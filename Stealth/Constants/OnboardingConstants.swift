@@ -11,7 +11,7 @@ struct OnboardingPage {
     let color : Color
     let image : String
     let title : String
-    let desciption: String
+    let description: String
 }
 
 
