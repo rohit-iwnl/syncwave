@@ -38,5 +38,8 @@ struct OnboardingConstants{
     
     static let TopoPatternOpacity : Double = 0.4
     
+    static let illustrationCornerRadius : CGFloat = 20
+    static let buttonCornerRadius : CGFloat = 16
+    
     // First Login Check
 }
