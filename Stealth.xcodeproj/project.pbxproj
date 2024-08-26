@@ -22,6 +22,8 @@
 		B6D543E72C7C04DD00C9D14C /* CapsuleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543E62C7C04DD00C9D14C /* CapsuleButton.swift */; };
 		B6D543E92C7C060C00C9D14C /* TextColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543E82C7C060C00C9D14C /* TextColors.swift */; };
 		B6D543EB2C7C090800C9D14C /* ContentSizeCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */; };
+		B6D543EE2C7C1D9D00C9D14C /* SignInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */; };
+		B6D543F12C7C2A8300C9D14C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6D543F02C7C2A8300C9D14C /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,8 @@
 		B6D543E62C7C04DD00C9D14C /* CapsuleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButton.swift; sourceTree = "<group>"; };
 		B6D543E82C7C060C00C9D14C /* TextColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextColors.swift; sourceTree = "<group>"; };
 		B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeCategory.swift; sourceTree = "<group>"; };
+		B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheet.swift; sourceTree = "<group>"; };
+		B6D543F02C7C2A8300C9D14C /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +158,8 @@
 		B6D543CE2C7BFA2900C9D14C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B6D543EF2C7C2A7200C9D14C /* LaunchScreen */,
+				B6D543EC2C7C1D9300C9D14C /* Auth */,
 				B6D543DB2C7BFE5400C9D14C /* Onboarding */,
 				B6D543D82C7BFE4900C9D14C /* Home */,
 			);
@@ -210,6 +216,22 @@
 				B6D543E62C7C04DD00C9D14C /* CapsuleButton.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		B6D543EC2C7C1D9300C9D14C /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		B6D543EF2C7C2A7200C9D14C /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B6D543F02C7C2A8300C9D14C /* Launch Screen.storyboard */,
+			);
+			path = LaunchScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,6 +292,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6D543F12C7C2A8300C9D14C /* Launch Screen.storyboard in Resources */,
 				B6D543C12C7BF96E00C9D14C /* Preview Assets.xcassets in Resources */,
 				B6D543BE2C7BF96E00C9D14C /* Assets.xcassets in Resources */,
 			);
@@ -291,6 +314,7 @@
 				B6D543DF2C7BFED200C9D14C /* TopographyPattern.swift in Sources */,
 				B6D543BA2C7BF96E00C9D14C /* StealthApp.swift in Sources */,
 				B6D543E42C7C024000C9D14C /* FrameAlignment.swift in Sources */,
+				B6D543EE2C7C1D9D00C9D14C /* SignInSheet.swift in Sources */,
 				B6D543E72C7C04DD00C9D14C /* CapsuleButton.swift in Sources */,
 				B6D543EB2C7C090800C9D14C /* ContentSizeCategory.swift in Sources */,
 				B6D543DD2C7BFE6500C9D14C /* OnboardingView.swift in Sources */,

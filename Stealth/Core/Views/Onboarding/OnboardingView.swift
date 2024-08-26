@@ -14,6 +14,7 @@ struct OnboardingView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
+    @State private var isModalOpen : Bool = false
     var body: some View {
         ZStack{
             TopographyPattern()
@@ -32,8 +33,8 @@ struct OnboardingView: View {
                                 VStack{
                                     HStack{
                                         CapsuleButton(title: "Skip", action: {
-                                            
-                                        }, color: .black)
+                                            isModalOpen = true
+                                        }, color: TextColors.primaryBlack.color)
                                         .alignment(.trailing)
                                         .padding()
                                     }
@@ -84,31 +85,45 @@ struct OnboardingView: View {
                         .animation(.easeInOut(duration: 0.25), value: currentPage)
                 }
                 Spacer()
-                HStack{
-                    Text(currentPage < onboardingPages.count - 1 ? "Next" : "Continue")
-                        .font(.callout)
-                        .lineLimit(1)
-                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
-                        .transition(.opacity)
-                        .animation(.easeInOut(duration: 0.5), value: currentPage)
-                        .padding(.horizontal)
-                        .padding(.vertical,5)
+                Button(action: {
+                    if currentPage < onboardingPages.count - 1 {
+                        withAnimation(.easeOut) {
+                            currentPage += 1
+                        }
+                    } else {
+                        isModalOpen = true
+                    }
+                }){
+                    HStack{
+                        Text(currentPage < onboardingPages.count - 1 ? "Next" : "Continue")
+                            .font(.callout)
+                            .lineLimit(1)
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                            .transition(.opacity)
+                            .animation(.easeInOut(duration: 0.5), value: currentPage)
+                            .padding(.horizontal)
+                            .padding(.vertical,5)
+                    }
+                    .containerRelativeFrame(.horizontal, { length, _ in
+                        return length / 3.5
+                    })
+                    .background(TextColors.primaryBlack.color)
+                    .clipShape(RoundedRectangle(cornerRadius: 12.0))
                 }
-                .containerRelativeFrame(.horizontal, { length, _ in
-                    return length / 3.5
-                })
-                .background(TextColors.primaryBlack.color)
-                .clipShape(RoundedRectangle(cornerRadius: 12.0))
             }
             .padding()
             .alignment(.trailing)
             .alignment(.bottom)
-            
         }
-        
-        
+        .sheet(isPresented: $isModalOpen){
+            SignInSheet()
+            
+                .presentationDetents([.fraction(0.8)])
+                .presentationDragIndicator(.visible)
+                .ignoresSafeArea()
+        }
     }
 }
 
