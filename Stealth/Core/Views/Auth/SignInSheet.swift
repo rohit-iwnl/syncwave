@@ -81,6 +81,17 @@ struct SignInSheet: View {
                 }
                 .foregroundStyle(.gray)
                 
+                Spacer(minLength: 20)
+                
+                HStack{
+                    CircleAuthButton(image: "AuthIcons/apple") {
+                        
+                    }
+                    CircleAuthButton(image: "AuthIcons/google") {
+                        
+                    }
+                }
+                
                 VStack{
                     
                 }
