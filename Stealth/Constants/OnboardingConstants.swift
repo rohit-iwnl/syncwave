@@ -14,7 +14,6 @@ struct OnboardingPage {
     let description: String
 }
 
-
 struct OnboardingConstants{
     static let pages : [OnboardingPage] = [
         OnboardingPage(
@@ -36,4 +35,8 @@ struct OnboardingConstants{
             description: "Manage schedules, set reminders, access resources. Let’s make your journey easier."
         )
     ]
+    
+    static let TopoPatternOpacity : Double = 0.4
+    
+    // First Login Check
 }

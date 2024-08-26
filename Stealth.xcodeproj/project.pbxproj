@@ -13,6 +13,10 @@
 		B6D543C12C7BF96E00C9D14C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6D543C02C7BF96E00C9D14C /* Preview Assets.xcassets */; };
 		B6D543D22C7BFACB00C9D14C /* OnboardingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543D12C7BFACB00C9D14C /* OnboardingConstants.swift */; };
 		B6D543D42C7BFB9C00C9D14C /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543D32C7BFB9C00C9D14C /* HexColor.swift */; };
+		B6D543D72C7BFD7600C9D14C /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543D62C7BFD7600C9D14C /* AppStorageConstants.swift */; };
+		B6D543DA2C7BFE5100C9D14C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543D92C7BFE5100C9D14C /* HomeView.swift */; };
+		B6D543DD2C7BFE6500C9D14C /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543DC2C7BFE6500C9D14C /* OnboardingView.swift */; };
+		B6D543DF2C7BFED200C9D14C /* TopographyPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543DE2C7BFED200C9D14C /* TopographyPattern.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +27,10 @@
 		B6D543C02C7BF96E00C9D14C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B6D543D12C7BFACB00C9D14C /* OnboardingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConstants.swift; sourceTree = "<group>"; };
 		B6D543D32C7BFB9C00C9D14C /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
+		B6D543D62C7BFD7600C9D14C /* AppStorageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageConstants.swift; sourceTree = "<group>"; };
+		B6D543D92C7BFE5100C9D14C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B6D543DC2C7BFE6500C9D14C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B6D543DE2C7BFED200C9D14C /* TopographyPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopographyPattern.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +141,8 @@
 		B6D543CE2C7BFA2900C9D14C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B6D543DB2C7BFE5400C9D14C /* Onboarding */,
+				B6D543D82C7BFE4900C9D14C /* Home */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -140,9 +150,35 @@
 		B6D543D02C7BFAB600C9D14C /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				B6D543D52C7BFD6300C9D14C /* AppStorageKeys */,
 				B6D543D12C7BFACB00C9D14C /* OnboardingConstants.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		B6D543D52C7BFD6300C9D14C /* AppStorageKeys */ = {
+			isa = PBXGroup;
+			children = (
+				B6D543D62C7BFD7600C9D14C /* AppStorageConstants.swift */,
+			);
+			path = AppStorageKeys;
+			sourceTree = "<group>";
+		};
+		B6D543D82C7BFE4900C9D14C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B6D543D92C7BFE5100C9D14C /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		B6D543DB2C7BFE5400C9D14C /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B6D543DC2C7BFE6500C9D14C /* OnboardingView.swift */,
+				B6D543DE2C7BFED200C9D14C /* TopographyPattern.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,7 +254,11 @@
 				B6D543D22C7BFACB00C9D14C /* OnboardingConstants.swift in Sources */,
 				B6D543D42C7BFB9C00C9D14C /* HexColor.swift in Sources */,
 				B6D543BC2C7BF96E00C9D14C /* ContentView.swift in Sources */,
+				B6D543DA2C7BFE5100C9D14C /* HomeView.swift in Sources */,
+				B6D543D72C7BFD7600C9D14C /* AppStorageConstants.swift in Sources */,
+				B6D543DF2C7BFED200C9D14C /* TopographyPattern.swift in Sources */,
 				B6D543BA2C7BF96E00C9D14C /* StealthApp.swift in Sources */,
+				B6D543DD2C7BFE6500C9D14C /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
