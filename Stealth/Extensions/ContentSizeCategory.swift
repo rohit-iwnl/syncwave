@@ -16,9 +16,9 @@ extension DynamicTypeSize {
             return 0.8
         case .xxxLarge, .accessibility1, .accessibility2:
             return 0.6
-        default:
+        case .accessibility3, .accessibility4, .accessibility5 :
             return 0.4
-        @unknown default:
+        default:
             return 1.0
         }
     }

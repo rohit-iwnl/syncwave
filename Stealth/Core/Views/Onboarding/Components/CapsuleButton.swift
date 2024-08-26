@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct CapsuleButton: View {
+    
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     var title : String
     var action : () -> Void
     let color : Color
@@ -15,12 +18,15 @@ struct CapsuleButton: View {
     var body : some View {
         Button(action: action) {
             Text(title)
-                .font(.headline)
+                .font(.caption2)
+                .lineLimit(1)
+                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                 .foregroundColor(TextColors.primaryBlack.color)
                 .containerRelativeFrame(.horizontal, { length, _ in
-                    return length/4
+                    return length/5
                 })
-                .padding()
+                .padding(.vertical,10)
+                .padding(.horizontal,2)
                 .background(RoundedRectangle(cornerRadius: OnboardingConstants.buttonCornerRadius).fill(TextColors.primaryWhite.color))
         }
     }

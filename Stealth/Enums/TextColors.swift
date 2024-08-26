@@ -17,8 +17,7 @@ enum TextColors {
             return Color(hex: "#242424")
         case .primaryWhite:
             return Color(hex: "#F6F6F6")
-        default:
-            return .black
+
         }
     }
 }
