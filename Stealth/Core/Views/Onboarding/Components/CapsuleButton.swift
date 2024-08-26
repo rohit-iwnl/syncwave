@@ -17,6 +17,9 @@ struct CapsuleButton: View {
             Text(title)
                 .font(.headline)
                 .foregroundColor(TextColors.primaryBlack.color)
+                .containerRelativeFrame(.horizontal, { length, _ in
+                    return length/4
+                })
                 .padding()
                 .background(RoundedRectangle(cornerRadius: OnboardingConstants.buttonCornerRadius).fill(TextColors.primaryWhite.color))
         }

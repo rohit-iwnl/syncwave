@@ -21,6 +21,7 @@
 		B6D543E42C7C024000C9D14C /* FrameAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543E32C7C024000C9D14C /* FrameAlignment.swift */; };
 		B6D543E72C7C04DD00C9D14C /* CapsuleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543E62C7C04DD00C9D14C /* CapsuleButton.swift */; };
 		B6D543E92C7C060C00C9D14C /* TextColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543E82C7C060C00C9D14C /* TextColors.swift */; };
+		B6D543EB2C7C090800C9D14C /* ContentSizeCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		B6D543E32C7C024000C9D14C /* FrameAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameAlignment.swift; sourceTree = "<group>"; };
 		B6D543E62C7C04DD00C9D14C /* CapsuleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleButton.swift; sourceTree = "<group>"; };
 		B6D543E82C7C060C00C9D14C /* TextColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextColors.swift; sourceTree = "<group>"; };
+		B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeCategory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 			children = (
 				B6D543D32C7BFB9C00C9D14C /* HexColor.swift */,
 				B6D543E02C7C01E700C9D14C /* AlignmentExtension.swift */,
+				B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				B6D543BA2C7BF96E00C9D14C /* StealthApp.swift in Sources */,
 				B6D543E42C7C024000C9D14C /* FrameAlignment.swift in Sources */,
 				B6D543E72C7C04DD00C9D14C /* CapsuleButton.swift in Sources */,
+				B6D543EB2C7C090800C9D14C /* ContentSizeCategory.swift in Sources */,
 				B6D543DD2C7BFE6500C9D14C /* OnboardingView.swift in Sources */,
 				B6D543E12C7C01E700C9D14C /* AlignmentExtension.swift in Sources */,
 			);
