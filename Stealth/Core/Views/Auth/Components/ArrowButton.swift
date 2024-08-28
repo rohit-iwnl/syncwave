@@ -53,14 +53,14 @@ struct ArrowButton: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size * 0.4, height: size * 0.4)
                 .rotationEffect(Angle(degrees: progress == 1.0 ? -90 : 0)) // Rotate the arrow when complete
-                .animation(.easeInOut(duration: 0.75), value: progress)
+                .animation(.easeInOut(duration: 0.5), value: progress)
                 .foregroundColor(progress == 1.0 ? .white : .black) // Change color when complete
                 .scaleEffect(progress == 1.0 ? 1.0 : 1.0) // Ensure size does not change
         }
         .frame(width: size, height: size) // Fixed size for the entire component
         .background(progress == 1.0 ? Color.black : Color.clear) // Fill background when complete
         .clipShape(Circle())
-        .animation(.easeInOut(duration: 1.25), value: progress) // Disable any implicit animation for background change
+        .animation(.easeInOut(duration: 0.75), value: progress) // Disable any implicit animation for background change
     }
 }
 

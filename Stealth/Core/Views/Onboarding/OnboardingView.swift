@@ -34,11 +34,17 @@ struct OnboardingView: View {
                             .overlay(
                                 VStack{
                                     HStack{
-                                        CapsuleButton(title: "Skip", action: {
-                                            isModalOpen = true
-                                        }, color: TextColors.primaryBlack.color)
-                                        .alignment(.trailing)
-                                        .padding()
+                                        if (index < onboardingPages.count - 1 ){
+                                            CapsuleButton(title: "Skip", action: {
+                                                isModalOpen = true
+                                            }, color: TextColors.primaryBlack.color)
+                                            .alignment(.trailing)
+                                            .padding()
+                                        } else {
+                                            Spacer()
+                                                .frame(height: 36) // Adjust the height to match the height of the button
+                                                .padding()
+                                        }
                                     }
                                     
                                     Image("OnboardingIllustrations/\(onboardingPages[index].image)")
@@ -85,7 +91,7 @@ struct OnboardingView: View {
                 updateProgress()
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            HStack(spacing: 8) {
+            HStack() {
                 ForEach(0..<onboardingPages.count, id: \.self) { index in
                     Capsule()
                         .fill(index == currentPage ? Color.primary : Color.secondary.opacity(0.5))

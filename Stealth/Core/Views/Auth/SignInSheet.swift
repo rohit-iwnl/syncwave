@@ -79,7 +79,10 @@ struct SignInSheet: View {
                 HStack{
                     Rectangle()
                         .frame(height: 1)
-                    Text("Or")
+                    Text("Or continue with")
+                        .font(.callout)
+                        .lineLimit(1)
+                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                     
                     Rectangle()
                         .frame(height: 1)
@@ -93,8 +96,8 @@ struct SignInSheet: View {
                     CircleAuthButton(image: "AuthIcons/apple") {
                         Task {
                             do {
-                                try await viewModel.signInWithApple()
-                                self.appUser = appUser
+                                let _appUser = try await viewModel.signInWithApple()
+                                self.appUser = _appUser
                             } catch {
                                 print("Error Signing in with apple provider")
                             }
