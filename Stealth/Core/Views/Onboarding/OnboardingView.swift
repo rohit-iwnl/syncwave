@@ -9,6 +9,8 @@ import SwiftUI
 
 struct OnboardingView: View {
     
+    @Binding var appUser : AppUser?
+    @State private var progress: CGFloat = 0.0
     @State private var currentPage : Int = 0
     let onboardingPages : [OnboardingPage] = OnboardingConstants.pages
     
@@ -76,6 +78,12 @@ struct OnboardingView: View {
                     .tag(index)
                 }
             }
+            .onAppear {
+                updateProgress()
+            }
+            .onChange(of : currentPage) {
+                updateProgress()
+            }
             .tabViewStyle(.page(indexDisplayMode: .never))
             HStack(spacing: 8) {
                 ForEach(0..<onboardingPages.count, id: \.self) { index in
@@ -85,48 +93,41 @@ struct OnboardingView: View {
                         .animation(.easeInOut(duration: 0.25), value: currentPage)
                 }
                 Spacer()
-                Button(action: {
-                    if currentPage < onboardingPages.count - 1 {
-                        withAnimation(.easeOut) {
+                ArrowButton(progress: $progress, size: 60)
+                    .onTapGesture {
+                        let totalPages = onboardingPages.count
+                        if currentPage < totalPages - 1 {
                             currentPage += 1
+                            progress = CGFloat(currentPage + 1) / CGFloat(totalPages)
+                        } else {
+                            isModalOpen = true
                         }
-                    } else {
-                        isModalOpen = true
                     }
-                }){
-                    HStack{
-                        Text(currentPage < onboardingPages.count - 1 ? "Next" : "Continue")
-                            .font(.callout)
-                            .lineLimit(1)
-                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.white)
-                            .transition(.opacity)
-                            .animation(.easeInOut(duration: 0.5), value: currentPage)
-                            .padding(.horizontal)
-                            .padding(.vertical,5)
-                    }
-                    .containerRelativeFrame(.horizontal, { length, _ in
-                        return length / 3.5
-                    })
-                    .background(TextColors.primaryBlack.color)
-                    .clipShape(RoundedRectangle(cornerRadius: 12.0))
-                }
             }
             .padding()
             .alignment(.trailing)
             .alignment(.bottom)
         }
         .sheet(isPresented: $isModalOpen){
-            SignInSheet()
-            
+            SignInSheet(appUser: $appUser)
                 .presentationDetents([.fraction(0.8)])
                 .presentationDragIndicator(.visible)
                 .ignoresSafeArea()
+                .onAppear{
+                    Task {
+                        try await AuthManager.shared.getCurrentSession()
+                    }
+                }
         }
+    }
+    
+    
+    private func updateProgress() {
+        let totalPages = onboardingPages.count
+        progress = CGFloat(currentPage + 1) / CGFloat(totalPages)
     }
 }
 
 #Preview {
-    OnboardingView()
+    OnboardingView(appUser: .constant(nil))
 }

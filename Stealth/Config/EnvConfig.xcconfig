@@ -1,0 +1,13 @@
+//
+//  Config.xcconfig
+//  Stealth
+//
+//  Created by Rohit Manivel on 8/26/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+SUPABASE_URL = "https://uvnclhfhccqtipmrvlxb.supabase.co"
+
+SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2bmNsaGZoY2NxdGlwbXJ2bHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM5NTY2MTksImV4cCI6MjAzOTUzMjYxOX0.en805gbeA8KdRJ1bDJpXpLA8u1XhJdL7wIuRANyBSv8

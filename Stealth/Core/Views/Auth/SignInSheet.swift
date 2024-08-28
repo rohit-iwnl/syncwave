@@ -13,6 +13,12 @@ struct SignInSheet: View {
     @State private var emailID : String = ""
     @FocusState private var isEmailFocused : Bool
     
+    @StateObject var viewModel = SignInViewModel()
+    
+    @Binding var appUser : AppUser?
+    
+    let appleSignInUtils = AppleSignInUtils()
+    
     var body: some View {
         VStack{
             VStack{
@@ -22,7 +28,7 @@ struct SignInSheet: View {
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                     .fontWeight(.semibold)
                     .alignment(.leading)
-            
+                
                 Spacer(minLength: 20)
                 
                 TextField(text: $emailID, prompt: Text("Enter your email ID").foregroundStyle(.gray)) {
@@ -85,7 +91,14 @@ struct SignInSheet: View {
                 
                 HStack{
                     CircleAuthButton(image: "AuthIcons/apple") {
-                        
+                        Task {
+                            do {
+                                try await viewModel.signInWithApple()
+                                self.appUser = appUser
+                            } catch {
+                                print("Error Signing in with apple provider")
+                            }
+                        }
                     }
                     CircleAuthButton(image: "AuthIcons/google") {
                         
@@ -100,7 +113,7 @@ struct SignInSheet: View {
             .alignment(.top)
             .padding(.vertical,20)
             .padding(.horizontal)
-
+            
             
         }
         .alignment(.top)
@@ -111,6 +124,6 @@ struct SignInSheet: View {
 }
 
 #Preview {
-    SignInSheet()
+    SignInSheet(appUser: .constant(nil))
         .ignoresSafeArea(edges: [.bottom])
 }
