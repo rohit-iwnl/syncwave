@@ -11,7 +11,7 @@ import SwiftUI
 class SignInViewModel : ObservableObject {
     
     let appleSignInUtils = AppleSignInUtils()
-        
+    
     func signInWithApple() async throws -> AppUser{
         let appleResult = try await appleSignInUtils.startSignInWithAppleFlow()
         return try await AuthManager.shared.signInWithApple(idToken: appleResult.idToken, nonce: appleResult.nonce)
@@ -32,6 +32,10 @@ class SignInViewModel : ObservableObject {
             print("Registration Form is invalid")
             throw NSError()
         }
+    }
+    
+    func checkIfUserExists(email : String) async throws -> Bool {
+        return true
     }
     
     func signInWithEmail(email : String, password : String) async throws -> AppUser {

@@ -13,6 +13,10 @@ struct AppUser{
     let email : String?
 }
 
+struct User : Decodable {
+    let email : String
+}
+
 struct SupabaseConfig {
     static let SUPABASE_URL = "SUPABASE_URL"
     static let SUPABASE_KEY = "SUPABASE_ANON_KEY"
@@ -77,4 +81,29 @@ class AuthManager {
         
         return AppUser(uid: session?.user.id.uuidString ?? "1234", email: session?.user.email ?? "No Email")
     }
+    
+    func checkIfUserExist(email: String) async throws -> Bool {
+        guard email.isValidEmail() else {
+            print("Invalid email format")
+            return false
+        }
+        
+        do {
+            // Query the Supabase table to check if the user exists
+            let response = try await client?
+                .rpc("check_user_exists", params: ["user_email" : email])
+                .execute()
+            if let data = response?.data {
+                let decodedJson = try JSONDecoder().decode(Bool.self, from: data)
+                print("Decoded JSON: \(decodedJson)")
+                return decodedJson
+            } else {
+                return false
+            }
+        } catch {
+            print("Error executing query: \(error.localizedDescription)")
+            throw error
+        }
+    }
+    
 }

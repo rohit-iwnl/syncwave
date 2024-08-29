@@ -17,6 +17,8 @@ struct OnboardingView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     @State private var isModalOpen : Bool = false
+    
+    
     var body: some View {
         ZStack{
             TopographyPattern()
