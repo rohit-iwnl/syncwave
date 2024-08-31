@@ -18,7 +18,7 @@ class SignInViewModel : ObservableObject {
     }
     
     func isFormValid(email : String, password : String) -> Bool {
-        guard email.isValidEmail(), password.count < 8 else {
+        guard email.isValidEmail(), password.isValidPassword() else {
             return false
         }
         

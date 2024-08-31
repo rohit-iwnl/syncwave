@@ -91,7 +91,7 @@ class AuthManager {
         do {
             // Query the Supabase table to check if the user exists
             let response = try await client?
-                .rpc("check_user_exists", params: ["user_email" : email])
+                .rpc("check_user_exists", params: [CheckUserExistParams.emailParam : email.lowercased()])
                 .execute()
             if let data = response?.data {
                 let decodedJson = try JSONDecoder().decode(Bool.self, from: data)

@@ -20,6 +20,17 @@ struct SignInSheet: View {
     @State private var password : String = ""
     @State private var isLoading : Bool = false
     
+    @State private var isEmailValid: Bool = false
+    @State private var isPasswordValid: Bool = false
+    
+    var isInputValid: Bool {
+        if isPasswordFieldVisible {
+            return isEmailValid && isPasswordValid
+        } else {
+            return isEmailValid
+        }
+    }
+    
     
     @Binding var appUser : AppUser?
     
@@ -28,54 +39,52 @@ struct SignInSheet: View {
     var body: some View {
         VStack{
             VStack{
-                Text("Login /\nSignup")
+                Text("Login")
                     .font(.largeTitle)
                     .lineLimit(2)
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                     .fontWeight(.semibold)
                     .alignment(.leading)
                 
-                Spacer(minLength: 20)
+                
                 
                 if !isPasswordFieldVisible {
-                    TextInputField(
-                        text: $emailID,
-                        prompt: "Enter your email ID",
-                        keyboardType: .emailAddress,
-                        textContentType: .emailAddress,
-                        autoCapitalization: .never,
-                        autoCorrection: false
-                    )
-                    .transition(.asymmetric(insertion: .slide, removal: .opacity))
-                } else {
-                    TextInputField(
-                        text: $password,
-                        prompt: "Enter your password",
-                        keyboardType: .default,
-                        textContentType: .password,
-                        autoCapitalization: .never,
-                        autoCorrection: false
-                    )
-                    .transition(.asymmetric(insertion: .slide, removal: .opacity))
-                    
-                    Button(action: {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            isPasswordFieldVisible = false
-                            password = "" // Clear the password field
+                    CustomTextField(text: $emailID, placeholder: "Enter your email")
+                        .transition(.asymmetric(insertion: .slide, removal: .opacity))
+                        .onChange(of: emailID) { _, newValue in
+                            isEmailValid = newValue.isValidEmail()
                         }
-                    }) {
-                        Text("Wrong email?")
-                            .font(.caption)
-                            .foregroundColor(.white)
-                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                            .padding(.top,10)
+                } else {
+                    VStack(alignment: .trailing, spacing: 10) {
+                        CustomSecureField(text: $password, placeholder: "Enter your password")
+                            .transition(.asymmetric(insertion: .slide, removal: .opacity))
+                            .onChange(of: password) { _, newValue in
+                                isPasswordValid = newValue.isValidPassword()
+                            }
+                        
+                        HStack {
+                            
+                            Spacer()
+                            Button(action: {
+                                withAnimation(.easeInOut(duration: 0.5)) {
+                                    isPasswordFieldVisible = false
+                                    password = "" // Clear the password field
+                                }
+                            }) {
+                                Text("Wrong email?")
+                                    .font(.caption)
+                                    .underline()
+                                    .foregroundColor(.white)
+                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            }
                             .transition(.slide)
-                            .alignment(.leading)
+                        }
+                        .padding(.top)
                     }
-                    
                 }
                 
-                Spacer(minLength: 20)
+                
+                
                 
                 Button(action: {
                     isLoading = true
@@ -91,7 +100,6 @@ struct SignInSheet: View {
                                     await MainActor.run {
                                         isSignUpModalOpen = true
                                     }
-                                    
                                 }
                             } else {
                                 // Handle sign in with email and password here
@@ -109,31 +117,61 @@ struct SignInSheet: View {
                                 .progressViewStyle(CircularProgressViewStyle(tint: .black))
                         } else {
                             Text("Continue")
-                                .font(.subheadline) // Customize the font and size
+                                .font(.title3)
                                 .lineLimit(2)
                                 .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                            Image(systemName: "arrow.right") // Use SF Symbol for the arrow icon
+                            Image(systemName: "arrow.right")
                                 .font(.system(size: 18, weight: .bold))
                         }
                         Spacer()
                     }
-                    .padding(.horizontal, 20) // Add horizontal padding
-                    .frame(height: 50) // Set the height of the button
-                    .background(Color.white) // Button background color
-                    .foregroundColor(.black)
+                    .padding(.horizontal, 20)
+                    .frame(height: 50)
+                    .background(
+                        isInputValid && !isLoading ?
+                        Color.white :
+                            Color.white.opacity(0.3) // Reduced opacity for disabled state
+                    )
+                    .foregroundColor(
+                        isInputValid && !isLoading ?
+                        Color.black :
+                            Color.gray // Gray text for disabled state
+                    )
                     .cornerRadius(16)
-                    .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2) // Optional: Add shadow for depth
-                    .padding(.vertical)
+                    .shadow(
+                        color: isInputValid && !isLoading ?
+                        Color.black.opacity(0.2) :
+                            Color.clear, // No shadow for disabled state
+                        radius: 5, x: 0, y: 2
+                    )
+                    .animation(.easeInOut(duration: 0.25), value: isInputValid)
+                    .animation(.easeInOut(duration: 0.25), value: isLoading)
                 }
-                .disabled(isLoading) // Disable the button while loading
+                .padding(.vertical)
+                .disabled(!isInputValid || isLoading)
                 
-                Spacer(minLength: 20)
+                
+                if (isPasswordFieldVisible){
+                    NavigationLink(destination: ForgotPasswordView(email: emailID)) {
+                        
+                        Text("Forgot password?")
+                            .font(.subheadline)
+                            .underline()
+                            .foregroundColor(.white)
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            .transition(.slide)
+                    }
+                    .padding(.vertical)
+                    
+                }
+                
                 
                 HStack{
                     Rectangle()
                         .frame(height: 1)
                     Text("Or continue with")
-                        .font(.callout)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
                         .lineLimit(1)
                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                     
@@ -143,7 +181,7 @@ struct SignInSheet: View {
                 }
                 .foregroundStyle(.gray)
                 
-                Spacer(minLength: 20)
+                
                 
                 HStack{
                     CircleAuthButton(image: "AuthIcons/apple") {
@@ -160,15 +198,35 @@ struct SignInSheet: View {
                         
                     }
                 }
+                .padding(.vertical)
+                Spacer(minLength: 20)
                 
-                VStack{
+                if (!isPasswordFieldVisible){
                     
+                    
+                    VStack {
+                        HStack {
+                            Text("Don't have an account?")
+                                .foregroundColor(.gray)
+                            NavigationLink(destination: SignupSheet(emailID: emailID)) {
+                                Text("Sign up here")
+                                    .foregroundColor(TextColors.primaryWhite.color)
+                                    .fontWeight(.bold)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            }
+                        }
+                        .transition(.slide)
+                        .animation(.easeIn, value: isPasswordFieldVisible)
+                        .font(.subheadline)
+                        .padding(.top, 20)
+                    }
+                    .padding(.bottom,30)
+                    .alignment(.bottom)
                 }
-                .alignment(.top)
             }
             .alignment(.top)
-            .padding(.vertical,20)
-            .padding(.horizontal)
+            
             
             
         }
@@ -185,6 +243,11 @@ struct SignInSheet: View {
 }
 
 #Preview {
-    SignInSheet(appUser: .constant(nil))
-        .ignoresSafeArea(edges: [.bottom])
+    ZStack{
+        Color(TextColors.primaryBlack.color)
+            .ignoresSafeArea()
+        SignInSheet(appUser: .constant(nil) )
+            .ignoresSafeArea(edges: [.bottom])
+            .padding()
+    }
 }

@@ -16,7 +16,7 @@ struct TextInputField: View {
     var autoCapitalization: TextInputAutocapitalization
     var autoCorrection : Bool
     
-    @FocusState private var isFocused: Bool
+    
     
     var body: some View {
         TextField(text: $text, prompt: Text(prompt).foregroundStyle(.gray)) {}
@@ -24,18 +24,16 @@ struct TextInputField: View {
             .autocorrectionDisabled(!autoCorrection)
             .textContentType(textContentType)
             .keyboardType(keyboardType)
-            .focused($isFocused)
             .foregroundStyle(.white)
             .padding(.vertical, 10)
             .background(Color.clear)
             .overlay(
                 Rectangle()
                     .frame(height: 1)
-                    .foregroundColor(isFocused ? .white : .gray)
+                    .foregroundColor(.gray)
                     .transition(.opacity)
-                    .animation(.easeOut.speed(2), value: isFocused)
-                    .padding(.top, 35),
-                alignment: .bottom
+                    .padding(.top, 35)
+                    .alignment(.bottom)
             )
     }
 }

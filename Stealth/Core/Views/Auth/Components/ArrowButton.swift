@@ -40,9 +40,13 @@ struct ProgressCircle: View {
         .frame(width: size, height: size)
     }
 }
+
+
 struct ArrowButton: View {
-    @Binding var progress: CGFloat // Binding to control the progress externally
+    @Binding var progress: CGFloat
     var size: CGFloat
+    
+    @State private var isAnimating: Bool = false
     
     var body: some View {
         ZStack {
@@ -52,17 +56,40 @@ struct ArrowButton: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size * 0.4, height: size * 0.4)
-                .rotationEffect(Angle(degrees: progress == 1.0 ? -90 : 0)) // Rotate the arrow when complete
-                .animation(.easeInOut(duration: 0.5), value: progress)
-                .foregroundColor(progress == 1.0 ? .white : .black) // Change color when complete
-                .scaleEffect(progress == 1.0 ? 1.0 : 1.0) // Ensure size does not change
+                .foregroundColor(progress == 1.0 ? .white : .black)
+                .rotationEffect(Angle(degrees: isAnimating ? -90 : 0))
         }
-        .frame(width: size, height: size) // Fixed size for the entire component
-        .background(progress == 1.0 ? Color.black : Color.clear) // Fill background when complete
+        .frame(width: size, height: size)
+        .background(progress == 1.0 ? Color.black : Color.clear)
+        .animation(.easeIn, value: progress)
         .clipShape(Circle())
-        .animation(.easeInOut(duration: 0.75), value: progress) // Disable any implicit animation for background change
+        .modifier(ProgressChangeModifier(progress: progress, isAnimating: $isAnimating))
     }
 }
+
+struct ProgressChangeModifier: ViewModifier {
+    let progress: CGFloat
+    @Binding var isAnimating: Bool
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 17.0, *) {
+            content.onChange(of: progress) { oldValue, newValue in
+                handleProgressChange(newValue: newValue)
+            }
+        } else {
+            content.onChange(of: progress) { newValue in
+                handleProgressChange(newValue: newValue)
+            }
+        }
+    }
+    
+    private func handleProgressChange(newValue: CGFloat) {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            isAnimating = (newValue == 1.0)
+        }
+    }
+}
+
 
 
 #Preview {

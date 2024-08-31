@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640DAA52C82823D00D76F98 /* OptionsSheet.swift */; };
 		B66047112C80655500C8061F /* SignupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047102C80655500C8061F /* SignupSheet.swift */; };
-		B66047152C80778200C8061F /* PhoneNumberValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047142C80778200C8061F /* PhoneNumberValidation.swift */; };
+		B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568982C8288CE00E0BF1F /* SignInView.swift */; };
+		B67568A52C82B45C00E0BF1F /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */; };
 		B6D3043D2C7D33000018C1FF /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3043C2C7D33000018C1FF /* Auth */; };
 		B6D3043F2C7D33000018C1FF /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3043E2C7D33000018C1FF /* PostgREST */; };
 		B6D304412C7D33000018C1FF /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = B6D304402C7D33000018C1FF /* Realtime */; };
@@ -37,12 +39,13 @@
 		B6D543EB2C7C090800C9D14C /* ContentSizeCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */; };
 		B6D543EE2C7C1D9D00C9D14C /* SignInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */; };
 		B6FE87842C7D8ABE000685E0 /* AppleSignInUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */; };
-		B6FE87892C7DD40D000685E0 /* EmailValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FE87882C7DD40D000685E0 /* EmailValidation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B640DAA52C82823D00D76F98 /* OptionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsSheet.swift; sourceTree = "<group>"; };
 		B66047102C80655500C8061F /* SignupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupSheet.swift; sourceTree = "<group>"; };
-		B66047142C80778200C8061F /* PhoneNumberValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneNumberValidation.swift; sourceTree = "<group>"; };
+		B67568982C8288CE00E0BF1F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		B6D304442C7D334D0018C1FF /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		B6D543B62C7BF96E00C9D14C /* Stealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6D543B92C7BF96E00C9D14C /* StealthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealthApp.swift; sourceTree = "<group>"; };
@@ -63,10 +66,16 @@
 		B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheet.swift; sourceTree = "<group>"; };
 		B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUtils.swift; sourceTree = "<group>"; };
 		B6FE87852C7D930F000685E0 /* Stealth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stealth.entitlements; sourceTree = "<group>"; };
-		B6FE87882C7DD40D000685E0 /* EmailValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B640DAA22C81941100D76F98 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
+		B675689C2C82984000E0BF1F /* TextInput */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TextInput; sourceTree = "<group>"; };
+		B67568A12C82AED400E0BF1F /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+		B67568A62C82B56C00E0BF1F /* StatusBar */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = StatusBar; sourceTree = "<group>"; };
+		B67568AB2C82CACA00E0BF1F /* FormValidations */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FormValidations; sourceTree = "<group>"; };
+		B67568AE2C82CF0F00E0BF1F /* Keyboard */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Keyboard; sourceTree = "<group>"; };
+		B6D1BBE62C80A26C004F63A5 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D304382C7D2E9B0018C1FF /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D3044A2C7D38F00018C1FF /* Config */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Config; sourceTree = "<group>"; };
 		B6FE877E2C7D896D000685E0 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
@@ -147,6 +156,7 @@
 		B6D543C72C7BFA0D00C9D14C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B6D1BBE62C80A26C004F63A5 /* Components */,
 				B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */,
 			);
 			path = Utils;
@@ -170,11 +180,14 @@
 		B6D543CA2C7BFA1B00C9D14C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B67568AE2C82CF0F00E0BF1F /* Keyboard */,
+				B67568AB2C82CACA00E0BF1F /* FormValidations */,
+				B67568A62C82B56C00E0BF1F /* StatusBar */,
+				B67568A12C82AED400E0BF1F /* Views */,
+				B675689C2C82984000E0BF1F /* TextInput */,
 				B6D543D32C7BFB9C00C9D14C /* HexColor.swift */,
 				B6D543E02C7C01E700C9D14C /* AlignmentExtension.swift */,
 				B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */,
-				B6FE87882C7DD40D000685E0 /* EmailValidation.swift */,
-				B66047142C80778200C8061F /* PhoneNumberValidation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -219,6 +232,7 @@
 		B6D543D02C7BFAB600C9D14C /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				B640DAA22C81941100D76F98 /* Auth */,
 				B6D543D52C7BFD6300C9D14C /* AppStorageKeys */,
 				B6D543D12C7BFACB00C9D14C /* OnboardingConstants.swift */,
 			);
@@ -274,6 +288,9 @@
 				B6D304382C7D2E9B0018C1FF /* Components */,
 				B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */,
 				B66047102C80655500C8061F /* SignupSheet.swift */,
+				B640DAA52C82823D00D76F98 /* OptionsSheet.swift */,
+				B67568982C8288CE00E0BF1F /* SignInView.swift */,
+				B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -301,6 +318,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				B640DAA22C81941100D76F98 /* Auth */,
+				B675689C2C82984000E0BF1F /* TextInput */,
+				B67568A12C82AED400E0BF1F /* Views */,
+				B67568A62C82B56C00E0BF1F /* StatusBar */,
+				B67568AB2C82CACA00E0BF1F /* FormValidations */,
+				B67568AE2C82CF0F00E0BF1F /* Keyboard */,
+				B6D1BBE62C80A26C004F63A5 /* Components */,
 				B6D304382C7D2E9B0018C1FF /* Components */,
 				B6D3044A2C7D38F00018C1FF /* Config */,
 				B6FE877E2C7D896D000685E0 /* ViewModels */,
@@ -364,10 +388,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D543D22C7BFACB00C9D14C /* OnboardingConstants.swift in Sources */,
+				B67568A52C82B45C00E0BF1F /* ForgotPasswordView.swift in Sources */,
 				B6D543E92C7C060C00C9D14C /* TextColors.swift in Sources */,
 				B6D543D42C7BFB9C00C9D14C /* HexColor.swift in Sources */,
+				B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */,
+				B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */,
 				B6D543BC2C7BF96E00C9D14C /* ContentView.swift in Sources */,
-				B66047152C80778200C8061F /* PhoneNumberValidation.swift in Sources */,
 				B6D543DA2C7BFE5100C9D14C /* HomeView.swift in Sources */,
 				B6D543D72C7BFD7600C9D14C /* AppStorageConstants.swift in Sources */,
 				B6D543DF2C7BFED200C9D14C /* TopographyPattern.swift in Sources */,
@@ -376,7 +402,6 @@
 				B6D543E42C7C024000C9D14C /* FrameAlignment.swift in Sources */,
 				B6D543EE2C7C1D9D00C9D14C /* SignInSheet.swift in Sources */,
 				B6D543E72C7C04DD00C9D14C /* CapsuleButton.swift in Sources */,
-				B6FE87892C7DD40D000685E0 /* EmailValidation.swift in Sources */,
 				B6D543EB2C7C090800C9D14C /* ContentSizeCategory.swift in Sources */,
 				B6D543DD2C7BFE6500C9D14C /* OnboardingView.swift in Sources */,
 				B6FE87842C7D8ABE000685E0 /* AppleSignInUtils.swift in Sources */,
