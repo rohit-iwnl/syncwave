@@ -68,6 +68,16 @@
 		B6FE87852C7D930F000685E0 /* Stealth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stealth.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B67568B12C82D61200E0BF1F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				EnvConfig.xcconfig,
+			);
+			target = B6D543B52C7BF96E00C9D14C /* Stealth */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B640DAA22C81941100D76F98 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B675689C2C82984000E0BF1F /* TextInput */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TextInput; sourceTree = "<group>"; };
@@ -77,7 +87,7 @@
 		B67568AE2C82CF0F00E0BF1F /* Keyboard */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Keyboard; sourceTree = "<group>"; };
 		B6D1BBE62C80A26C004F63A5 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D304382C7D2E9B0018C1FF /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
-		B6D3044A2C7D38F00018C1FF /* Config */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Config; sourceTree = "<group>"; };
+		B6D3044A2C7D38F00018C1FF /* Config */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B67568B12C82D61200E0BF1F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Config; sourceTree = "<group>"; };
 		B6FE877E2C7D896D000685E0 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -342,7 +352,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					B6D543B52C7BF96E00C9D14C = {
 						CreatedOnToolsVersion = 15.4;
