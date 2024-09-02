@@ -22,7 +22,7 @@ struct CircleAuthButton: View {
                 
                 .background(.white)
                 .clipShape(Circle())
-                .shadow(color: .gray.opacity(0.5), radius: 10, x: 0, y: 5)
+                
         }
     }
 }
