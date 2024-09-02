@@ -1,38 +1,47 @@
-//
-//  ContentView.swift
-//  Stealth
-//
-//  Created by Rohit Manivel on 8/25/24.
-//
-
-import SwiftUI
-
 import SwiftUI
 
 struct ContentView: View {
     @AppStorage(AppStorageConstants.hasCompletedOnboarding.key) private var hasCompletedOnboarding: Bool = false
-    @State var appUser: AppUser? = nil
+    @State private var appUser: AppUser? = nil
+    @State private var isLoading = true
+    @State private var showError = false
     
     var body: some View {
-        ZStack {
-            if hasCompletedOnboarding {
-                if let appUser = appUser {
-                    HomeView()
-                } else {
-                    SignInView()
-                }
+        Group {
+            if isLoading {
+                ProgressView("Loading...")
+            } else if let appUser = appUser, !appUser.uid.isEmpty {
+                HomeView(appUser: $appUser)
+                    .transition(.move(edge: .trailing))
             } else {
-                OnboardingView(appUser: $appUser)
-                    .preferredColorScheme(.light)
+                SignInView(appUser: $appUser)
+                    .transition(.move(edge: .leading))
             }
         }
-        .onAppear {
-            Task {
-                do {
-                    self.appUser = try await AuthManager.shared.getCurrentSession()
-                } catch {
-                    // Handle error if session retrieval fails
-                    print("Failed to get current session: \(error.localizedDescription)")
+        .animation(.easeInOut(duration: 0.5), value: appUser)
+        .onAppear(perform: checkSession)
+        .alert("Session Error", isPresented: $showError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Failed to retrieve your session. Please try signing in again.")
+        }
+    }
+    
+    private func checkSession() {
+        Task {
+            do {
+                let sessionUser = try await AuthManager.shared.getCurrentSession()
+                await MainActor.run {
+                    withAnimation {
+                        self.appUser = sessionUser
+                        self.isLoading = false
+                    }
+                }
+            } catch {
+                print("Failed to get current session: \(error.localizedDescription)")
+                await MainActor.run {
+                    self.showError = true
+                    self.isLoading = false
                 }
             }
         }
@@ -40,5 +49,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(appUser: nil)
+    ContentView()
 }

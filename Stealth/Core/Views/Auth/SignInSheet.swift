@@ -103,6 +103,19 @@ struct SignInSheet: View {
                                 }
                             } else {
                                 // Handle sign in with email and password here
+                                Task {
+                                    do {
+                                        let _appUser = try await viewModel.signInWithEmail(email: emailID, password: password)
+                                        await MainActor.run {
+                                            self.appUser = _appUser
+                                        }
+                                        print("DEBUG : \(_appUser.uid)")
+                                        print("DEBUG : \(String(describing: _appUser.email))")
+                                    } catch {
+                                        print("Error Signing in with email provider: \(error)")
+                                    }
+                                }
+                                
                             }
                         } catch {
                             print("Error caught")
@@ -195,7 +208,14 @@ struct SignInSheet: View {
                         }
                     }
                     CircleAuthButton(image: "AuthIcons/google") {
-                        
+                        Task {
+                            do {
+                                let _appUser = try await viewModel.signInWithGoogle()
+                                self.appUser = _appUser
+                            } catch {
+                                print("Error Signing in with google provider")
+                            }
+                        }
                     }
                 }
                 .padding(.vertical)
@@ -243,11 +263,14 @@ struct SignInSheet: View {
 }
 
 #Preview {
-    ZStack{
-        Color(TextColors.primaryBlack.color)
-            .ignoresSafeArea()
-        SignInSheet(appUser: .constant(nil) )
-            .ignoresSafeArea(edges: [.bottom])
-            .padding()
+    struct PreviewWrapper: View {
+        @State var previewUser: AppUser? = AppUser(uid: "1234", email: "rohitmanivel9@gmail.com")
+        
+        var body: some View {
+            SignInView(appUser: $previewUser)
+        }
     }
+    
+    return PreviewWrapper()
 }
+

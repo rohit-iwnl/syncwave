@@ -11,6 +11,8 @@ struct SignInView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
+    @Binding var appUser : AppUser?
+    
     var body: some View {
         ZStack{
             Color(TextColors.primaryBlack.color)
@@ -29,7 +31,7 @@ struct SignInView: View {
 
                 
                 SignInSheet(
-                    appUser: .constant(nil)
+                    appUser: $appUser
                 )
             }
             .padding(.horizontal)
@@ -41,6 +43,6 @@ struct SignInView: View {
 
 
 #Preview {
-    SignInView()
+    SignInView(appUser: .constant(nil))
         
 }

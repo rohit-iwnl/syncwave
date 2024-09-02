@@ -8,7 +8,8 @@
 import Foundation
 import Supabase
 
-struct AppUser{
+
+struct AppUser : Equatable {
     let uid : String
     let email : String?
 }
@@ -104,6 +105,20 @@ class AuthManager {
             print("Error executing query: \(error.localizedDescription)")
             throw error
         }
+    }
+    
+    func singInWithGoogleAuth(idToken : String, nonce : String) async throws -> AppUser {
+        let session = try await client?.auth.signInWithIdToken(credentials: .init(provider: .google, idToken: idToken, nonce: nonce))
+        print(session ?? "No session")
+        print(session?.user ?? "No user")
+        
+        return AppUser(uid: session?.user.id.uuidString ?? "nil", email: session?.user.email ?? "no email")
+    }
+    
+    func signOut() async throws -> AppUser {
+        try await client?.auth.signOut()
+        
+        return AppUser(uid: "", email: nil)
     }
     
 }

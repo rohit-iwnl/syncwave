@@ -14,7 +14,7 @@ struct SignInWithAppleResult {
     let nonce : String
 }
 
-
+@MainActor
 class AppleSignInUtils : NSObject {
     
     

@@ -14,6 +14,8 @@ struct OnboardingView: View {
     @State private var currentPage : Int = 0
     let onboardingPages : [OnboardingPage] = OnboardingConstants.pages
     
+
+    
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     @State private var isModalOpen : Bool = false
@@ -49,6 +51,7 @@ struct OnboardingView: View {
                                                 .alignment(.trailing)
                                                 .padding()
                                             } else {
+                                                
                                                 Spacer()
                                                     .frame(height: 36) // Adjust the height to match the height of the button
                                                     .padding()
@@ -145,9 +148,10 @@ struct OnboardingView: View {
                         Color(TextColors.primaryBlack.color)
                             .ignoresSafeArea()
                             .opacity(1) // Adjust this value for desired opacity
-                        SignInView()
+                        SignInView(appUser : $appUser)
                             .transition(.move(edge: .bottom))
                             .edgesIgnoringSafeArea([.horizontal, .bottom])
+
                     }
                 }
                 
@@ -155,6 +159,7 @@ struct OnboardingView: View {
             }
             
         }
+        
     }
     
     
