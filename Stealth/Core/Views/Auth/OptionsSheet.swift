@@ -15,6 +15,9 @@ struct OptionsSheet: View {
     @Binding var navigateToSignIn: Bool
     @Binding var isModalOpen: Bool
     
+    @Binding var appUser : AppUser?
+    @StateObject var viewModel = SignInViewModel()
+    
     var body: some View {
         
         ZStack {
@@ -53,10 +56,27 @@ struct OptionsSheet: View {
                 
                 OAuthSignInButton(imageName: "AuthIcons/apple") {
                     // Handle Apple sign-in
+                    Task {
+                        do {
+                            let _appUser = try await viewModel.signInWithApple()
+                            self.appUser = _appUser
+                        } catch {
+                            print("DEBUG: Error signing in with apple from OPTIONS SHEET")
+                        }
+                    }
                 }
                 
                 OAuthSignInButton(imageName: "AuthIcons/google") {
                     // Handle Google sign-in
+                    Task {
+                        do {
+                            let _appUser = try await viewModel.signInWithGoogle()
+                            self.appUser = _appUser
+                        } catch {
+                            print("DEBUG: Error signing in with google from OPTIONS SHEET")
+
+                        }
+                    }
                 }
             }
             .padding()
@@ -67,5 +87,5 @@ struct OptionsSheet: View {
 }
 
 #Preview {
-    OptionsSheet(navigateToSignIn: .constant(false), isModalOpen: .constant(true))
+    OptionsSheet(navigateToSignIn: .constant(false), isModalOpen: .constant(true), appUser: .constant(nil))
 }

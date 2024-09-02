@@ -11,15 +11,21 @@ struct ContentView: View {
             if isLoading {
                 ProgressView("Loading...")
             } else if let appUser = appUser, !appUser.uid.isEmpty {
+                // If appUser is set, navigate to HomeView
                 HomeView(appUser: $appUser)
                     .transition(.move(edge: .trailing))
+            } else if !hasCompletedOnboarding {
+                // If onboarding is not completed, navigate to OnboardingView
+                OnboardingView(appUser: $appUser)
+                    .transition(.move(edge: .leading))
             } else {
+                // Otherwise, show SignInView
                 SignInView(appUser: $appUser)
                     .transition(.move(edge: .leading))
             }
         }
         .animation(.easeInOut(duration: 0.5), value: appUser)
-        .onAppear(perform: checkSession)
+        .onAppear(perform: checkOnboardingAndSession)
         .alert("Session Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -27,7 +33,14 @@ struct ContentView: View {
         }
     }
     
-    private func checkSession() {
+    private func checkOnboardingAndSession() {
+        // Check if onboarding is completed first
+        if !hasCompletedOnboarding {
+            isLoading = false
+            return
+        }
+        
+        // If onboarding is completed, check the session
         Task {
             do {
                 let sessionUser = try await AuthManager.shared.getCurrentSession()

@@ -14,7 +14,7 @@ struct OnboardingView: View {
     @State private var currentPage : Int = 0
     let onboardingPages : [OnboardingPage] = OnboardingConstants.pages
     
-
+    
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
@@ -136,7 +136,7 @@ struct OnboardingView: View {
             }
             .sheet(isPresented: $isModalOpen){
                 
-                OptionsSheet(navigateToSignIn: $navigateToSignIn, isModalOpen : $isModalOpen)
+                OptionsSheet(navigateToSignIn: $navigateToSignIn, isModalOpen : $isModalOpen, appUser: $appUser)
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
                 
@@ -151,7 +151,7 @@ struct OnboardingView: View {
                         SignInView(appUser : $appUser)
                             .transition(.move(edge: .bottom))
                             .edgesIgnoringSafeArea([.horizontal, .bottom])
-
+                        
                     }
                 }
                 
