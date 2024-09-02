@@ -15,15 +15,13 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            if let appUser = appUser {
-                // User is logged in and onboarding is completed
-                if hasCompletedOnboarding {
+            if hasCompletedOnboarding {
+                if let appUser = appUser {
                     HomeView()
                 } else {
-                    SignInSheet(appUser: $appUser)
+                    SignInView()
                 }
             } else {
-                // User is not logged in, show onboarding or login view
                 OnboardingView(appUser: $appUser)
                     .preferredColorScheme(.light)
             }
