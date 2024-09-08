@@ -24,13 +24,16 @@ struct OptionsSheet: View {
             Color(TextColors.primaryBlack.color)
                 .ignoresSafeArea()
             VStack {
-                Text("Get Started")
-                    .font(.sora(.largeTitle))
-                    .foregroundStyle(TextColors.primaryWhite.color)
-                    .lineLimit(2)
-                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                    .fontWeight(.semibold)
-                    .alignment(.leading)
+                HStack {
+                    Text("Get Started")
+                        .font(.sora(.largeTitle))
+                        .foregroundStyle(TextColors.primaryWhite.color)
+                        .lineLimit(2)
+                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                        .fontWeight(.semibold)
+                        
+                    Spacer()
+                }
                 
                 
                 OAuthSignInButton(imageName: "AuthIcons/email") {

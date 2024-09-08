@@ -10,6 +10,7 @@
 		B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640DAA52C82823D00D76F98 /* OptionsSheet.swift */; };
 		B66047112C80655500C8061F /* SignupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047102C80655500C8061F /* SignupSheet.swift */; };
 		B66D5A642C8E4513008C9592 /* Sora.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B66D5A632C8E4513008C9592 /* Sora.ttf */; };
+		B66D5A6A2C8E5016008C9592 /* SignInSheetWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */; };
 		B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568982C8288CE00E0BF1F /* SignInView.swift */; };
 		B67568A52C82B45C00E0BF1F /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */; };
 		B6D3043D2C7D33000018C1FF /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3043C2C7D33000018C1FF /* Auth */; };
@@ -47,6 +48,7 @@
 		B640DAA52C82823D00D76F98 /* OptionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsSheet.swift; sourceTree = "<group>"; };
 		B66047102C80655500C8061F /* SignupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupSheet.swift; sourceTree = "<group>"; };
 		B66D5A632C8E4513008C9592 /* Sora.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sora.ttf; sourceTree = "<group>"; };
+		B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheetWrapper.swift; sourceTree = "<group>"; };
 		B67568982C8288CE00E0BF1F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		B6D543B62C7BF96E00C9D14C /* Stealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -321,6 +323,7 @@
 				B640DAA52C82823D00D76F98 /* OptionsSheet.swift */,
 				B67568982C8288CE00E0BF1F /* SignInView.swift */,
 				B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */,
+				B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D543D22C7BFACB00C9D14C /* OnboardingConstants.swift in Sources */,
+				B66D5A6A2C8E5016008C9592 /* SignInSheetWrapper.swift in Sources */,
 				B67568A52C82B45C00E0BF1F /* ForgotPasswordView.swift in Sources */,
 				B6D543E92C7C060C00C9D14C /* TextColors.swift in Sources */,
 				B6D543D42C7BFB9C00C9D14C /* HexColor.swift in Sources */,
@@ -585,11 +589,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stealth/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -598,9 +603,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rohitmanivel.Stealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPABASE_URL = "\"https://uvnclhfhccqtipmrvlxb.supabase.co\"";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -619,11 +628,12 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stealth/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -632,9 +642,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rohitmanivel.Stealth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPABASE_URL = "\"https://uvnclhfhccqtipmrvlxb.supabase.co\"";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -648,7 +662,7 @@
 				B6D543C32C7BF96E00C9D14C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B6D543C42C7BF96E00C9D14C /* Build configuration list for PBXNativeTarget "Stealth" */ = {
 			isa = XCConfigurationList;
@@ -657,7 +671,7 @@
 				B6D543C62C7BF96E00C9D14C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

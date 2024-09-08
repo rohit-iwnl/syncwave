@@ -245,7 +245,7 @@ struct SignInSheet: View {
                         .font(.sora(.subheadline))
                         .padding(.top, 20)
                     }
-                    .padding(.bottom,30)
+                    .padding(.bottom,60)
                     .alignment(.bottom)
                 }
             }

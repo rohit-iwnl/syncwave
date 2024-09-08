@@ -10,27 +10,17 @@ import SwiftUI
 struct CustomTextField: View {
     @Binding var text: String
     let placeholder: String
-    @State private var isFocused: Bool = false
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            TextField("", text: $text, onEditingChanged: { editing in
-                DispatchQueue.main.async {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        self.isFocused = editing
-                    }
-                }
-            })
-            .placeholder(when: text.isEmpty) {
-                Text(placeholder)
-                    .font(.sora(.body))
-                    .foregroundColor(Color.gray.opacity(0.7))
-            }
-            .addDismissButton()
-            .foregroundColor(.white)
-            .tint(.white)
-            .padding(.vertical, 8)
-            .background(Color(hex: "#242424"))
+            TextField(placeholder, text: $text)
+                .focused($isFocused)
+                .foregroundColor(.white)
+                .tint(.white)
+                .padding(.vertical, 8)
+                .background(Color(hex: "#242424"))
+                .animation(.easeInOut(duration: 0.2), value: isFocused)
             
             Rectangle()
                 .fill(isFocused ? Color.white : Color.gray.opacity(0.5))
@@ -38,10 +28,4 @@ struct CustomTextField: View {
                 .animation(.easeInOut(duration: 0.2), value: isFocused)
         }
     }
-}
-
-
-
-#Preview {
-    CustomTextField(text: .constant("nil"), placeholder: "Enter your email")
 }
