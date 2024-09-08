@@ -25,7 +25,7 @@ struct OptionsSheet: View {
                 .ignoresSafeArea()
             VStack {
                 Text("Get Started")
-                    .font(.largeTitle)
+                    .font(.sora(.largeTitle))
                     .foregroundStyle(TextColors.primaryWhite.color)
                     .lineLimit(2)
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
@@ -45,7 +45,7 @@ struct OptionsSheet: View {
                     Rectangle()
                         .frame(height: 1)
                     Text("Or")
-                        .font(.callout)
+                        .font(.sora(.callout))
                         .lineLimit(1)
                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                     

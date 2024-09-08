@@ -53,7 +53,7 @@ struct OnboardingView: View {
                                             } else {
                                                 
                                                 Spacer()
-                                                    .frame(height: 36) // Adjust the height to match the height of the buttonr
+                                                    .frame(height: 36) // Adjust the height to match the height of the button
                                                     .padding()
                                             }
                                         }

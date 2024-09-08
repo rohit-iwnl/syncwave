@@ -20,8 +20,8 @@ struct OAuthSignInButton: View {
             HStack {
                 Spacer()
                 Text("Continue with")
-                    .font(.subheadline) // Customize the font and size
-                    .lineLimit(2)
+                    .font(.sora(.subheadline)) // Customize the font and size
+                    .lineLimit(1)
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                 Image(imageName) // Use SF Symbol for the arrow icon
                     .resizable()

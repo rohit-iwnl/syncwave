@@ -44,7 +44,7 @@ struct SignInSheet: View {
         VStack{
             VStack{
                 Text("Login")
-                    .font(.largeTitle)
+                    .font(.sora(.largeTitle))
                     .lineLimit(2)
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                     .fontWeight(.semibold)
@@ -76,7 +76,7 @@ struct SignInSheet: View {
                                 }
                             }) {
                                 Text("Wrong email?")
-                                    .font(.caption)
+                                    .font(.sora(.caption))
                                     .underline()
                                     .foregroundColor(.white)
                                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
@@ -134,7 +134,7 @@ struct SignInSheet: View {
                                 .progressViewStyle(CircularProgressViewStyle(tint: .black))
                         } else {
                             Text("Continue")
-                                .font(.title3)
+                                .font(.sora(.title3))
                                 .lineLimit(2)
                                 .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                             Image(systemName: "arrow.right")
@@ -172,7 +172,7 @@ struct SignInSheet: View {
                     NavigationLink(destination: ForgotPasswordView(email: emailID)) {
                         
                         Text("Forgot password?")
-                            .font(.subheadline)
+                            .font(.sora(.subheadline))
                             .underline()
                             .foregroundColor(.white)
                             .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
@@ -187,7 +187,7 @@ struct SignInSheet: View {
                     Rectangle()
                         .frame(height: 1)
                     Text("Or continue with")
-                        .font(.subheadline)
+                        .font(.sora(.subheadline))
                         .fontWeight(.semibold)
                         .lineLimit(1)
                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
@@ -242,7 +242,7 @@ struct SignInSheet: View {
                         }
                         .transition(.slide)
                         .animation(.easeIn, value: isPasswordFieldVisible)
-                        .font(.subheadline)
+                        .font(.sora(.subheadline))
                         .padding(.top, 20)
                     }
                     .padding(.bottom,30)

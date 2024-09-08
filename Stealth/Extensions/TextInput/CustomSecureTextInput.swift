@@ -20,12 +20,14 @@ struct CustomSecureField: View {
                     SecureField("", text: $text)
                         .placeholder(when: text.isEmpty) {
                             Text(placeholder)
+                                .font(.sora(.body))
                                 .foregroundColor(Color.gray.opacity(0.7))
                         }
                 } else {
                     TextField("", text: $text)
                         .placeholder(when: text.isEmpty) {
                             Text(placeholder)
+                                .font(.sora(.body))
                                 .foregroundColor(Color.gray.opacity(0.7))
                         }
                 }
