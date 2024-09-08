@@ -53,7 +53,7 @@ struct OnboardingView: View {
                                             } else {
                                                 
                                                 Spacer()
-                                                    .frame(height: 36) // Adjust the height to match the height of the button
+                                                    .frame(height: 36) // Adjust the height to match the height of the buttonr
                                                     .padding()
                                             }
                                         }
@@ -73,9 +73,9 @@ struct OnboardingView: View {
                             Spacer()
                             
                             Text(onboardingPages[index].title)
-                                .font(.largeTitle)
+                                .font(.sora(.largeTitle))
                                 .transition(.opacity)
-                                .animation(/*@START_MENU_TOKEN@*/.easeIn/*@END_MENU_TOKEN@*/, value: index)
+                                .animation(.easeIn, value: index)
                                 .fontWeight(.bold)
                                 .lineLimit(2)
                                 .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
@@ -83,9 +83,9 @@ struct OnboardingView: View {
                                 .padding()
                             
                             Text(onboardingPages[index].description)
-                                .font(.headline)
+                                .font(.sora(.headline, weight: .regular))
                                 .transition(.opacity)
-                                .animation(/*@START_MENU_TOKEN@*/.easeIn/*@END_MENU_TOKEN@*/, value: index)
+                                .animation(.easeIn, value: index)
                                 .lineLimit(3)
                                 .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                 .alignment(.leading)

@@ -83,23 +83,22 @@ class AuthManager {
         return AppUser(uid: session?.user.id.uuidString ?? "1234", email: session?.user.email ?? "No Email")
     }
     
-    func checkIfUserExist(email: String) async throws -> Bool {
+    func checkIfUserExist(email: String) async throws -> String {
         guard email.isValidEmail() else {
-            print("Invalid email format")
-            return false
+            return "Invalid email format"
         }
         
         do {
             // Query the Supabase table to check if the user exists
             let response = try await client?
-                .rpc("check_user_exists", params: [CheckUserExistParams.emailParam : email.lowercased()])
+                .rpc(CheckEmailUserExists.rpc_func_name, params: [CheckEmailUserExists.emailParamater : email.lowercased()])
                 .execute()
             if let data = response?.data {
-                let decodedJson = try JSONDecoder().decode(Bool.self, from: data)
+                let decodedJson = try JSONDecoder().decode(String.self, from: data)
                 print("Decoded JSON: \(decodedJson)")
                 return decodedJson
             } else {
-                return false
+                return "Error fetching the user details"
             }
         } catch {
             print("Error executing query: \(error.localizedDescription)")
@@ -121,4 +120,18 @@ class AuthManager {
         return AppUser(uid: "", email: nil)
     }
     
+    
+}
+
+extension AuthManager {
+    func executeRPC<T: Decodable, E: Encodable & Sendable>(functionName: String, params: [String: E]) async throws -> T {
+        guard let client = client else {
+            throw NSError(domain: "AuthManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "Supabase client is not initialized"])
+        }
+        
+        return try await client.rpc(functionName, params: params)
+            .single()
+            .execute()
+            .value
+    }
 }

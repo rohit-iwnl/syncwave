@@ -18,7 +18,7 @@ struct CapsuleButton: View {
     var body : some View {
         Button(action: action) {
             Text(title)
-                .font(.callout)
+                .font(.sora(.callout))
                 .fontWeight(.medium)
                 .lineLimit(1)
                 .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)

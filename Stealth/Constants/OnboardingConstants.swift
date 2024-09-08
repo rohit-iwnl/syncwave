@@ -36,7 +36,7 @@ struct OnboardingConstants{
         )
     ]
     
-    static let TopoPatternOpacity : Double = 0.5
+    static let TopoPatternOpacity : Double = 0.3
     
     static let illustrationCornerRadius : CGFloat = 20
     static let buttonCornerRadius : CGFloat = 16

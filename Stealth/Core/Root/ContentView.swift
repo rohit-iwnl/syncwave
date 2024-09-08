@@ -5,26 +5,32 @@ struct ContentView: View {
     @State private var appUser: AppUser? = nil
     @State private var isLoading = true
     @State private var showError = false
+    @State private var hasCompletedPreferences = false
     
     var body: some View {
-        Group {
+        ZStack {
             if isLoading {
                 ProgressView("Loading...")
+                    .transition(.opacity)
             } else if let appUser = appUser, !appUser.uid.isEmpty {
-                // If appUser is set, navigate to HomeView
-                HomeView(appUser: $appUser)
-                    .transition(.move(edge: .trailing))
+                if hasCompletedPreferences {
+                    HomeView(appUser: $appUser)
+                        .transition(.opacity)
+                } else {
+                    PreferencesView(appUser: $appUser)
+                        .transition(.opacity)
+                }
             } else if !hasCompletedOnboarding {
-                // If onboarding is not completed, navigate to OnboardingView
                 OnboardingView(appUser: $appUser)
-                    .transition(.move(edge: .leading))
+                    .transition(.opacity)
             } else {
-                // Otherwise, show SignInView
                 SignInView(appUser: $appUser)
-                    .transition(.move(edge: .leading))
+                    .transition(.opacity)
             }
         }
         .animation(.easeInOut(duration: 0.5), value: appUser)
+        .animation(.easeInOut(duration: 0.5), value: hasCompletedPreferences)
+        .animation(.easeInOut(duration: 0.5), value: isLoading)
         .onAppear(perform: checkOnboardingAndSession)
         .alert("Session Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }
@@ -36,7 +42,9 @@ struct ContentView: View {
     private func checkOnboardingAndSession() {
         // Check if onboarding is completed first
         if !hasCompletedOnboarding {
-            isLoading = false
+            withAnimation {
+                isLoading = false
+            }
             return
         }
         
@@ -44,23 +52,28 @@ struct ContentView: View {
         Task {
             do {
                 let sessionUser = try await AuthManager.shared.getCurrentSession()
+                
+                // Check if user has completed preferences
+                
+                
+                let preferencesCompleted = await PreferencesService.shared.checkIfUserCompletedPreferences(userID: sessionUser.uid)
+                
                 await MainActor.run {
                     withAnimation {
                         self.appUser = sessionUser
+                        self.hasCompletedPreferences = preferencesCompleted
                         self.isLoading = false
                     }
                 }
             } catch {
                 print("Failed to get current session: \(error.localizedDescription)")
                 await MainActor.run {
-                    self.showError = true
-                    self.isLoading = false
+                    withAnimation {
+                        self.showError = true
+                        self.isLoading = false
+                    }
                 }
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

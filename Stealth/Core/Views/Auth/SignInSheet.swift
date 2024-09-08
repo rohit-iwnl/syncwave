@@ -23,6 +23,10 @@ struct SignInSheet: View {
     @State private var isEmailValid: Bool = false
     @State private var isPasswordValid: Bool = false
     
+    @State private var showToast: Bool = false
+    @State private var toastMessage: String = ""
+    
+    
     var isInputValid: Bool {
         if isPasswordFieldVisible {
             return isEmailValid && isPasswordValid
@@ -91,12 +95,12 @@ struct SignInSheet: View {
                     Task {
                         do {
                             if !isPasswordFieldVisible {
-                                let response: Bool = try await AuthManager.shared.checkIfUserExist(email: emailID)
-                                if response == true {
+                                let response: String = try await AuthManager.shared.checkIfUserExist(email: emailID)
+                                if response == CheckEmailUserExists.ApiReponse.Found {
                                     withAnimation {
                                         isPasswordFieldVisible = true
                                     }
-                                } else {
+                                } else if response == CheckEmailUserExists.ApiReponse.Not_Found {
                                     await MainActor.run {
                                         isSignUpModalOpen = true
                                     }
@@ -258,7 +262,9 @@ struct SignInSheet: View {
                 .presentationDragIndicator(.visible)
                 .ignoresSafeArea()
         }
-        
+        .overlay(
+            ToastView(message: toastMessage, isShowing: $showToast, color: .white)
+        )
     }
 }
 

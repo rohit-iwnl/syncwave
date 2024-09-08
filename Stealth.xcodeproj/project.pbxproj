@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640DAA52C82823D00D76F98 /* OptionsSheet.swift */; };
 		B66047112C80655500C8061F /* SignupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047102C80655500C8061F /* SignupSheet.swift */; };
+		B66D5A642C8E4513008C9592 /* Sora.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B66D5A632C8E4513008C9592 /* Sora.ttf */; };
 		B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568982C8288CE00E0BF1F /* SignInView.swift */; };
 		B67568A52C82B45C00E0BF1F /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */; };
 		B6D3043D2C7D33000018C1FF /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3043C2C7D33000018C1FF /* Auth */; };
 		B6D3043F2C7D33000018C1FF /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3043E2C7D33000018C1FF /* PostgREST */; };
 		B6D304412C7D33000018C1FF /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = B6D304402C7D33000018C1FF /* Realtime */; };
 		B6D304432C7D33000018C1FF /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = B6D304422C7D33000018C1FF /* Storage */; };
-		B6D304452C7D334D0018C1FF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D304442C7D334D0018C1FF /* AuthManager.swift */; };
 		B6D304502C7D3C8B0018C1FF /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3044F2C7D3C8B0018C1FF /* Auth */; };
 		B6D304522C7D3C8B0018C1FF /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = B6D304512C7D3C8B0018C1FF /* Functions */; };
 		B6D304542C7D3C8B0018C1FF /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = B6D304532C7D3C8B0018C1FF /* PostgREST */; };
@@ -46,9 +46,9 @@
 /* Begin PBXFileReference section */
 		B640DAA52C82823D00D76F98 /* OptionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsSheet.swift; sourceTree = "<group>"; };
 		B66047102C80655500C8061F /* SignupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupSheet.swift; sourceTree = "<group>"; };
+		B66D5A632C8E4513008C9592 /* Sora.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sora.ttf; sourceTree = "<group>"; };
 		B67568982C8288CE00E0BF1F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
-		B6D304442C7D334D0018C1FF /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		B6D543B62C7BF96E00C9D14C /* Stealth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stealth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6D543B92C7BF96E00C9D14C /* StealthApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StealthApp.swift; sourceTree = "<group>"; };
 		B6D543BB2C7BF96E00C9D14C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -82,7 +82,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B6001FA32C885745001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
+		B6001FA62C8858EE001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B640DAA22C81941100D76F98 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
+		B66D5A652C8E4612008C9592 /* CustomFonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CustomFonts; sourceTree = "<group>"; };
 		B675689C2C82984000E0BF1F /* TextInput */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TextInput; sourceTree = "<group>"; };
 		B67568A12C82AED400E0BF1F /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
 		B67568A62C82B56C00E0BF1F /* StatusBar */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = StatusBar; sourceTree = "<group>"; };
@@ -91,6 +94,10 @@
 		B6D1BBE62C80A26C004F63A5 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D304382C7D2E9B0018C1FF /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D3044A2C7D38F00018C1FF /* Config */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B67568B12C82D61200E0BF1F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Config; sourceTree = "<group>"; };
+		B6EFFDA62C8A8042004005C0 /* ToastMessage */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ToastMessage; sourceTree = "<group>"; };
+		B6EFFDA92C8A82C9004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
+		B6EFFDAA2C8A82D7004005C0 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
+		B6EFFDAD2C8A852C004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B6FE877E2C7D896D000685E0 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -172,6 +179,7 @@
 		B6D543C72C7BFA0D00C9D14C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B6EFFDA62C8A8042004005C0 /* ToastMessage */,
 				B6D1BBE62C80A26C004F63A5 /* Components */,
 				B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */,
 			);
@@ -181,7 +189,8 @@
 		B6D543C82C7BFA1400C9D14C /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				B6D304442C7D334D0018C1FF /* AuthManager.swift */,
+				B6EFFDAA2C8A82D7004005C0 /* Preferences */,
+				B6EFFDA92C8A82C9004005C0 /* Auth */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -189,6 +198,7 @@
 		B6D543C92C7BFA1700C9D14C /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				B66D5A632C8E4513008C9592 /* Sora.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -196,6 +206,8 @@
 		B6D543CA2C7BFA1B00C9D14C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B66D5A652C8E4612008C9592 /* CustomFonts */,
+				B6EFFDAD2C8A852C004005C0 /* Auth */,
 				B67568AE2C82CF0F00E0BF1F /* Keyboard */,
 				B67568AB2C82CACA00E0BF1F /* FormValidations */,
 				B67568A62C82B56C00E0BF1F /* StatusBar */,
@@ -237,9 +249,10 @@
 		B6D543CE2C7BFA2900C9D14C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B6D543EF2C7C2A7200C9D14C /* LaunchScreen */,
 				B6D543EC2C7C1D9300C9D14C /* Auth */,
+				B6D543EF2C7C2A7200C9D14C /* LaunchScreen */,
 				B6D543DB2C7BFE5400C9D14C /* Onboarding */,
+				B6001FA32C885745001DC029 /* Preferences */,
 				B6D543D82C7BFE4900C9D14C /* Home */,
 			);
 			path = Views;
@@ -248,6 +261,7 @@
 		B6D543D02C7BFAB600C9D14C /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				B6001FA62C8858EE001DC029 /* Preferences */,
 				B640DAA22C81941100D76F98 /* Auth */,
 				B6D543D52C7BFD6300C9D14C /* AppStorageKeys */,
 				B6D543D12C7BFACB00C9D14C /* OnboardingConstants.swift */,
@@ -334,7 +348,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				B6001FA32C885745001DC029 /* Preferences */,
+				B6001FA62C8858EE001DC029 /* Preferences */,
 				B640DAA22C81941100D76F98 /* Auth */,
+				B66D5A652C8E4612008C9592 /* CustomFonts */,
 				B675689C2C82984000E0BF1F /* TextInput */,
 				B67568A12C82AED400E0BF1F /* Views */,
 				B67568A62C82B56C00E0BF1F /* StatusBar */,
@@ -343,6 +360,10 @@
 				B6D1BBE62C80A26C004F63A5 /* Components */,
 				B6D304382C7D2E9B0018C1FF /* Components */,
 				B6D3044A2C7D38F00018C1FF /* Config */,
+				B6EFFDA62C8A8042004005C0 /* ToastMessage */,
+				B6EFFDA92C8A82C9004005C0 /* Auth */,
+				B6EFFDAA2C8A82D7004005C0 /* Preferences */,
+				B6EFFDAD2C8A852C004005C0 /* Auth */,
 				B6FE877E2C7D896D000685E0 /* ViewModels */,
 			);
 			name = Stealth;
@@ -392,6 +413,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B66D5A642C8E4513008C9592 /* Sora.ttf in Resources */,
 				B6D543C12C7BF96E00C9D14C /* Preview Assets.xcassets in Resources */,
 				B6D543BE2C7BF96E00C9D14C /* Assets.xcassets in Resources */,
 			);
@@ -415,7 +437,6 @@
 				B6D543D72C7BFD7600C9D14C /* AppStorageConstants.swift in Sources */,
 				B6D543DF2C7BFED200C9D14C /* TopographyPattern.swift in Sources */,
 				B6D543BA2C7BF96E00C9D14C /* StealthApp.swift in Sources */,
-				B6D304452C7D334D0018C1FF /* AuthManager.swift in Sources */,
 				B6D543E42C7C024000C9D14C /* FrameAlignment.swift in Sources */,
 				B6D543EE2C7C1D9D00C9D14C /* SignInSheet.swift in Sources */,
 				B6D543E72C7C04DD00C9D14C /* CapsuleButton.swift in Sources */,
