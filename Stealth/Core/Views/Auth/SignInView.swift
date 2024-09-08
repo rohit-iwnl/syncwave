@@ -11,7 +11,7 @@ struct SignInView: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
-    @Binding var appUser : AppUser?
+    @EnvironmentObject private var appUserStateManager: AppUserManger
     
     var body: some View {
         ZStack{
@@ -30,9 +30,7 @@ struct SignInView: View {
                 .padding(.vertical)
 
                 
-                SignInSheet(
-                    appUser: $appUser
-                )
+                SignInSheet()
             }
             .padding(.horizontal)
             .foregroundStyle(TextColors.primaryWhite.color)
@@ -43,6 +41,6 @@ struct SignInView: View {
 
 
 #Preview {
-    SignInView(appUser: .constant(nil))
+    SignInView()
         
 }

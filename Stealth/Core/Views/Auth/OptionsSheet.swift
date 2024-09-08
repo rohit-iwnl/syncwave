@@ -15,7 +15,7 @@ struct OptionsSheet: View {
     @Binding var navigateToSignIn: Bool
     @Binding var isModalOpen: Bool
     
-    @Binding var appUser : AppUser?
+    @EnvironmentObject private var appUserStateManager: AppUserManger
     @StateObject var viewModel = SignInViewModel()
     
     var body: some View {
@@ -62,7 +62,7 @@ struct OptionsSheet: View {
                     Task {
                         do {
                             let _appUser = try await viewModel.signInWithApple()
-                            self.appUser = _appUser
+                            self.appUserStateManager.appUser = _appUser
                         } catch {
                             print("DEBUG: Error signing in with apple from OPTIONS SHEET")
                         }
@@ -74,7 +74,7 @@ struct OptionsSheet: View {
                     Task {
                         do {
                             let _appUser = try await viewModel.signInWithGoogle()
-                            self.appUser = _appUser
+                            self.appUserStateManager.appUser = _appUser
                         } catch {
                             print("DEBUG: Error signing in with google from OPTIONS SHEET")
 
@@ -90,5 +90,5 @@ struct OptionsSheet: View {
 }
 
 #Preview {
-    OptionsSheet(navigateToSignIn: .constant(false), isModalOpen: .constant(true), appUser: .constant(nil))
+    OptionsSheet(navigateToSignIn: .constant(false), isModalOpen: .constant(true))
 }

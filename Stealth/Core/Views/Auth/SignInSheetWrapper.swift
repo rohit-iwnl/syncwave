@@ -11,10 +11,10 @@ import SwiftUI
 import UIKit
 
 struct SignInSheetWrapper: UIViewControllerRepresentable {
-    @Binding var appUser: AppUser?
+    @EnvironmentObject private var appUserStateManager: AppUserManger
     
     func makeUIViewController(context: Context) -> UIViewController {
-        let hostingController = UIHostingController(rootView: SignInView(appUser: $appUser))
+        let hostingController = UIHostingController(rootView: SignInView())
         hostingController.view.backgroundColor = .clear
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         return hostingController
@@ -22,4 +22,3 @@ struct SignInSheetWrapper: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
-

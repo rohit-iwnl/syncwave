@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PreferencesView: View {
     
-    @Binding var appUser : AppUser?
+    @EnvironmentObject private var appUserStateManager: AppUserManger
     
     @State private var fullName: String = ""
     @State private var isNameLoaded = false
@@ -100,7 +100,7 @@ struct PreferencesView: View {
     private func fetchUserName()  {
         Task {
             do {
-                let name = try await PreferencesService.shared.getUserFullName(userID: appUser?.uid ?? "")
+                let name = try await PreferencesService.shared.getUserFullName(userID: appUserStateManager.appUser?.uid ?? "")
                 await MainActor.run {
                     self.fullName = name
                     withAnimation {
@@ -115,7 +115,7 @@ struct PreferencesView: View {
 }
 
 #Preview {
-    PreferencesView(appUser: .constant(nil))
+    PreferencesView()
 }
 
 extension View {

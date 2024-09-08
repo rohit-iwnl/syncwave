@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     
-    @Binding var appUser : AppUser?
+    @EnvironmentObject private var appUserStateManager: AppUserManger
     @State private var progress: CGFloat = 0.0
     @State private var currentPage : Int = 0
     let onboardingPages : [OnboardingPage] = OnboardingConstants.pages
@@ -24,6 +24,8 @@ struct OnboardingView: View {
     
     @State private var isViewLoaded: Bool = false
     @State private var currentStatusBarStyle: UIStatusBarStyle = .darkContent
+    
+    
     
     
     var body: some View {
@@ -138,7 +140,7 @@ struct OnboardingView: View {
                 }
                 .sheet(isPresented: $isModalOpen){
                     
-                    OptionsSheet(navigateToSignIn: $navigateToSignIn, isModalOpen : $isModalOpen, appUser: $appUser)
+                    OptionsSheet(navigateToSignIn: $navigateToSignIn, isModalOpen : $isModalOpen)
                         .presentationDetents([.medium])
                         .presentationDragIndicator(.visible)
                     
@@ -151,7 +153,7 @@ struct OnboardingView: View {
                                 Color(TextColors.primaryBlack.color)
                                     .ignoresSafeArea()
                                     .opacity(1) // Adjust this value for desired opacity
-                                SignInSheetWrapper(appUser: $appUser)
+                                SignInSheetWrapper()
                                     .frame(width: geometry.size.width, height: geometry.size.height)
                                     .transition(.move(edge: .bottom))
                                     .edgesIgnoringSafeArea([.horizontal, .bottom])
@@ -178,5 +180,5 @@ struct OnboardingView: View {
 }
 
 #Preview {
-    OnboardingView(appUser: .constant(nil))
+    OnboardingView()
 }

@@ -36,7 +36,7 @@ struct SignInSheet: View {
     }
     
     
-    @Binding var appUser : AppUser?
+    @EnvironmentObject private var appUserStateManager: AppUserManger
     
     let appleSignInUtils = AppleSignInUtils()
     
@@ -111,7 +111,7 @@ struct SignInSheet: View {
                                     do {
                                         let _appUser = try await viewModel.signInWithEmail(email: emailID, password: password)
                                         await MainActor.run {
-                                            self.appUser = _appUser
+                                            self.appUserStateManager.appUser = _appUser
                                         }
                                         print("DEBUG : \(_appUser.uid)")
                                         print("DEBUG : \(String(describing: _appUser.email))")
@@ -182,48 +182,51 @@ struct SignInSheet: View {
                     
                 }
                 
-                
-                HStack{
-                    Rectangle()
-                        .frame(height: 1)
-                    Text("Or continue with")
-                        .font(.sora(.subheadline))
-                        .fontWeight(.semibold)
-                        .lineLimit(1)
-                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                if (!isPasswordFieldVisible) {
+                    HStack{
+                        Rectangle()
+                            .frame(height: 1)
+                        Text("Or continue with")
+                            .font(.sora(.subheadline))
+                            .fontWeight(.semibold)
+                            .lineLimit(1)
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                        
+                    }
+                    .foregroundStyle(.gray)
                     
-                    Rectangle()
-                        .frame(height: 1)
                     
-                }
-                .foregroundStyle(.gray)
-                
-                
-                
-                HStack{
-                    CircleAuthButton(image: "AuthIcons/apple") {
-                        Task {
-                            do {
-                                let _appUser = try await viewModel.signInWithApple()
-                                self.appUser = _appUser
-                            } catch {
-                                print("Error Signing in with apple provider")
+                    
+                    
+                    HStack{
+                        CircleAuthButton(image: "AuthIcons/apple") {
+                            Task {
+                                do {
+                                    let _appUser = try await viewModel.signInWithApple()
+                                    self.appUserStateManager.appUser = _appUser
+                                } catch {
+                                    print("Error Signing in with apple provider")
+                                }
+                            }
+                        }
+                        CircleAuthButton(image: "AuthIcons/google") {
+                            Task {
+                                do {
+                                    let _appUser = try await viewModel.signInWithGoogle()
+                                    self.appUserStateManager.appUser = _appUser
+                                } catch {
+                                    print("Error Signing in with google provider")
+                                }
                             }
                         }
                     }
-                    CircleAuthButton(image: "AuthIcons/google") {
-                        Task {
-                            do {
-                                let _appUser = try await viewModel.signInWithGoogle()
-                                self.appUser = _appUser
-                            } catch {
-                                print("Error Signing in with google provider")
-                            }
-                        }
-                    }
+                    .animation(.easeIn, value: isPasswordFieldVisible)
+                    .padding(.vertical)
+                    Spacer(minLength: 20)
                 }
-                .padding(.vertical)
-                Spacer(minLength: 20)
                 
                 if (!isPasswordFieldVisible){
                     
@@ -273,7 +276,7 @@ struct SignInSheet: View {
         @State var previewUser: AppUser? = AppUser(uid: "1234", email: "rohitmanivel9@gmail.com")
         
         var body: some View {
-            SignInView(appUser: $previewUser)
+            SignInView()
         }
     }
     

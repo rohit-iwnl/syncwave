@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage(AppStorageConstants.hasCompletedOnboarding.key) private var hasCompletedOnboarding: Bool = false
-    @State private var appUser: AppUser? = nil
+    @StateObject private var appUserStateManager = AppUserManger()
     @State private var isLoading = true
     @State private var showError = false
     @State private var hasCompletedPreferences = false
@@ -12,23 +12,23 @@ struct ContentView: View {
             if isLoading {
                 ProgressView("Loading...")
                     .transition(.opacity)
-            } else if let appUser = appUser, !appUser.uid.isEmpty {
+            } else if let appUser = appUserStateManager.appUser, !appUser.uid.isEmpty {
                 if hasCompletedPreferences {
-                    HomeView(appUser: $appUser)
+                    HomeView()
                         .transition(.opacity)
                 } else {
-                    PreferencesView(appUser: $appUser)
+                    PreferencesView()
                         .transition(.opacity)
                 }
             } else if !hasCompletedOnboarding {
-                OnboardingView(appUser: $appUser)
+                OnboardingView()
                     .transition(.opacity)
             } else {
-                SignInView(appUser: $appUser)
+                SignInView()
                     .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.5), value: appUser)
+        .animation(.easeInOut(duration: 0.5), value: appUserStateManager.appUser)
         .animation(.easeInOut(duration: 0.5), value: hasCompletedPreferences)
         .animation(.easeInOut(duration: 0.5), value: isLoading)
         .onAppear(perform: checkOnboardingAndSession)
@@ -37,6 +37,7 @@ struct ContentView: View {
         } message: {
             Text("Failed to retrieve your session. Please try signing in again.")
         }
+        .environmentObject(appUserStateManager)
     }
     
     private func checkOnboardingAndSession() {
@@ -54,13 +55,11 @@ struct ContentView: View {
                 let sessionUser = try await AuthManager.shared.getCurrentSession()
                 
                 // Check if user has completed preferences
-                
-                
                 let preferencesCompleted = await PreferencesService.shared.checkIfUserCompletedPreferences(userID: sessionUser.uid)
                 
                 await MainActor.run {
                     withAnimation {
-                        self.appUser = sessionUser
+                        self.appUserStateManager.appUser = sessionUser
                         self.hasCompletedPreferences = preferencesCompleted
                         self.isLoading = false
                     }

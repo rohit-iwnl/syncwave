@@ -9,12 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @Binding var appUser : AppUser?
+    @EnvironmentObject private var appUserStateManager: AppUserManger
     
     var body: some View {
-        Text("App user ID Token : \(appUser?.uid ?? "no user logged in")")
+        Text("App user ID Token : \(appUserStateManager.appUser?.uid ?? "no user logged in")")
             .padding()
-        Text("User email Id : \(appUser?.email ?? "No email")")
+        Text("User email Id : \(appUserStateManager.appUser?.email ?? "No email")")
             .padding()
         Text("Home View")
             .padding()
@@ -25,7 +25,7 @@ struct HomeView: View {
                     let signedOutUser = try await AuthManager.shared.signOut()
                     
                     await MainActor.run {
-                        self.appUser = signedOutUser
+                        self.appUserStateManager.appUser = signedOutUser
                     }
                 } catch {
                     print("DEBUG : Error signing out")
@@ -39,5 +39,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(appUser: .constant(.init(uid: "1234", email: "rohitmanivel9@gmail.com")))
+    HomeView()
 }

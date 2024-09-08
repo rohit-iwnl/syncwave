@@ -23,6 +23,7 @@ struct SupabaseConfig {
     static let SUPABASE_KEY = "SUPABASE_ANON_KEY"
 }
 
+
 class AuthManager {
     static let shared = AuthManager()
     
