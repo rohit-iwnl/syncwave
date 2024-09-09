@@ -6,31 +6,31 @@ struct ContentView: View {
     @State private var isLoading = true
     @State private var showError = false
     @State private var hasCompletedPreferences = false
+    @State private var isContentReady = false
     
     var body: some View {
         ZStack {
             if isLoading {
                 ProgressView("Loading...")
                     .transition(.opacity)
-            } else if let appUser = appUserStateManager.appUser, !appUser.uid.isEmpty {
-                if hasCompletedPreferences {
-                    HomeView()
-                        .transition(.opacity)
-                } else {
-                    PreferencesView()
-                        .transition(.opacity)
+            } else if isContentReady {
+                Group {
+                    if let appUser = appUserStateManager.appUser, !appUser.uid.isEmpty {
+                        if hasCompletedPreferences {
+                            HomeView()
+                        } else {
+                            PreferencesView()
+                        }
+                    } else if !hasCompletedOnboarding {
+                        OnboardingView()
+                    } else {
+                        SignInView()
+                    }
                 }
-            } else if !hasCompletedOnboarding {
-                OnboardingView()
-                    .transition(.opacity)
-            } else {
-                SignInView()
-                    .transition(.opacity)
+                .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.5), value: appUserStateManager.appUser)
-        .animation(.easeInOut(duration: 0.5), value: hasCompletedPreferences)
-        .animation(.easeInOut(duration: 0.5), value: isLoading)
+        .animation(.easeInOut(duration: 0.5), value: isContentReady)
         .onAppear(perform: checkOnboardingAndSession)
         .alert("Session Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }
@@ -41,38 +41,54 @@ struct ContentView: View {
     }
     
     private func checkOnboardingAndSession() {
-        // Check if onboarding is completed first
-        if !hasCompletedOnboarding {
-            withAnimation {
-                isLoading = false
-            }
-            return
-        }
-        
-        // If onboarding is completed, check the session
         Task {
+            await MainActor.run {
+                isLoading = true
+                isContentReady = false
+            }
+            
+            // Check if onboarding is completed first
+            if !hasCompletedOnboarding {
+                try? await Task.sleep(for: .milliseconds(500))
+                await MainActor.run {
+                    withAnimation {
+                        isLoading = false
+                        isContentReady = true
+                    }
+                }
+                return
+            }
+            
+            // If onboarding is completed, check the session
             do {
                 let sessionUser = try await AuthManager.shared.getCurrentSession()
-                
-                // Check if user has completed preferences
                 let preferencesCompleted = await PreferencesService.shared.checkIfUserCompletedPreferences(userID: sessionUser.uid)
+                
+                try? await Task.sleep(for: .milliseconds(100))
                 
                 await MainActor.run {
                     withAnimation {
                         self.appUserStateManager.appUser = sessionUser
                         self.hasCompletedPreferences = preferencesCompleted
                         self.isLoading = false
+                        self.isContentReady = true
                     }
                 }
             } catch {
                 print("Failed to get current session: \(error.localizedDescription)")
+                
+                try? await Task.sleep(for: .milliseconds(100))
+                
                 await MainActor.run {
                     withAnimation {
                         self.showError = true
                         self.isLoading = false
+                        self.isContentReady = true
                     }
                 }
             }
         }
     }
+    
 }
+

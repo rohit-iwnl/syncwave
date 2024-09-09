@@ -14,13 +14,20 @@ struct CustomTextField: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            TextField(placeholder, text: $text)
-                .focused($isFocused)
-                .foregroundColor(.white)
-                .tint(.white)
-                .padding(.vertical, 8)
-                .background(Color(hex: "#242424"))
-                .animation(.easeInOut(duration: 0.2), value: isFocused)
+            ZStack(alignment: .leading) {
+                if text.isEmpty {
+                    Text(placeholder)
+                        .foregroundColor(Color.gray.opacity(0.7))
+                        .padding(.vertical, 8)
+                }
+                TextField("", text: $text)
+                    .focused($isFocused)
+                    .foregroundColor(.white)
+                    .tint(.white)
+                    .padding(.vertical, 8)
+            }
+            .background(Color(hex: "#242424"))
+            .animation(.easeInOut(duration: 0.2), value: isFocused)
             
             Rectangle()
                 .fill(isFocused ? Color.white : Color.gray.opacity(0.5))
@@ -28,4 +35,14 @@ struct CustomTextField: View {
                 .animation(.easeInOut(duration: 0.2), value: isFocused)
         }
     }
+}
+
+#Preview {
+    @Previewable @State var previewText = ""
+    return VStack {
+        CustomTextField(text: $previewText, placeholder: "Enter text")
+        CustomTextField(text: .constant(""), placeholder: "Placeholder only")
+    }
+    .padding()
+    .background(Color.black)
 }
