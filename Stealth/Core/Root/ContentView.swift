@@ -18,8 +18,10 @@ struct ContentView: View {
                     if let appUser = appUserStateManager.appUser, !appUser.uid.isEmpty {
                         if hasCompletedPreferences {
                             HomeView()
+                                .environmentObject(appUserStateManager)
                         } else {
-                            PreferencesView()
+                            WelcomeCard()
+                                .environmentObject(appUserStateManager)
                         }
                     } else if !hasCompletedOnboarding {
                         OnboardingView()

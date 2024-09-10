@@ -23,6 +23,16 @@ struct SupabaseConfig {
     static let SUPABASE_KEY = "SUPABASE_ANON_KEY"
 }
 
+enum UserRPCs {
+    static let updateFullNameRPC = (funcName: "update_user_full_name", userIDParam: "user_id", fullNameParam: "new_full_name")
+}
+
+struct UpdateFullNameResponse: Codable {
+    let success: Bool
+    let message: String
+}
+
+
 
 class AuthManager {
     static let shared = AuthManager()
@@ -119,6 +129,25 @@ class AuthManager {
         try await client?.auth.signOut()
         
         return AppUser(uid: "", email: nil)
+    }
+    
+    func updateUserFullName(userID: String, fullName: String) async throws -> Bool {
+        do {
+            let response: UpdateFullNameResponse = try await executeRPC(
+                functionName: UserRPCs.updateFullNameRPC.funcName,
+                params: [
+                    UserRPCs.updateFullNameRPC.userIDParam: userID,
+                    UserRPCs.updateFullNameRPC.fullNameParam: fullName
+                ]
+            )
+            if !response.success {
+                print("Failed to update user's full name: \(response.message)")
+            }
+            return response.success
+        } catch {
+            print("Error updating user's full name: \(error)")
+            throw error
+        }
     }
     
     

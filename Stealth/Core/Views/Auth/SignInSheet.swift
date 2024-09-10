@@ -264,6 +264,7 @@ struct SignInSheet: View {
             SignupSheet(emailID: emailID)
                 .presentationDragIndicator(.visible)
                 .ignoresSafeArea()
+                .environmentObject(viewModel)
         }
         .overlay(
             ToastView(message: toastMessage, isShowing: $showToast, color: .white)

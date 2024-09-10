@@ -1,5 +1,5 @@
 //
-//  PreferencesView.swift
+//  WelcomeCard.swift
 //  Stealth
 //
 //  Created by Rohit Manivel on 9/4/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreMotion
 
-struct PreferencesView: View {
+struct WelcomeCard: View {
     
     @EnvironmentObject private var appUserStateManager: AppUserManger
     
@@ -108,7 +108,7 @@ struct PreferencesView: View {
 }
 
 #Preview {
-    PreferencesView()
+    WelcomeCard()
         .environmentObject(AppUserManger())
 }
 
