@@ -22,6 +22,7 @@ struct ContentView: View {
                         } else {
                             WelcomeCard()
                                 .environmentObject(appUserStateManager)
+                                .ignoresSafeArea(edges : .all)
                         }
                     } else if !hasCompletedOnboarding {
                         OnboardingView()

@@ -11,81 +11,76 @@ import CoreMotion
 struct WelcomeCard: View {
     
     @EnvironmentObject private var appUserStateManager: AppUserManger
-    
-    
     @State private var fullName: String = ""
     @State private var isNameLoaded = false
     
     var body: some View {
         
-        ZStack {
-            TopographyPattern()
-                .fill(TextColors.primaryBlack.color)
-                .opacity(PreferencesScreenConstants.topoPatternOpacity)
-                .ignoresSafeArea()
-            
-            VStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(Color(TextColors.primaryBlack.color))
-                    
-                    VStack {
-                        HStack {
+        NavigationView {
+            ZStack {
+                TopographyPattern()
+                    .fill(TextColors.primaryBlack.color)
+                    .opacity(PreferencesScreenConstants.topoPatternOpacity)
+                    .ignoresSafeArea(edges: .all)
+                
+                VStack {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color(TextColors.primaryBlack.color))
+                        
+                        VStack {
+                            HStack {
+                                
+                                Text("Hello\n\(fullName)")
+                                    .font(.sora(.largeTitle, weight: .bold))
+                                    .fontWeight(.bold)
+                                    .lineLimit(2)
+                                    .multilineTextAlignment(.leading)
+                                    .foregroundStyle(.white)
+                                
+                                Spacer()
+                            }
+                            .padding(.vertical)
                             
-                            Text("Hello\n\(fullName)")
-                                .font(.sora(.largeTitle, weight: .bold))
-                                .fontWeight(.bold)
-                                .lineLimit(2)
-                                .multilineTextAlignment(.leading)
-                                .foregroundStyle(.white)
+                            Text("Help us to understand you better by adding your preferences. Let's make your journey hyper personalized")
+                                .font(.sora(.subheadline))
+                                .foregroundStyle(TextColors.primaryWhite.color)
                             
                             Spacer()
+                            
+                            AnimatedStarIllustration()
+                            Spacer()
+                            
                         }
+                        
+                        .padding(.horizontal)
                         .padding(.vertical)
-                        
-                        Text("Help us to understand you better by adding your preferences. Let's make your journey hyper personalized")
-                            .font(.sora(.subheadline))
-                            .foregroundStyle(TextColors.primaryWhite.color)
-                        
-                        Spacer()
-                        
-                        AnimatedStarIllustration()
-                        
+                    }
+                    .containerRelativeFrame(.vertical) { height, _ in
+                        return height / 1.2
                     }
                     
-                    .padding(.horizontal)
-                    .padding(.vertical)
-                }
-                .containerRelativeFrame(.vertical) { height, _ in
-                    return height / 1.2
-                }
-                
-                Button {
-                    print("DEBUG : GO to pref screen")
-                } label: {
-                    HStack {
-                        Text("Select preferences")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.white)
-                        
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(.white)
+                    
+                    NavigationLink(destination: PreferencesView()) {
+                        HStack {
+                            Text("Select preferences")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
+                            
+                            Image(systemName: "arrow.right")
+                                .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(TextColors.primaryBlack.color)
+                        .cornerRadius(16)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(TextColors.primaryBlack.color)
-                    .cornerRadius(16)
+                    
                 }
-                
-                
-                
-                
-                
-                
+                .padding()
             }
+            .onAppear(perform: fetchUserName)
         }
-        .padding()
-        .onAppear(perform: fetchUserName)
         
     }
     

@@ -7,8 +7,11 @@
 
 import Foundation
 
+
+
 struct PreferencesScreenConstants {
     static let topoPatternOpacity : Double = 0.05
     
     static let starPath = "Preferences/PreferencesStar"
 }
+
