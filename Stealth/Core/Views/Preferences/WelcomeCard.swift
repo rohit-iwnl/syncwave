@@ -11,7 +11,7 @@ import CoreMotion
 struct PreferencesView: View {
     
     @EnvironmentObject private var appUserStateManager: AppUserManger
-    @StateObject private var motionManager = MotionManager()
+    
     
     @State private var fullName: String = ""
     @State private var isNameLoaded = false
@@ -49,33 +49,7 @@ struct PreferencesView: View {
                         
                         Spacer()
                         
-                        Image(PreferencesScreenConstants.starPath)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .overlay(
-                                GeometryReader { geometry in
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [
-                                            Color(hex: "#FFEAB6"),  // Vibrant red
-                                            Color(hex: "#CFDFFF"),  // Turquoise
-                                            Color(hex: "#CFDFFF"),  // Bright green
-                                            Color(hex: "#FEDDDE"),
-                                            Color(hex: "#FBBF29"),
-                                            
-                                        ]),
-                                        startPoint: UnitPoint(x: 0.5, y: CGFloat(0.5 + motionManager.tilt * 0.5)),
-                                        endPoint: UnitPoint(x: 0.5, y: CGFloat(0.5 - motionManager.tilt * 0.5))
-                                    )
-                                    .mask(
-                                        Image(PreferencesScreenConstants.starPath)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                    )
-                                }
-                            )
-                            .animation(.easeInOut(duration: 0.05), value: motionManager.tilt)
-                            .animation(.easeInOut(duration: 0.05), value: motionManager.tilt)
-                        
+                        AnimatedStarIllustration()
                         
                     }
                     
@@ -86,8 +60,8 @@ struct PreferencesView: View {
                     return height / 1.2
                 }
                 
-                NavigationLink {
-                    
+                Button {
+                    print("DEBUG : GO to pref screen")
                 } label: {
                     HStack {
                         Text("Select preferences")
@@ -102,6 +76,9 @@ struct PreferencesView: View {
                     .background(TextColors.primaryBlack.color)
                     .cornerRadius(16)
                 }
+                
+                
+                
                 
                 
                 
@@ -135,35 +112,88 @@ struct PreferencesView: View {
         .environmentObject(AppUserManger())
 }
 
+struct AnimatedStarIllustration : View {
+    
+    @StateObject private var motionManager = MotionManager()
+    var body : some View {
+        Image(PreferencesScreenConstants.starPath)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .overlay(
+                GeometryReader { geometry in
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color(hex: "#BFB2F3"),
+                            Color(hex: "#96CAF7"),
+                            Color(hex: "#9CDCAA"),
+                            Color(hex: "#E5E1AB"),
+                            Color(hex: "#F3C6A5"),
+                            Color(hex: "#F8A3A8"),
+                        ]),
+                        startPoint: UnitPoint(
+                            x: 0.5 + CGFloat(motionManager.tiltX * 0.1),
+                            y: 0.5 + CGFloat(motionManager.tiltY * 0.1)
+                        ),
+                        endPoint: UnitPoint(
+                            x: 0.5 - CGFloat(motionManager.tiltX * 0.1),
+                            y: 0.5 - CGFloat(motionManager.tiltY * 0.1)
+                        )
+                    )
+                    .mask(
+                        Image(PreferencesScreenConstants.starPath)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    )
+                }
+            )
+            .animation(.interpolatingSpring(stiffness: 50, damping: 5), value: motionManager.tiltX)
+            .animation(.interpolatingSpring(stiffness: 50, damping: 5), value: motionManager.tiltY)
+    }
+}
+
 
 
 
 
 class MotionManager: ObservableObject {
     private let motionManager = CMMotionManager()
-    @Published var tilt: Double = 0.0
+    @Published var tiltX: Double = 0.0
+    @Published var tiltY: Double = 0.0
     
     init() {
         motionManager.deviceMotionUpdateInterval = 1/60
         motionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, error in
             guard let motion = motion else { return }
             
-            // Focus on pitch (vertical tilt) and adjust sensitivity
+            // Use attitude.roll for X-axis tilt
+            let roll = motion.attitude.roll
+            // Use attitude.pitch for Y-axis tilt
             let pitch = motion.attitude.pitch
-            let adjustedTilt = (pitch + .pi/2) / .pi // Normalize to 0-1 range
             
-            // Apply a non-linear curve for more sensitivity in the middle range
-            self?.tilt = sin(adjustedTilt * .pi)
+            // Apply a non-linear curve and damping for more sensitivity
+            self?.tiltX = sin(roll) * 2 // Increase multiplier for more sensitivity
+            self?.tiltY = sin(pitch) * 2 // Increase multiplier for more sensitivity
             
-            // Ensure tilt stays within -1 to 1 range
-            self?.tilt = max(-1, min(1, self?.tilt ?? 0))
+            // Apply damping to create inertia effect
+            self?.applyDamping()
         }
+    }
+    
+    private func applyDamping() {
+        // Adjust these values to fine-tune the inertia effect
+        let damping: Double = 0.95
+        let sensitivity: Double = 0.1
+        
+        tiltX = tiltX * damping + (tiltX * sensitivity)
+        tiltY = tiltY * damping + (tiltY * sensitivity)
     }
     
     deinit {
         motionManager.stopDeviceMotionUpdates()
     }
 }
+
+
 
 
 
