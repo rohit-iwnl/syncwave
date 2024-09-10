@@ -12,6 +12,7 @@ struct OptionButton {
     let label: String
     let backgroundColor: Color
     let pressableColor: Color
+    let illustration: String // Name of the SVG file
 }
 
 struct OptionButtonConstants {
@@ -19,23 +20,26 @@ struct OptionButtonConstants {
         OptionButton(
             label: "Lease/ sublease your property",
             backgroundColor: .white,
-            pressableColor: Color(hex: "#FFDAF6")
+            pressableColor: Color(hex: "#FFDAF6"),
+            illustration: "lease"
         ),
         OptionButton(
             label: "Find a roommate",
             backgroundColor: .white,
-            pressableColor: Color(hex: "#EDD4CE")
+            pressableColor: Color(hex: "#EDD4CE"),
+            illustration: "roommate"
         ),
         OptionButton(
             label: "Sell/ buy a product",
             backgroundColor: .white,
-            pressableColor: Color(hex: "#CFDFFF")
+            pressableColor: Color(hex: "#CFDFFF"),
+            illustration: "selling"
         ),
         OptionButton(
             label: "Here to explore",
             backgroundColor: .white,
-            pressableColor: Color(hex: "#EDE2FE")
+            pressableColor: Color(hex: "#EDE2FE"),
+            illustration: "explore"
         )
     ]
 }
-

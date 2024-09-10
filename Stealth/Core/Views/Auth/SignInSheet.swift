@@ -88,8 +88,6 @@ struct SignInSheet: View {
                 }
                 
                 
-                
-                
                 Button(action: {
                     isLoading = true
                     Task {
@@ -170,7 +168,6 @@ struct SignInSheet: View {
                 
                 if (isPasswordFieldVisible){
                     NavigationLink(destination: ForgotPasswordView(email: emailID)) {
-                        
                         Text("Forgot password?")
                             .font(.sora(.subheadline))
                             .underline()

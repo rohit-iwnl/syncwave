@@ -33,9 +33,7 @@ struct PreferencesView: View {
                         .font(.sora(.largeTitle, weight: .semibold))
                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                         .lineLimit(2)
-                        .padding(.vertical)
-                    
-                    
+                        .padding(.bottom)
                     
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(OptionButtonConstants.buttons.indices, id: \.self) { index in
@@ -43,22 +41,39 @@ struct PreferencesView: View {
                             Button(action: {
                                 toggleSelection(index)
                             }) {
-                                VStack(alignment: .leading) {
-                                    Text(button.label)
-                                        .font(.headline)
-                                        .foregroundColor(.black)
-                                        .multilineTextAlignment(.leading)
+                                ZStack(alignment: .bottomTrailing) {
+                                    VStack(alignment: .leading) {
+                                        Text(button.label)
+                                            .font(.sora(.headline))
+                                            .foregroundColor(.black)
+                                            .multilineTextAlignment(.leading)
+                                            .padding()
+                                        Spacer()
+                                        HStack {
+                                            Spacer()
+                                            Image("Preferences/Illustrations/\(button.illustration)")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 100, height: 100)
+                                                .scaleEffect(selectedButtons[index] ? 1.2 : 1.0)
+                                                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedButtons[index])
+                                            
+                                            
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
+                                    
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(selectedButtons[index] ? button.pressableColor : button.backgroundColor)
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(selectedButtons[index] ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtons[index] ? 1.2 : 1)
+                                    )
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }
-                                .frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(selectedButtons[index] ? button.pressableColor : button.backgroundColor)
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(selectedButtons[index] ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtons[index] ? 1.2 : 1)
-                                )
                             }
                             .buttonStyle(PressableButtonStyle(
                                 backgroundColor: button.backgroundColor,
@@ -66,11 +81,14 @@ struct PreferencesView: View {
                                 isSelected: selectedButtons[index]
                             ))
                             .sensoryFeedback(.selection, trigger: selectedButtons[index])
-                            
                         }
                     }
                     
                     Spacer()
+                    
+                    
+                    ContinueButton()
+                    
                 }
                 .padding()
             }
