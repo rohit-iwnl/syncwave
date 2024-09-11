@@ -10,13 +10,18 @@ import SwiftUI
 struct PreferencesToolbar: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var currentPage: Int
-    let totalPages: Int
+    @Binding var totalPages: Int
     
     var body: some View {
         ZStack {
             HStack {
                 Button(action: {
-                    presentationMode.wrappedValue.dismiss()
+                    if(currentPage == 0){
+                        presentationMode.wrappedValue.dismiss()
+                    } else {
+                        currentPage -= 1
+                    }
+                    
                 }) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.black)
@@ -46,6 +51,6 @@ struct PreferencesToolbar: View {
 }
 
 #Preview {
-    PreferencesToolbar(currentPage: .constant(1), totalPages: 4)
+    PreferencesToolbar(currentPage: .constant(0), totalPages: .constant(3))
 }
 
