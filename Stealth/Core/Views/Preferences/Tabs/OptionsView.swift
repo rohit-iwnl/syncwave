@@ -12,84 +12,90 @@ struct OptionsView: View {
     @State private var selectedButtons: [Bool] = Array(repeating: false, count: OptionButtonConstants.buttons.count)
     @State private var isLoading = false
     
-    @Binding var currentPage : Int
-    @Binding var totalPages : Int
+    @Binding var currentPage: Int
+    @Binding var totalPages: Int
     
     var body: some View {
-        
-        ZStack {
-            TopographyPattern()
-                .fill(TextColors.primaryBlack.color)
-                .opacity(PreferencesScreenConstants.topoPatternOpacity)
-                .ignoresSafeArea(edges: .all)
-            
-            VStack(alignment: .leading, spacing: 20) {
-                Text("What are you seeking for?")
-                    .font(.sora(.largeTitle, weight: .semibold))
-                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                    .lineLimit(2)
-                    .padding(.bottom)
+        GeometryReader { geometry in
+            ZStack {
+                TopographyPattern()
+                    .fill(TextColors.primaryBlack.color)
+                    .opacity(PreferencesScreenConstants.topoPatternOpacity)
+                    .ignoresSafeArea(edges: .all)
                 
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(OptionButtonConstants.buttons.indices, id: \.self) { index in
-                        let button = OptionButtonConstants.buttons[index]
-                        Button(action: {
-                            toggleSelection(index)
-                        }) {
-                            ZStack(alignment: .bottomTrailing) {
-                                VStack(alignment: .leading) {
-                                    Text(button.label)
-                                        .font(.sora(.headline))
-                                        .foregroundColor(.black)
-                                        .multilineTextAlignment(.leading)
-                                        .padding()
-                                    Spacer()
-                                    HStack {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("What are you seeking for?")
+                        .font(.sora(.largeTitle, weight: .semibold))
+                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                        .lineLimit(2)
+                        .padding(.bottom)
+                    
+                    // Use adaptive grid to make it responsive
+                    LazyVGrid(columns: adaptiveGridColumns(for: geometry.size.width), spacing: 16) {
+                        ForEach(OptionButtonConstants.buttons.indices, id: \.self) { index in
+                            let button = OptionButtonConstants.buttons[index]
+                            Button(action: {
+                                toggleSelection(index)
+                            }) {
+                                ZStack(alignment: .bottomTrailing) {
+                                    VStack(alignment: .leading) {
+                                        Text(button.label)
+                                            .font(.sora(.headline))
+                                            .foregroundColor(.black)
+                                            .multilineTextAlignment(.leading)
+                                            .padding()
                                         Spacer()
-                                        Image("Preferences/Illustrations/\(button.illustration)")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 100, height: 100)
-                                            .scaleEffect(selectedButtons[index] ? 1.2 : 1.0)
-                                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedButtons[index])
-                                        
-                                        
+                                        HStack {
+                                            Spacer()
+                                            Image("Preferences/Illustrations/\(button.illustration)")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
+                                                .scaleEffect(selectedButtons[index] ? 1.2 : 1.0)
+                                                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedButtons[index])
+                                        }
                                     }
+                                    .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.15, alignment: .topLeading) // Adjust height based on screen size
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(selectedButtons[index] ? button.pressableColor : button.backgroundColor)
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(selectedButtons[index] ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtons[index] ? 1.2 : 1)
+                                    )
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }
-                                .frame(maxWidth: .infinity, minHeight: 100, alignment: .topLeading)
-                                
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(selectedButtons[index] ? button.pressableColor : button.backgroundColor)
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(selectedButtons[index] ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtons[index] ? 1.2 : 1)
-                                )
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
+                            .buttonStyle(PressableButtonStyle(
+                                backgroundColor: button.backgroundColor,
+                                pressedColor: button.pressableColor,
+                                isSelected: selectedButtons[index]
+                            ))
+                            .sensoryFeedback(.selection, trigger: selectedButtons[index])
                         }
-                        .buttonStyle(PressableButtonStyle(
-                            backgroundColor: button.backgroundColor,
-                            pressedColor: button.pressableColor,
-                            isSelected: selectedButtons[index]
-                        ))
-                        .sensoryFeedback(.selection, trigger: selectedButtons[index])
+                    }
+                    
+                    Spacer()
+                    
+                    ContinueButton(
+                        isEnabled: checkIfValidSelection(selectedButtons: selectedButtons),
+                        isLoading: isLoading
+                    ) {
+                        performAPICallAndNavigate()
                     }
                 }
-                
-                Spacer()
-                
-                ContinueButton(
-                    isEnabled: checkIfValidSelection(selectedButtons: selectedButtons),
-                    isLoading: isLoading
-                ) {
-                    performAPICallAndNavigate()
-                }
+                .padding()
             }
-            .padding()
         }
+    }
+    
+    // Dynamically adjust the number of columns based on the available width
+    private func adaptiveGridColumns(for width: CGFloat) -> [GridItem] {
+        let itemWidth: CGFloat = 150  // Define a desired minimum width for each card
+        let numColumns = max(Int(width / itemWidth), 2) // Ensure at least 2 columns
+        return Array(repeating: GridItem(.flexible(), spacing: 16), count: numColumns)
     }
     
     private func toggleSelection(_ buttonIndex: Int) {
@@ -129,13 +135,7 @@ struct OptionsView: View {
             }
         }
     }
-    
-    private let columns: [GridItem] = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
 }
-
 
 #Preview {
     OptionsView(currentPage: .constant(0), totalPages: .constant(3))

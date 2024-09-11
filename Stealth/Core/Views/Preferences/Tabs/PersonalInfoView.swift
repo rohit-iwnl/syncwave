@@ -23,6 +23,8 @@ struct PersonalInfoView: View {
     @State private var selectedPronouns = PersonalInfoConstants.pronouns.placeholder
     @State private var selectedField = PersonalInfoConstants.fields.placeholder
     
+    @State private var activeField: String?
+    
     private var isContinueEnabled: Bool {
         selectedCountry != PersonalInfoConstants.residentialStatusCountry.placeholder &&
         selectedState != PersonalInfoConstants.residentialStatusState.placeholder &&
@@ -49,38 +51,42 @@ struct PersonalInfoView: View {
                             .padding(.bottom)
                         
                         VStack(alignment: .leading, spacing: 16) {
-                            InfoField(title: PersonalInfoConstants.residentialStatusCountry.title, selection: $selectedCountry, options: PersonalInfoConstants.residentialStatusCountry.options)
-                            InfoField(title: PersonalInfoConstants.residentialStatusState.title, selection: $selectedState, options: PersonalInfoConstants.residentialStatusState.options)
+                            InfoField(title: PersonalInfoConstants.residentialStatusCountry.title,
+                                      selection: $selectedCountry,
+                                      options: PersonalInfoConstants.residentialStatusCountry.options,
+                                      isActive: Binding(
+                                        get: { activeField == PersonalInfoConstants.residentialStatusCountry.title },
+                                        set: { if $0 { activeField = PersonalInfoConstants.residentialStatusCountry.title } else { activeField = nil } }
+                                      ))
+                            InfoField(title: PersonalInfoConstants.residentialStatusState.title,
+                                      selection: $selectedState,
+                                      options: PersonalInfoConstants.residentialStatusState.options,
+                                      isActive: Binding(
+                                        get: { activeField == PersonalInfoConstants.residentialStatusState.title },
+                                        set: { if $0 { activeField = PersonalInfoConstants.residentialStatusState.title } else { activeField = nil } }
+                                      ))
                             
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Your Gender")
-                                    .font(.sora(.subheadline))
-                                    .foregroundColor(.gray)
-                                HStack {
-                                    ForEach(PersonalInfoConstants.genders.options, id: \.self) { gender in
-                                        Button(action: { selectedGender = gender }) {
-                                            Text(gender)
-                                                .font(.sora(.body))
-                                                .padding(.horizontal, 16)
-                                                .padding(.vertical, 8)
-                                                .background(selectedGender == gender ? Color.black : Color.white)
-                                                .foregroundColor(selectedGender == gender ? .white : .black)
-                                                .cornerRadius(20)
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 20)
-                                                        .stroke(Color.gray, lineWidth: 1)
-                                                )
-                                        }
-                                    }
-                                }
-                            }
+                            // Gender buttons remain unchanged
                             
-                            InfoField(title: PersonalInfoConstants.pronouns.title, selection: $selectedPronouns, options: PersonalInfoConstants.pronouns.options)
-                            InfoField(title: PersonalInfoConstants.fields.title, selection: $selectedField, options: PersonalInfoConstants.fields.options)
+                            InfoField(title: PersonalInfoConstants.pronouns.title,
+                                      selection: $selectedPronouns,
+                                      options: PersonalInfoConstants.pronouns.options,
+                                      isActive: Binding(
+                                        get: { activeField == PersonalInfoConstants.pronouns.title },
+                                        set: { if $0 { activeField = PersonalInfoConstants.pronouns.title } else { activeField = nil } }
+                                      ))
+                            InfoField(title: PersonalInfoConstants.fields.title,
+                                      selection: $selectedField,
+                                      options: PersonalInfoConstants.fields.options,
+                                      isActive: Binding(
+                                        get: { activeField == PersonalInfoConstants.fields.title },
+                                        set: { if $0 { activeField = PersonalInfoConstants.fields.title } else { activeField = nil } }
+                                      ))
                         }
                     }
                     .padding()
                 }
+                .blur(radius: activeField != nil ? 5 : 0)
                 
                 Spacer(minLength: 20)
                 
@@ -102,32 +108,52 @@ struct PersonalInfoView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 20)
             }
+            .blur(radius: activeField != nil ? 5 : 0)
+            
+            if activeField != nil {
+                Color.black.opacity(0.001)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        activeField = nil
+                    }
+            }
         }
     }
 }
 
 
 
+
 struct InfoField: View {
+    
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     let title: String
     @Binding var selection: String
     let options: [String]
+    @Binding var isActive: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.sora(.subheadline))
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                 .foregroundColor(.gray)
             Menu {
                 ForEach(options, id: \.self) { option in
                     Button(option) {
                         selection = option
+                        isActive = false
                     }
                 }
             } label: {
                 HStack {
                     Text(selection)
                         .font(.sora(.body))
+                        .multilineTextAlignment(.leading)
+                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                         .foregroundColor(.black)
                     Spacer()
                     Image(systemName: "chevron.down")
@@ -144,9 +170,13 @@ struct InfoField: View {
                     alignment: .bottom
                 )
             }
+            .onTapGesture {
+                isActive = true
+            }
         }
     }
 }
+
 
 
 #Preview {

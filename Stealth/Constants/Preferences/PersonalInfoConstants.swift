@@ -20,8 +20,7 @@ struct PersonalInfoConstants {
         options: [
             "USA",
             "Canada",
-            "Mexico",
-            // Add more countries as needed
+            "UK"
         ]
     )
     
@@ -30,6 +29,9 @@ struct PersonalInfoConstants {
         placeholder: "Select state",
         options: [
             "California",
+            "Arizona",
+            "North Carolina",
+            "New Jersey",
             "Texas",
             "New York",
             // Add more states as needed
@@ -62,10 +64,12 @@ struct PersonalInfoConstants {
         placeholder: "What's your field?",
         options: [
             "Engineering",
+            "Finance",
+            "Business",
             "Design",
             "Healthcare",
             "Education",
-            // Add more fields as needed
+            "Arts",
         ]
     )
     

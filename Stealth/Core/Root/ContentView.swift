@@ -22,19 +22,17 @@ struct ContentView: View {
                         } else {
                             WelcomeCard()
                                 .environmentObject(appUserStateManager)
-                                .ignoresSafeArea(edges : .all)
+                                .ignoresSafeArea(edges: .all)
                         }
-                    } else if !hasCompletedOnboarding {
-                        OnboardingView()
                     } else {
-                        SignInView()
+                        SignInView() // Only show this if no session exists
                     }
                 }
                 .transition(.opacity)
             }
         }
         .animation(.easeInOut(duration: 0.5), value: isContentReady)
-        .onAppear(perform: checkOnboardingAndSession)
+        .onAppear(perform: checkSession)
         .alert("Session Error", isPresented: $showError) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -43,30 +41,22 @@ struct ContentView: View {
         .environmentObject(appUserStateManager)
     }
     
-    private func checkOnboardingAndSession() {
+    private func checkSession() {
         Task {
             await MainActor.run {
                 isLoading = true
                 isContentReady = false
             }
             
-            // Check if onboarding is completed first
-            if !hasCompletedOnboarding {
-                try? await Task.sleep(for: .milliseconds(500))
-                await MainActor.run {
-                    withAnimation {
-                        isLoading = false
-                        isContentReady = true
-                    }
-                }
-                return
-            }
-            
-            // If onboarding is completed, check the session
+            // Skip onboarding, check session directly
             do {
+                // Attempt to retrieve the current session
                 let sessionUser = try await AuthManager.shared.getCurrentSession()
+                
+                // Check if the user has completed preferences
                 let preferencesCompleted = await PreferencesService.shared.checkIfUserCompletedPreferences(userID: sessionUser.uid)
                 
+                // Simulate short delay for smoother transition
                 try? await Task.sleep(for: .milliseconds(100))
                 
                 await MainActor.run {
@@ -92,6 +82,4 @@ struct ContentView: View {
             }
         }
     }
-    
 }
-
