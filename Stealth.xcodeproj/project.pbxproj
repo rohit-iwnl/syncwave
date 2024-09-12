@@ -13,6 +13,7 @@
 		B66D5A6A2C8E5016008C9592 /* SignInSheetWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */; };
 		B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568982C8288CE00E0BF1F /* SignInView.swift */; };
 		B67568A52C82B45C00E0BF1F /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67568A42C82B45C00E0BF1F /* ForgotPasswordView.swift */; };
+		B696A8022C92D1DB0058215B /* Sliders in Frameworks */ = {isa = PBXBuildFile; productRef = B696A8012C92D1DB0058215B /* Sliders */; };
 		B699AF7F2C92352000269D2A /* NicknameOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B699AF7E2C92352000269D2A /* NicknameOAuthView.swift */; };
 		B6D3043D2C7D33000018C1FF /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3043C2C7D33000018C1FF /* Auth */; };
 		B6D3043F2C7D33000018C1FF /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = B6D3043E2C7D33000018C1FF /* PostgREST */; };
@@ -118,6 +119,7 @@
 			files = (
 				B6D3045B2C7D3CBF0018C1FF /* Supabase in Frameworks */,
 				B6D304522C7D3C8B0018C1FF /* Functions in Frameworks */,
+				B696A8022C92D1DB0058215B /* Sliders in Frameworks */,
 				B6DF189A2C854C8100741B53 /* GoogleSignIn in Frameworks */,
 				B6DF189C2C854C8100741B53 /* GoogleSignInSwift in Frameworks */,
 				B6D304432C7D33000018C1FF /* Storage in Frameworks */,
@@ -425,6 +427,7 @@
 			packageReferences = (
 				B6D3043B2C7D33000018C1FF /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				B6DF18982C854C8100741B53 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */,
 			);
 			productRefGroup = B6D543B72C7BF96E00C9D14C /* Products */;
 			projectDirPath = "";
@@ -700,6 +703,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:spacenation/swiftui-sliders.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 		B6D3043B2C7D33000018C1FF /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase/supabase-swift";
@@ -719,6 +730,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B696A8012C92D1DB0058215B /* Sliders */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */;
+			productName = Sliders;
+		};
 		B6D3043C2C7D33000018C1FF /* Auth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B6D3043B2C7D33000018C1FF /* XCRemoteSwiftPackageReference "supabase-swift" */;
