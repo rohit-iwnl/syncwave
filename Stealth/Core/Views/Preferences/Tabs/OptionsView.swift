@@ -30,7 +30,6 @@ struct OptionsView: View {
                         .lineLimit(2)
                         .padding(.bottom)
                     
-                    // Use adaptive grid to make it responsive
                     LazyVGrid(columns: adaptiveGridColumns(for: geometry.size.width), spacing: 16) {
                         ForEach(OptionButtonConstants.buttons.indices, id: \.self) { index in
                             let button = OptionButtonConstants.buttons[index]
@@ -42,9 +41,8 @@ struct OptionsView: View {
                                         Text(button.label)
                                             .font(.sora(.headline))
                                             .foregroundColor(.black)
-                                            .multilineTextAlignment(.leading)
                                             .padding()
-                                        Spacer()
+                                        Spacer(minLength: 20)
                                         HStack {
                                             Spacer()
                                             Image("Preferences/Illustrations/\(button.illustration)")
@@ -56,7 +54,7 @@ struct OptionsView: View {
                                                 .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedButtons[index])
                                         }
                                     }
-                                    .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.15, alignment: .topLeading) // Adjust height based on screen size
+                                    .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.15, alignment: .topLeading)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12)
                                             .fill(selectedButtons[index] ? button.pressableColor : button.backgroundColor)
@@ -91,24 +89,24 @@ struct OptionsView: View {
         }
     }
     
-    // Dynamically adjust the number of columns based on the available width
     private func adaptiveGridColumns(for width: CGFloat) -> [GridItem] {
-        let itemWidth: CGFloat = 150  // Define a desired minimum width for each card
-        let numColumns = max(Int(width / itemWidth), 2) // Ensure at least 2 columns
+        let itemWidth: CGFloat = 150
+        let numColumns = max(Int(width / itemWidth), 2)
         return Array(repeating: GridItem(.flexible(), spacing: 16), count: numColumns)
     }
     
     private func toggleSelection(_ buttonIndex: Int) {
-        if buttonIndex == selectedButtons.count - 1 && selectedButtons[buttonIndex] == false {
-            // If the last button is selected, clear all other selections and set only the last to true
-            selectedButtons = Array(repeating: false, count: selectedButtons.count)
-            selectedButtons[buttonIndex] = true
-        } else if buttonIndex != selectedButtons.count - 1 && selectedButtons[selectedButtons.count-1] == true {
-            selectedButtons[selectedButtons.count-1] = false
-            selectedButtons[buttonIndex].toggle()
-        } else {
-            // Toggle the selection for the button
-            selectedButtons[buttonIndex].toggle()
+        // Debounce rapid updates
+        DispatchQueue.main.async {
+            if buttonIndex == selectedButtons.count - 1 && selectedButtons[buttonIndex] == false {
+                selectedButtons = Array(repeating: false, count: selectedButtons.count)
+                selectedButtons[buttonIndex] = true
+            } else if buttonIndex != selectedButtons.count - 1 && selectedButtons[selectedButtons.count - 1] == true {
+                selectedButtons[selectedButtons.count - 1] = false
+                selectedButtons[buttonIndex].toggle()
+            } else {
+                selectedButtons[buttonIndex].toggle()
+            }
         }
     }
     
@@ -120,18 +118,14 @@ struct OptionsView: View {
         isLoading = true
         
         // Simulated API call
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { // Replace with actual API call
-            // Process the API response here
-            let apiCallSucceeded = true // Replace with actual API call result
-            
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            let apiCallSucceeded = true
             isLoading = false
             
             if apiCallSucceeded {
                 withAnimation {
                     currentPage = min(currentPage + 1, totalPages - 1)
                 }
-            } else {
-                // Handle API call failure (e.g., show an error message)
             }
         }
     }
