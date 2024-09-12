@@ -18,6 +18,8 @@ struct OptionsSheet: View {
     @EnvironmentObject private var appUserStateManager: AppUserManger
     @StateObject var viewModel = SignInViewModel()
     
+    @AppStorage(AppStorageConstants.hasCompletedOnboarding.key) private var hasCompletedOnboarding: Bool = false
+    
     var body: some View {
         
         ZStack {
@@ -37,8 +39,9 @@ struct OptionsSheet: View {
                 
                 
                 OAuthSignInButton(imageName: "AuthIcons/email") {
+                    hasCompletedOnboarding = true
                     isModalOpen = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         navigateToSignIn = true
                     }
                 }
@@ -59,6 +62,7 @@ struct OptionsSheet: View {
                 
                 OAuthSignInButton(imageName: "AuthIcons/apple") {
                     // Handle Apple sign-in
+                    hasCompletedOnboarding = true
                     Task {
                         do {
                             let _appUser = try await viewModel.signInWithApple()
@@ -71,6 +75,8 @@ struct OptionsSheet: View {
                 
                 OAuthSignInButton(imageName: "AuthIcons/google") {
                     // Handle Google sign-in
+                    hasCompletedOnboarding = true
+                    
                     Task {
                         do {
                             let _appUser = try await viewModel.signInWithGoogle()
