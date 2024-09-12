@@ -27,6 +27,9 @@ struct SignupSheet: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     
+    @StateObject private var keychainVM = KeychainViewModel()
+    
+    
     
     var body: some View {
         if isVisible {
@@ -34,7 +37,7 @@ struct SignupSheet: View {
                 
                 VStack {
                     Text("Finish signing up")
-                        .font(.largeTitle)
+                        .font(.sora(.largeTitle))
                         .foregroundStyle(TextColors.primaryWhite.color)
                         .fontWeight(.semibold)
                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
@@ -50,7 +53,7 @@ struct SignupSheet: View {
                     CustomTextField(text: $emailID, placeholder: "Email ID")
                         .padding(.bottom)
                     
-                    CustomTextField(text: $password, placeholder: "Password")
+                    CustomSecureField(text: $password, placeholder: "Password")
                         .padding(.bottom)
                     
                     Spacer()
@@ -112,9 +115,12 @@ struct SignupSheet: View {
                 do {
                     let _appUser = try await viewModel.registerNewUserWithEmail(email: emailID, password: password)
                     
-                    let updateSuccess = try await AuthManager.shared.updateUserFullName(userID: _appUser.uid, fullName: preferredName)
+                    let updateSuccess = try await AuthManager.shared.updateUserFullName(userID: _appUser.uid!, fullName: preferredName)
                     
                     if updateSuccess {
+                        
+                        keychainVM.saveToKeychain(value: ApiConstants.apiAuthToken.value, forKey: ApiConstants.apiAuthToken.key)
+                        
                         await MainActor.run {
                             self.appUserStateManager.appUser = _appUser
                             withAnimation(.easeInOut(duration: 0.3)) {

@@ -14,6 +14,7 @@ struct SignInSheet: View {
     @FocusState private var isEmailFocused : Bool
     
     @StateObject var viewModel = SignInViewModel()
+    @StateObject private var keychainVM = KeychainViewModel()
     
     @State private var isSignUpModalOpen : Bool = false
     @State private var isPasswordFieldVisible : Bool = false
@@ -111,7 +112,7 @@ struct SignInSheet: View {
                                         await MainActor.run {
                                             self.appUserStateManager.appUser = _appUser
                                         }
-                                        print("DEBUG : \(_appUser.uid)")
+                                        
                                         print("DEBUG : \(String(describing: _appUser.email))")
                                     } catch {
                                         print("Error Signing in with email provider: \(error)")
@@ -203,9 +204,13 @@ struct SignInSheet: View {
                             Task {
                                 do {
                                     let _appUser = try await viewModel.signInWithApple()
+                                    
+                                    keychainVM.saveToKeychain(value: ApiConstants.apiAuthToken.value, forKey: ApiConstants.apiAuthToken.key)
+                                    
                                     self.appUserStateManager.appUser = _appUser
                                 } catch {
                                     print("Error Signing in with apple provider")
+                                    keychainVM.deleteFromKeychain(forKey: ApiConstants.apiAuthToken.key)
                                 }
                             }
                         }
@@ -213,9 +218,12 @@ struct SignInSheet: View {
                             Task {
                                 do {
                                     let _appUser = try await viewModel.signInWithGoogle()
+                                    keychainVM.saveToKeychain(value: ApiConstants.apiAuthToken.value, forKey: ApiConstants.apiAuthToken.key)
                                     self.appUserStateManager.appUser = _appUser
                                 } catch {
                                     print("Error Signing in with google provider")
+                                    keychainVM.deleteFromKeychain(forKey: ApiConstants.apiAuthToken.key)
+                                    
                                 }
                             }
                         }
