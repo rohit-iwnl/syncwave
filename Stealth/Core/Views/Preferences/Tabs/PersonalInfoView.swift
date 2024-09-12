@@ -14,6 +14,8 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct PersonalInfoView: View {
     @Binding var currentPage: Int
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
@@ -28,7 +30,6 @@ struct PersonalInfoView: View {
     private var isContinueEnabled: Bool {
         selectedCountry != PersonalInfoConstants.residentialStatusCountry.placeholder &&
         selectedState != PersonalInfoConstants.residentialStatusState.placeholder &&
-        !selectedGender.isEmpty &&
         selectedPronouns != PersonalInfoConstants.pronouns.placeholder &&
         selectedField != PersonalInfoConstants.fields.placeholder
     }
@@ -86,7 +87,6 @@ struct PersonalInfoView: View {
                     }
                     .padding()
                 }
-                .blur(radius: activeField != nil ? 5 : 0)
                 
                 Spacer(minLength: 20)
                 
@@ -108,18 +108,10 @@ struct PersonalInfoView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 20)
             }
-            .blur(radius: activeField != nil ? 5 : 0)
-            
-            if activeField != nil {
-                Color.black.opacity(0.001)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        activeField = nil
-                    }
-            }
         }
     }
 }
+
 
 
 
