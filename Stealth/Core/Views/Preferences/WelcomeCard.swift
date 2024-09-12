@@ -14,7 +14,7 @@ struct WelcomeCard: View {
     @State private var fullName: String = ""
     @State private var isNameLoaded = false
     
-    @State private var isViewLoaded = false
+
     
     @StateObject var viewModel = SignInViewModel()
     
