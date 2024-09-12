@@ -12,6 +12,7 @@ struct PreferencesToolbar: View {
     @Binding var currentPage: Int
     @Binding var totalPages: Int
     
+    
     var body: some View {
         ZStack {
             HStack {
@@ -24,6 +25,7 @@ struct PreferencesToolbar: View {
                     
                 }) {
                     Image(systemName: "chevron.left")
+                        .fontWeight(.bold)
                         .foregroundColor(.black)
                         .padding(8)
                         .background(Color.white)
@@ -46,11 +48,14 @@ struct PreferencesToolbar: View {
             }
         }
         .padding(.horizontal)
-        .padding(.top, 8)
+        .padding(.vertical, 8)
     }
 }
 
 #Preview {
-    PreferencesToolbar(currentPage: .constant(0), totalPages: .constant(3))
+    VStack{
+        PreferencesToolbar(currentPage: .constant(0), totalPages: .constant(3))
+    }
+    .background(.black)
 }
 
