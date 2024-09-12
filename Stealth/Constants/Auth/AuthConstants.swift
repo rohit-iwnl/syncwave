@@ -13,7 +13,7 @@ struct CheckUserExistParams {
 }
 
 struct CheckEmailUserExists {
-    static let rpc_func_name : String = "check_email_user_exists"
+    static let rpc_func_name : String = "check_user_exists"
     static let emailParamater : String = "email_to_check"
     
     struct ApiReponse {
