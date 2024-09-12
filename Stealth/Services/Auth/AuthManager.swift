@@ -10,7 +10,7 @@ import Supabase
 
 
 struct AppUser : Equatable {
-    let uid : String
+    let uid : String?
     let email : String?
 }
 
@@ -36,8 +36,8 @@ struct UpdateFullNameResponse: Codable {
 
 class AuthManager {
     static let shared = AuthManager()
-    
     private var client : SupabaseClient?
+    
     
     //    private init() {
     //        if let supabaseURL = Bundle.main.object(forInfoDictionaryKey: SupabaseConfig.SUPABASE_URL) as? String {
@@ -72,6 +72,7 @@ class AuthManager {
             print("No session created while registering user with email and password")
             throw NSError()
         }
+        
         return AppUser(uid: session.user.id.uuidString, email: session.user.email)
     }
     
@@ -82,10 +83,26 @@ class AuthManager {
         return AppUser(uid: session?.user.id.uuidString ?? "Test Email UUID", email: session?.user.email ?? "test@test.com")
     }
     
-    func getCurrentSession() async throws -> AppUser{
-        let session = try await client?.auth.session
-        return AppUser(uid: session?.user.id.uuidString ?? "1234", email: session?.user.email ?? "No Email")
+    func getCurrentSession() async throws -> AppUser? {
+        
+        
+        guard let session = try await client?.auth.session,
+              !session.user.id.uuidString.isEmpty else {
+            return nil
+        }
+        
+        print("DEBUG SESSION : \(session)")
+        
+        let userExists = try await checkIfUserExist(email: session.user.email ?? "")
+        if userExists == CheckEmailUserExists.ApiReponse.Found || userExists == CheckEmailUserExists.ApiReponse.OAuth {
+            return AppUser(uid: session.user.id.uuidString, email: session.user.email)
+        } else {
+            return nil
+        }
     }
+    
+    
+    
     
     func signInWithApple(idToken : String, nonce : String) async throws -> AppUser {
         let session = try await client?.auth.signInWithIdToken(credentials: .init(provider: .apple, idToken: idToken, nonce: nonce))
