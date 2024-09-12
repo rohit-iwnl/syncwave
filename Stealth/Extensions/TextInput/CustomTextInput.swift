@@ -17,10 +17,12 @@ struct CustomTextField: View {
             ZStack(alignment: .leading) {
                 if text.isEmpty {
                     Text(placeholder)
+                        .font(.sora(.body))
                         .foregroundColor(Color.gray.opacity(0.7))
                         .padding(.vertical, 8)
                 }
                 TextField("", text: $text)
+                    .font(.sora(.body))
                     .focused($isFocused)
                     .foregroundColor(.white)
                     .tint(.white)
