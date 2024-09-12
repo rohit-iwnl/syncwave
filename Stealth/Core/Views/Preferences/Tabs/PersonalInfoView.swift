@@ -171,6 +171,8 @@ struct InfoField: View {
 
 
 
+
+
 #Preview {
     PersonalInfoView(currentPage: .constant(2))
 }

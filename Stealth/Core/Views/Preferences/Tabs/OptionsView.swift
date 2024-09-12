@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OptionsView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
-    @State private var selectedButtons: [Bool] = Array(repeating: false, count: OptionButtonConstants.buttons.count)
+    @State private var selectedButtons: [Int: Bool] = [:] // Dictionary to track selections
     @State private var isLoading = false
     
     @Binding var currentPage: Int
@@ -50,18 +50,18 @@ struct OptionsView: View {
                                                 .scaledToFit()
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
-                                                .scaleEffect(selectedButtons[index] ? 1.2 : 1.0)
-                                                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedButtons[index])
+                                                .scaleEffect(selectedButtons[index] ?? false ? 1.2 : 1.0) // Access the dictionary value
+                                                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedButtons[index] ?? false)
                                         }
                                     }
                                     .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.15, alignment: .topLeading)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .fill(selectedButtons[index] ? button.pressableColor : button.backgroundColor)
+                                            .fill(selectedButtons[index] ?? false ? button.pressableColor : button.backgroundColor)
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .stroke(selectedButtons[index] ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtons[index] ? 1.2 : 1)
+                                            .stroke(selectedButtons[index] ?? false ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtons[index] ?? false ? 1.2 : 1)
                                     )
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }
@@ -69,16 +69,16 @@ struct OptionsView: View {
                             .buttonStyle(PressableButtonStyle(
                                 backgroundColor: button.backgroundColor,
                                 pressedColor: button.pressableColor,
-                                isSelected: selectedButtons[index]
+                                isSelected: selectedButtons[index] ?? false // Access the dictionary value
                             ))
-                            .sensoryFeedback(.selection, trigger: selectedButtons[index])
+                            .sensoryFeedback(.selection, trigger: selectedButtons[index] ?? false)
                         }
                     }
                     
                     Spacer()
                     
                     ContinueButton(
-                        isEnabled: checkIfValidSelection(selectedButtons: selectedButtons),
+                        isEnabled: checkIfValidSelection(),
                         isLoading: isLoading
                     ) {
                         performAPICallAndNavigate()
@@ -96,22 +96,23 @@ struct OptionsView: View {
     }
     
     private func toggleSelection(_ buttonIndex: Int) {
-        // Debounce rapid updates
         DispatchQueue.main.async {
-            if buttonIndex == selectedButtons.count - 1 && selectedButtons[buttonIndex] == false {
-                selectedButtons = Array(repeating: false, count: selectedButtons.count)
+            if buttonIndex == OptionButtonConstants.buttons.count - 1 {
+                // If the last button is selected, clear all other selections and set only the last to true
+                selectedButtons = Dictionary(uniqueKeysWithValues: OptionButtonConstants.buttons.indices.map { ($0, false) })
                 selectedButtons[buttonIndex] = true
-            } else if buttonIndex != selectedButtons.count - 1 && selectedButtons[selectedButtons.count - 1] == true {
-                selectedButtons[selectedButtons.count - 1] = false
-                selectedButtons[buttonIndex].toggle()
             } else {
-                selectedButtons[buttonIndex].toggle()
+                // Ensure the last button is deselected, if it was selected
+                selectedButtons[OptionButtonConstants.buttons.count - 1] = false
+                // Toggle the selected state for the current button
+                selectedButtons[buttonIndex, default: false].toggle()
             }
         }
     }
     
-    private func checkIfValidSelection(selectedButtons: [Bool]) -> Bool {
-        return selectedButtons.contains(true)
+    
+    private func checkIfValidSelection() -> Bool {
+        return selectedButtons.values.contains(true)
     }
     
     private func performAPICallAndNavigate() {
