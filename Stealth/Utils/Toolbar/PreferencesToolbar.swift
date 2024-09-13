@@ -12,6 +12,8 @@ struct PreferencesToolbar: View {
     @Binding var currentPage: Int
     @Binding var totalPages: Int
     
+    @Binding var showSkipButton : Bool
+    
     
     var body: some View {
         ZStack {
@@ -46,6 +48,26 @@ struct PreferencesToolbar: View {
                         .frame(width: 8, height: 8)
                 }
             }
+            
+            if showSkipButton {
+                HStack{
+                    Spacer()
+                    
+                    Button {
+                        
+                    } label : {
+                        Text("Skip")
+                            .font(.sora(.headline))
+                            .foregroundStyle(.black)
+                            .padding(.horizontal)
+                            .padding(.vertical,8)
+                    }
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(.black, lineWidth: 2))
+                    .animation(.easeInOut, value: showSkipButton)
+                }
+            }
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
@@ -54,8 +76,8 @@ struct PreferencesToolbar: View {
 
 #Preview {
     VStack{
-        PreferencesToolbar(currentPage: .constant(0), totalPages: .constant(3))
+        PreferencesToolbar(currentPage: .constant(3), totalPages: .constant(4), showSkipButton: .constant(true))
     }
-    .background(.black)
+    .background(.white)
 }
 
