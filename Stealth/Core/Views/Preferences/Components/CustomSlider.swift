@@ -8,38 +8,55 @@
 import SwiftUI
 import Sliders
 
-
-struct RentRangeSlider: View {
-    @State var range = 0.2...0.8
+struct CustomSlider: View {
+    @Binding var defaultMinValue: Double
+    @Binding var defaultMaxValue: Double
+    
+    var minValue: Double
+    var maxValue: Double
+    
+    var steps: Double.Stride
+    
+    @State private var isDragging = false
     
     var body: some View {
-        RangeSlider(range: $range)
-            .rangeSliderStyle(
-                HorizontalRangeSliderStyle(
-                    track: HorizontalRangeTrack(
-                        view: Capsule().foregroundColor(.black)
-                    )
-                    .background(Capsule().foregroundColor(.gray))
-                    .frame(height: 6),
-                    lowerThumb: RoundedRectangle(cornerRadius: 2).foregroundStyle(.white),
-                    
-                    upperThumb:  RoundedRectangle(cornerRadius: 2).foregroundStyle(.white),
-                    lowerThumbSize: CGSize(width: 20, height: 20),
-                    upperThumbSize: CGSize(width: 20, height: 20)
+        RangeSlider(range: Binding(
+            get: { defaultMinValue...defaultMaxValue },
+            set: { newValue in
+                defaultMinValue = newValue.lowerBound
+                defaultMaxValue = newValue.upperBound
+                if isDragging {
+                    provideHapticFeedback()
+                }
+            }
+        ), in: minValue...maxValue, step: steps)
+        .rangeSliderStyle(
+            HorizontalRangeSliderStyle(
+                track: HorizontalRangeTrack(
+                    view: Capsule().foregroundColor(TextColors.primaryBlack.color)
                 )
+                .background(Capsule().foregroundColor(.gray.opacity(0.4)))
+                .frame(height: 6),
+                lowerThumb: RoundedRectangle(cornerRadius: 4).foregroundStyle(TextColors.primaryBlack.color),
+                upperThumb: RoundedRectangle(cornerRadius: 4).foregroundStyle(TextColors.primaryBlack.color),
+                lowerThumbSize: CGSize(width: 20, height: 20),
+                upperThumbSize: CGSize(width: 20, height: 20)
             )
-            .padding()
+            
+        )
+        .gesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    isDragging = true
+                }
+                .onEnded { _ in
+                    isDragging = false
+                }
+        )
     }
-}
-
-
-
-#Preview {
-    VStack{
-        Spacer()
-        RentRangeSlider()
-        Spacer()
-    }
-    .background(.gray.opacity(0.5))
     
+    private func provideHapticFeedback() {
+        let impact = UIImpactFeedbackGenerator(style: .rigid)
+        impact.impactOccurred()
+    }
 }
