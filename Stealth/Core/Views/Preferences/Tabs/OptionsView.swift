@@ -24,11 +24,20 @@ struct OptionsView: View {
                     .ignoresSafeArea(edges: .all)
                 
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("What are you seeking for?")
-                        .font(.sora(.largeTitle, weight: .semibold))
-                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                        .lineLimit(2)
-                        .padding(.bottom)
+                    VStack(alignment: .leading){
+                        Text("What are you seeking for?")
+                            .font(.sora(.largeTitle, weight: .semibold))
+                            .foregroundStyle(TextColors.primaryBlack.color)
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            .lineLimit(2)
+                        
+                        Text("You can select multiple options")
+                            .font(.sora(.subheadline))
+                            .foregroundStyle(TextColors.secondaryBlack.color.opacity(0.6))
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            .lineLimit(2)
+                    }
+                    .padding(.bottom)
                     
                     LazyVGrid(columns: adaptiveGridColumns(for: geometry.size.width), spacing: 16) {
                         ForEach(OptionButtonConstants.buttons.indices, id: \.self) { index in
@@ -41,6 +50,7 @@ struct OptionsView: View {
                                         Text(button.label)
                                             .font(.sora(.headline))
                                             .foregroundColor(.black)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                             .padding()
                                         Spacer(minLength: 20)
                                         HStack {

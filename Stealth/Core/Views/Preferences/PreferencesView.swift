@@ -14,23 +14,28 @@ struct PreferencesView: View {
     
     @State private var keychainValue: String = "" // State to hold the fetched value
     
+    @State private var isShowingHousingPreferences : Bool = false
+    
     var body: some View {
         VStack(spacing: 0) {
-            PreferencesToolbar(currentPage: $currentPage, totalPages: $totalPages)
+            PreferencesToolbar(currentPage: $currentPage, totalPages: $totalPages, showSkipButton: $isShowingHousingPreferences)
             
             ZStack {
-                OptionsView(currentPage: $currentPage, totalPages: $totalPages)
-                    .opacity(currentPage == 0 ? 1 : 0)
-                    .animation(.easeInOut, value: currentPage)
                 
-                PersonalInfoView(currentPage: $currentPage)
-                    .opacity(currentPage == 1 ? 1 : 0)
-                    .animation(.easeInOut, value: currentPage)
-                
-                // Third screen with Keychain fetch
-                HousingPreferencesView(currentPage: $currentPage, totalPages: $totalPages)
-                .opacity(currentPage == 2 ? 1 : 0)
-                .animation(.easeInOut, value: currentPage)
+                Group{
+                    OptionsView(currentPage: $currentPage, totalPages: $totalPages)
+                        .opacity(currentPage == 0 ? 1 : 0)
+                        .animation(.easeInOut, value: currentPage)
+                    
+                    PersonalInfoView(currentPage: $currentPage)
+                        .opacity(currentPage == 1 ? 1 : 0)
+                        .animation(.easeInOut, value: currentPage)
+                    
+                    // Third screen with Keychain fetch
+                    HousingPreferencesView(currentPage: $currentPage, totalPages: $totalPages)
+                        .opacity(currentPage == 2 ? 1 : 0)
+                        .animation(.easeInOut, value: currentPage)
+                }
             }
         }
         .toolbar(.hidden)

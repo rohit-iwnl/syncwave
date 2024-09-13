@@ -7,19 +7,26 @@ struct HousingPreferencesView: View {
     @Binding var currentPage: Int
     @Binding var totalPages: Int
     
-    @State private var minRent = 400
-    @State private var maxRent = 500
-    @State private var isRentPickerPresented = false  // To control sheet presentation
+    @State private var minRent : Double = 400
+    @State private var maxRent : Double = 650
+    
+    @State private var rentRange : RentRangeSlider  = RentRangeSlider(min: 400, max: 550)
+    
+    @State private var propertySizeRange : propertySizeSlider = propertySizeSlider(min: 800, max: 1100)
+    @State private var selectedBedrooms : Set<String> = []
+    @State private var selectedBathrooms : Set<String> = []
+    @State private var selectedNumberOfRoommates : Set<String> = []
+    
+    @State private var selectedFurnishing : Set<String> = []
+    
+    @State private var selectedAmenities : Set<String> = []
+    
     
     var body: some View {
         ZStack {
             // Main HousingPreferencesView content
             GeometryReader { geometry in
                 ZStack {
-                    TopographyPattern()
-                        .fill(TextColors.primaryBlack.color)
-                        .opacity(PreferencesScreenConstants.topoPatternOpacity)
-                        .ignoresSafeArea(edges: .all)
                     
                     ScrollView {
                         VStack(alignment: .leading, spacing: 20) {
@@ -38,7 +45,6 @@ struct HousingPreferencesView: View {
                             LazyVGrid(columns: adaptiveGridColumns(for: geometry.size.width), spacing: 16) {
                                 ForEach(HousingViewConstants.houseOptionButtons.indices, id: \.self) { index in
                                     let button = HousingViewConstants.houseOptionButtons[index]
-                                    
                                     Button {
                                         toggleSelection(index)
                                     } label: {
@@ -83,15 +89,133 @@ struct HousingPreferencesView: View {
                                 }
                             }
                             
-                            VStack {
-                                RentRangeDisplayView(minRent: $minRent, maxRent: $maxRent, isRentPickerPresented: $isRentPickerPresented)
-                                    .padding()
+                            VStack(spacing: 5) {
+                                
+                                HStack {
+                                    Text("Desired rental range per person")
+                                        .font(.sora(.body))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    Spacer()
+                                }
+                                
+                                HStack {
+                                    Text("$\(Int(rentRange.min)) - $\(Int(rentRange.max))")
+                                        .font(.sora(.body, weight: .medium))
+                                        .fontDesign(.rounded)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(2)
+                                    
+                                    Spacer()
+                                }
+                                
+                                
+                                CustomSlider(defaultMinValue: $rentRange.min, defaultMaxValue: $rentRange.max, minValue: 200, maxValue: 4000, steps: 50)
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            
+                            VStack(spacing: 5){
+                                
+                                HStack{
+                                    Text("Property size")
+                                        .font(.sora(.body))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    Spacer()
+                                }
+                                
+                                HStack{
+                                    Text("\(Int(propertySizeRange.min)) Sqft - \(Int(propertySizeRange.max)) Sqft")
+                                        .font(.sora(.body, weight: .medium))
+                                        .fontDesign(.rounded)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    Spacer()
+                                }
+                                
+                                CustomSlider(defaultMinValue: $propertySizeRange.min, defaultMaxValue: $propertySizeRange.max, minValue: 500, maxValue: 3000, steps: 50)
+                                
+                            }
                             
                             
-                            Spacer(minLength: 50)
+                            VStack(spacing : 5){
+                                HStack {
+                                    Text("Bedrooms")
+                                        .font(.sora(.body))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    
+                                    Spacer()
+                                }
+                                CustomSelector(selectedOptions: $selectedBedrooms, options: BedroomsOptions.options, isScrollable: true, lineLimit: 1)
+                                    .padding(.vertical)
+                            }
                             
+                            VStack(spacing : 5){
+                                HStack {
+                                    Text("Bathrooms")
+                                        .font(.sora(.body))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    
+                                    Spacer()
+                                }
+                                CustomSelector(selectedOptions: $selectedBathrooms, options: BathroomOptions.options, isScrollable: true, lineLimit: 1)
+                                    .padding(.vertical)
+                            }
+                            
+                            VStack(spacing : 5){
+                                HStack {
+                                    Text("Preferred number of people per unit")
+                                        .font(.sora(.body))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    
+                                    Spacer()
+                                }
+                                CustomSelector(selectedOptions: $selectedNumberOfRoommates, options: RoomateOptions.options, isScrollable: true, lineLimit: 1)
+                                    .padding(.vertical)
+                            }
+                            
+                            VStack(spacing : 5){
+                                HStack {
+                                    Text("Furnishing")
+                                        .font(.sora(.body))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    
+                                    Spacer()
+                                }
+                                CustomSelector(selectedOptions: $selectedFurnishing, options: FurnishingOptions.options, isScrollable: true, lineLimit: 1)
+                                    .padding(.vertical)
+                            }
+                            
+                            
+                            
+                                HStack {
+                                    Text("Amenities")
+                                        .font(.sora(.body))
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    
+                                    Spacer()
+                                }
+                            
+                            
+                            CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
+                            
+                            Button{
+                                print(propertySizeRange)
+                               print(selectedBedrooms)
+                                print(selectedBathrooms)
+                                print(selectedNumberOfRoommates)
+                                
+                                print(selectedFurnishing)
+                                
+                                print(selectedAmenities)
+                            } label : {
+                                Text("DEBUG : Print all preferences")
+                            }
+                        
                             ContinueButton(
                                 isEnabled: checkIfValidSelection(),
                                 isLoading: isLoading
@@ -103,21 +227,9 @@ struct HousingPreferencesView: View {
                         .padding()
                     }
                 }
-                // Apply blur when isRentPickerPresented is true
-                .blur(radius: isRentPickerPresented ? 10 : 0)
-                .animation(.easeInOut, value: isRentPickerPresented)  // Smooth transition for blur
             }
             
             // Render RentRangePickerView when presented
-            if isRentPickerPresented {
-                
-                RentRangePickerView(minRent: $minRent, maxRent: $maxRent, isPresented: $isRentPickerPresented)
-                    .transition(.asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity))
-                    .animation(.easeInOut(duration: 0.75), value: isRentPickerPresented)
-                    .zIndex(1)  // Ensure it appears on top
-                    
-                
-            }
         }
         
     }
@@ -153,36 +265,6 @@ struct HousingPreferencesView: View {
     }
 }
 
-struct RentRangeDisplayView: View {
-    @Binding var minRent: Int
-    @Binding var maxRent: Int
-    @Binding var isRentPickerPresented: Bool
-    
-    var body: some View {
-        Button(action: {
-            isRentPickerPresented = true
-        }) {
-            HStack {
-                Text("Monthly base rent?")
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                Spacer()
-                Text("$\(minRent) - $\(maxRent)")
-                    .font(.headline)
-                    .foregroundColor(.black)
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.gray)
-            }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(10)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.gray, lineWidth: 1)
-            )
-        }
-    }
-}
 
 
 
