@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum TextColors {
-    case primaryBlack, primaryWhite
+    case primaryBlack, primaryWhite, secondaryBlack
     
     var color : Color {
         switch self {
@@ -17,6 +17,9 @@ enum TextColors {
             return Color(hex: "#242424")
         case .primaryWhite:
             return Color(hex: "#F6F6F6")
+        case .secondaryBlack:
+            return Color(hex: "#242424")
         }
+        
     }
 }
