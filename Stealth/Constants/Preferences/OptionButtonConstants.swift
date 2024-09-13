@@ -18,19 +18,19 @@ struct OptionButton {
 struct OptionButtonConstants {
     static let buttons: [OptionButton] = [
         OptionButton(
-            label: "Lease/ sublease your property",
+            label: "Lease/sublease your property",
             backgroundColor: .white,
             pressableColor: Color(hex: "#FFDAF6"),
             illustration: "lease"
         ),
         OptionButton(
-            label: "Find a roommate",
+            label: "Find a room & roommate",
             backgroundColor: .white,
             pressableColor: Color(hex: "#EDD4CE"),
             illustration: "roommate"
         ),
         OptionButton(
-            label: "Sell/ buy a product",
+            label: "Sell/buy a product",
             backgroundColor: .white,
             pressableColor: Color(hex: "#CFDFFF"),
             illustration: "selling"
