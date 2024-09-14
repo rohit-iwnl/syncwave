@@ -14,7 +14,7 @@ struct CustomSelectorAmenities: View {
     let options: [String]
     
     var body: some View {
-        FlowLayout(alignment: .leading, horizontalSpacing: 10, verticalSpacing: 15) {
+        FlowLayout(alignment: .leading, horizontalSpacing: 10, verticalSpacing: 0) {
             ForEach(options, id: \.self) { option in
                 Button(action: {
                     toggleSelection(option)
