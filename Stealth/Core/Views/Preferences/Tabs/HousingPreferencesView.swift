@@ -21,6 +21,8 @@ struct HousingPreferencesView: View {
     
     @State private var selectedAmenities : Set<String> = []
     
+    @Binding var isShowingHousingPreferences : Bool
+    
     
     var body: some View {
         ZStack {
@@ -203,19 +205,6 @@ struct HousingPreferencesView: View {
                             
                             CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
                             
-                            Button{
-                                print(propertySizeRange)
-                               print(selectedBedrooms)
-                                print(selectedBathrooms)
-                                print(selectedNumberOfRoommates)
-                                
-                                print(selectedFurnishing)
-                                
-                                print(selectedAmenities)
-                            } label : {
-                                Text("DEBUG : Print all preferences")
-                            }
-                        
                             ContinueButton(
                                 isEnabled: checkIfValidSelection(),
                                 isLoading: isLoading
@@ -269,7 +258,7 @@ struct HousingPreferencesView: View {
 
 
 #Preview {
-    HousingPreferencesView(currentPage: .constant(3), totalPages: .constant(3))
+    HousingPreferencesView(currentPage: .constant(3), totalPages: .constant(3), isShowingHousingPreferences: .constant(true))
     
     
 }
