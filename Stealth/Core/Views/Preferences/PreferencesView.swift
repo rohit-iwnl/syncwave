@@ -32,7 +32,7 @@ struct PreferencesView: View {
                         .animation(.easeInOut, value: currentPage)
                     
                     // Third screen with Keychain fetch
-                    HousingPreferencesView(currentPage: $currentPage, totalPages: $totalPages)
+                    HousingPreferencesView(currentPage: $currentPage, totalPages: $totalPages, isShowingHousingPreferences: $isShowingHousingPreferences)
                         .opacity(currentPage == 2 ? 1 : 0)
                         .animation(.easeInOut, value: currentPage)
                 }
