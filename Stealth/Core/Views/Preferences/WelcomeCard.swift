@@ -13,14 +13,11 @@ struct WelcomeCard: View {
     @EnvironmentObject private var appUserStateManager: AppUserManger
     @State private var fullName: String = ""
     @State private var isNameLoaded = false
-    
-
-    
     @StateObject var viewModel = SignInViewModel()
+    @State private var navigationPath : NavigationPath = NavigationPath()
     
     var body: some View {
-        
-        NavigationView {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 TopographyPattern()
                     .fill(TextColors.primaryBlack.color)
@@ -55,6 +52,8 @@ struct WelcomeCard: View {
                             AnimatedStarIllustration()
                             Spacer()
                             
+                            
+                            
                         }
                         
                         .padding(.horizontal)
@@ -65,7 +64,24 @@ struct WelcomeCard: View {
                     }
                     
                     
-                    NavigationLink(destination: PreferencesView()) {
+                    //                    NavigationLink(destination: PreferencesView()) {
+                    //                        HStack {
+                    //                            Text("Select preferences")
+                    //                                .font(.system(size: 16, weight: .medium))
+                    //                                .foregroundColor(.white)
+                    //
+                    //                            Image(systemName: "arrow.right")
+                    //                                .foregroundColor(.white)
+                    //                        }
+                    //                        .frame(maxWidth: .infinity)
+                    //                        .padding()
+                    //                        .background(TextColors.primaryBlack.color)
+                    //                        .cornerRadius(16)
+                    //                    }
+                    
+                    Button(action: {
+                        navigationPath.append("Preferences")
+                    }) {
                         HStack {
                             Text("Select preferences")
                                 .font(.system(size: 16, weight: .medium))
@@ -79,11 +95,18 @@ struct WelcomeCard: View {
                         .background(TextColors.primaryBlack.color)
                         .cornerRadius(16)
                     }
-                    
                 }
                 .padding()
             }
             .onAppear(perform: fetchUserName)
+            .navigationDestination(for: String.self) { destination in
+                switch destination {
+                case "Preferences":
+                    PreferencesView()
+                default:
+                    Text("Unknown destination: \(destination)")
+                }
+            }
         }
         
     }
@@ -111,10 +134,10 @@ struct WelcomeCard: View {
         .environmentObject(AppUserManger())
 }
 
-struct AnimatedStarIllustration : View {
-    
+struct AnimatedStarIllustration: View {
     @StateObject private var motionManager = MotionManager()
-    var body : some View {
+    
+    var body: some View {
         Image(PreferencesScreenConstants.starPath)
             .resizable()
             .aspectRatio(contentMode: .fit)
@@ -122,12 +145,10 @@ struct AnimatedStarIllustration : View {
                 GeometryReader { geometry in
                     LinearGradient(
                         gradient: Gradient(colors: [
-                            Color(hex: "#BFB2F3"),
-                            Color(hex: "#96CAF7"),
-                            Color(hex: "#9CDCAA"),
-                            Color(hex: "#E5E1AB"),
-                            Color(hex: "#F3C6A5"),
-                            Color(hex: "#F8A3A8"),
+                            Color(hex: "#FFEAB6"),
+                            Color(hex: "#CFDFFF"),
+                            Color(hex: "#C2F5E9"),
+                            Color(hex: "#FEDDDE")
                         ]),
                         startPoint: UnitPoint(
                             x: 0.5 + CGFloat(motionManager.tiltX * 0.1),
@@ -149,6 +170,7 @@ struct AnimatedStarIllustration : View {
             .animation(.interpolatingSpring(stiffness: 50, damping: 5), value: motionManager.tiltY)
     }
 }
+
 
 
 
