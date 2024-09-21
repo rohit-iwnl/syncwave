@@ -14,10 +14,13 @@ struct WelcomeCard: View {
     @State private var fullName: String = ""
     @State private var isNameLoaded = false
     @StateObject var viewModel = SignInViewModel()
-    @State private var navigationPath : NavigationPath = NavigationPath()
+    
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    
+    @EnvironmentObject private var navigationCoordinator : NavigationCoordinator
     
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $navigationCoordinator.path) {
             ZStack {
                 TopographyPattern()
                     .fill(TextColors.primaryBlack.color)
@@ -35,6 +38,7 @@ struct WelcomeCard: View {
                                 Text("Hello\n\(fullName)")
                                     .font(.sora(.largeTitle, weight: .bold))
                                     .fontWeight(.bold)
+                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                     .lineLimit(2)
                                     .multilineTextAlignment(.leading)
                                     .foregroundStyle(.white)
@@ -45,6 +49,7 @@ struct WelcomeCard: View {
                             
                             Text("Help us to understand you better by adding your preferences. Let's make your journey hyper personalized")
                                 .font(.sora(.subheadline))
+                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                 .foregroundStyle(TextColors.primaryWhite.color)
                             
                             Spacer()
@@ -64,7 +69,7 @@ struct WelcomeCard: View {
                     }
                     
                     Button(action: {
-                        navigationPath.append("Preferences")
+                        navigationCoordinator.navigateToPreferences()
                     }) {
                         HStack {
                             Text("Select preferences")
@@ -87,6 +92,11 @@ struct WelcomeCard: View {
                 switch destination {
                 case "Preferences":
                     PreferencesView()
+                        .environmentObject(navigationCoordinator)
+                case "Home":
+                    HomeView()
+                        .toolbar(.hidden)
+                        .environmentObject(appUserStateManager)
                 default:
                     Text("Unknown destination: \(destination)")
                 }
@@ -115,6 +125,7 @@ struct WelcomeCard: View {
 
 #Preview {
     WelcomeCard()
+        .environmentObject(NavigationCoordinator())
         .environmentObject(AppUserManger())
 }
 
