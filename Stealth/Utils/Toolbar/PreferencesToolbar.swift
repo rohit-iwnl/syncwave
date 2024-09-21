@@ -14,18 +14,16 @@ struct PreferencesToolbar: View {
     
     @Binding var showSkipButton : Bool
     
+    @Binding var showPages : Bool
+    
+    
+    var onBackTap : () -> Void
+    
     
     var body: some View {
         ZStack {
             HStack {
-                Button(action: {
-                    if(currentPage == 0){
-                        presentationMode.wrappedValue.dismiss()
-                    } else {
-                        currentPage -= 1
-                    }
-                    
-                }) {
+                Button(action: onBackTap) {
                     Image(systemName: "chevron.left")
                         .fontWeight(.bold)
                         .foregroundColor(.black)
@@ -41,13 +39,16 @@ struct PreferencesToolbar: View {
                 Spacer()
             }
             
-            HStack(spacing: 4) {
-                ForEach(0..<totalPages, id: \.self) { index in
-                    Circle()
-                        .fill(index == currentPage ? Color.black : Color.gray.opacity(0.3))
-                        .frame(width: 8, height: 8)
+            if showPages {
+                HStack(spacing: 4) {
+                    ForEach(0..<totalPages, id: \.self) { index in
+                        Circle()
+                            .fill(index == currentPage ? Color.black : Color.gray.opacity(0.3))
+                            .frame(width: 8, height: 8)
+                    }
                 }
             }
+
             
             if showSkipButton {
                 HStack{
@@ -76,7 +77,9 @@ struct PreferencesToolbar: View {
 
 #Preview {
     VStack{
-        PreferencesToolbar(currentPage: .constant(3), totalPages: .constant(4), showSkipButton: .constant(true))
+        PreferencesToolbar(currentPage: .constant(3), totalPages: .constant(4), showSkipButton: .constant(true), showPages: .constant(false)) {
+            
+        }
     }
     .background(.white)
 }
