@@ -1,4 +1,5 @@
 import SwiftUI
+import NavigationTransitions
 
 struct ContentView: View {
     @AppStorage(AppStorageConstants.hasCompletedOnboarding.key) private var hasCompletedOnboarding: Bool = false
@@ -7,8 +8,6 @@ struct ContentView: View {
     @State private var showError = false
     @State private var hasCompletedPreferences = false
     @State private var isContentReady = false
-    
-    
     
     var body: some View {
         ZStack {
@@ -20,6 +19,7 @@ struct ContentView: View {
                     if let appUser = appUserStateManager.appUser, let uid = appUser.uid, !uid.isEmpty {
                         if hasCompletedPreferences {
                             HomeView()
+                                .toolbar(.hidden)
                                 .environmentObject(appUserStateManager)
                         } else {
                             WelcomeCard()
@@ -40,6 +40,8 @@ struct ContentView: View {
         .animation(.easeInOut(duration: 0.5), value: isContentReady)
         .onAppear(perform: checkSession)
         .environmentObject(appUserStateManager)
+        
+        
     }
     
     private func checkSession() {
@@ -51,7 +53,6 @@ struct ContentView: View {
             
             do {
                 if let sessionUser = try await AuthManager.shared.getCurrentSession() {
-                    // Valid session exists
                     let preferencesCompleted = await PreferencesService.shared.checkIfUserCompletedPreferences(userID: sessionUser.uid ?? "")
                     
                     await MainActor.run {
@@ -63,7 +64,6 @@ struct ContentView: View {
                         }
                     }
                 } else {
-                    // No valid session
                     await MainActor.run {
                         withAnimation {
                             self.appUserStateManager.appUser = nil
