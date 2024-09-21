@@ -19,16 +19,18 @@ struct HousingViewConstants{
             label: "Condominiums",
             backgroundColor: Color(TextColors.primaryWhite.color),
             pressableColor: Color(hex: "#FFDAF6"),
-            illustration:"condo"
+            illustration:"condo",
+            jsonKey: "condo"
         ),
         
         OptionButton(
-            label: "Duplexes", backgroundColor: Color(TextColors.primaryWhite.color), pressableColor: Color(hex: "#EDD4CE"), illustration: "duplex"
+            label: "Duplexes", backgroundColor: Color(TextColors.primaryWhite.color), pressableColor: Color(hex: "#EDD4CE"), illustration: "duplex",
+            jsonKey: "duplexe"
         ),
         
-        OptionButton(label: "Apartment", backgroundColor: Color(TextColors.primaryWhite.color), pressableColor: Color(hex: "#CFDFFF"), illustration: "apartment"),
+        OptionButton(label: "Apartment", backgroundColor: Color(TextColors.primaryWhite.color), pressableColor: Color(hex: "#CFDFFF"), illustration: "apartment", jsonKey: "apartment"),
         
         
-        OptionButton(label: "Studio", backgroundColor: Color(TextColors.primaryWhite.color), pressableColor: Color(hex: "#EDE2FE"), illustration: "studio")
+        OptionButton(label: "Studio", backgroundColor: Color(TextColors.primaryWhite.color), pressableColor: Color(hex: "#EDE2FE"), illustration: "studio", jsonKey: "studio")
     ]
 }
