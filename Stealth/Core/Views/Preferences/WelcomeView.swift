@@ -63,22 +63,6 @@ struct WelcomeCard: View {
                         return height / 1.2
                     }
                     
-                    
-                    //                    NavigationLink(destination: PreferencesView()) {
-                    //                        HStack {
-                    //                            Text("Select preferences")
-                    //                                .font(.system(size: 16, weight: .medium))
-                    //                                .foregroundColor(.white)
-                    //
-                    //                            Image(systemName: "arrow.right")
-                    //                                .foregroundColor(.white)
-                    //                        }
-                    //                        .frame(maxWidth: .infinity)
-                    //                        .padding()
-                    //                        .background(TextColors.primaryBlack.color)
-                    //                        .cornerRadius(16)
-                    //                    }
-                    
                     Button(action: {
                         navigationPath.append("Preferences")
                     }) {
