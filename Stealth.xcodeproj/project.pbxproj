@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6052D932C9E5FCA00C87CBF /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = B6052D922C9E5FCA00C87CBF /* NavigationTransitions */; };
 		B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640DAA52C82823D00D76F98 /* OptionsSheet.swift */; };
 		B66047112C80655500C8061F /* SignupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047102C80655500C8061F /* SignupSheet.swift */; };
 		B66D5A642C8E4513008C9592 /* Sora.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B66D5A632C8E4513008C9592 /* Sora.ttf */; };
@@ -108,6 +109,7 @@
 		B6EFFDA92C8A82C9004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B6EFFDAA2C8A82D7004005C0 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B6EFFDAD2C8A852C004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
+		B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NavigationPathConstants; sourceTree = "<group>"; };
 		B6FE877E2C7D896D000685E0 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -125,6 +127,7 @@
 				B6D304542C7D3C8B0018C1FF /* PostgREST in Frameworks */,
 				B6D304562C7D3C8B0018C1FF /* Realtime in Frameworks */,
 				B6D304412C7D33000018C1FF /* Realtime in Frameworks */,
+				B6052D932C9E5FCA00C87CBF /* NavigationTransitions in Frameworks */,
 				B6D3043F2C7D33000018C1FF /* PostgREST in Frameworks */,
 				B6D304582C7D3C8B0018C1FF /* Storage in Frameworks */,
 				B6D304502C7D3C8B0018C1FF /* Auth in Frameworks */,
@@ -279,6 +282,7 @@
 		B6D543D02C7BFAB600C9D14C /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */,
 				B699AF912C926FC500269D2A /* NetworkCalls */,
 				B68EDCFD2C900A91003FDC94 /* Onboarding */,
 				B6001FA62C8858EE001DC029 /* Preferences */,
@@ -393,6 +397,7 @@
 				B6EFFDA92C8A82C9004005C0 /* Auth */,
 				B6EFFDAA2C8A82D7004005C0 /* Preferences */,
 				B6EFFDAD2C8A852C004005C0 /* Auth */,
+				B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */,
 				B6FE877E2C7D896D000685E0 /* ViewModels */,
 			);
 			name = Stealth;
@@ -428,6 +433,7 @@
 				B6D3043B2C7D33000018C1FF /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				B6DF18982C854C8100741B53 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */,
+				B6052D912C9E5FCA00C87CBF /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
 			);
 			productRefGroup = B6D543B72C7BF96E00C9D14C /* Products */;
 			projectDirPath = "";
@@ -702,6 +708,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B6052D912C9E5FCA00C87CBF /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davdroman/swiftui-navigation-transitions";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.13.4;
+			};
+		};
 		B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:spacenation/swiftui-sliders.git";
@@ -729,6 +743,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B6052D922C9E5FCA00C87CBF /* NavigationTransitions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6052D912C9E5FCA00C87CBF /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;
+			productName = NavigationTransitions;
+		};
 		B696A8012C92D1DB0058215B /* Sliders */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */;
