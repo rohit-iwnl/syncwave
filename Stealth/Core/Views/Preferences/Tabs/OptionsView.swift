@@ -15,6 +15,14 @@ struct OptionsView: View {
     @Binding var currentPage: Int
     @Binding var totalPages: Int
     
+    
+    
+    @EnvironmentObject var navigationCoordinator : NavigationCoordinator
+    
+    @Binding var preferencesArray : [String : Bool]
+    
+    
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -121,27 +129,91 @@ struct OptionsView: View {
     }
     
     
+    
+    private func convertPreferencesToJSON(completion: @escaping (String?) -> Void) {
+        DispatchQueue.global(qos: .background).async {
+            let preferences = OptionButtonConstants.buttons.indices.reduce(into: [String: Bool]()) { result, index in
+                let jsonKey = OptionButtonConstants.buttons[index].jsonKey
+                result[jsonKey] = selectedButtons[index] ?? false
+            }
+            
+            let jsonString: String?
+            if let jsonData = try? JSONSerialization.data(withJSONObject: preferences, options: [.prettyPrinted]),
+               let jsonStr = String(data: jsonData, encoding: .utf8) {
+                jsonString = jsonStr
+            } else {
+                jsonString = nil
+            }
+            
+            DispatchQueue.main.async {
+                completion(jsonString)
+            }
+        }
+    }
+    
+    
+    
+    
+    
     private func checkIfValidSelection() -> Bool {
         return selectedButtons.values.contains(true)
     }
     
+    private func parseJSON(_ jsonString: String) -> [String: Bool] {
+        if let data = jsonString.data(using: .utf8),
+           let preferences = try? JSONDecoder().decode([String: Bool].self, from: data) {
+            return preferences
+        }
+        return [:]
+    }
+    
     private func performAPICallAndNavigate() {
         isLoading = true
-        
-        // Simulated API call
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let apiCallSucceeded = true
-            isLoading = false
-            
+            self.isLoading = false
             if apiCallSucceeded {
-                withAnimation {
-                    currentPage = min(currentPage + 1, totalPages - 1)
+                self.convertPreferencesToJSON { jsonString in
+                    if let jsonString = jsonString {
+                        print(jsonString)
+                        let preferences = self.parseJSON(jsonString)
+                        print(preferences)
+                        
+                        // Update totalPages based on preferences
+                        self.updateTotalPages(preferences)
+                        
+                        // Update preferencesArray
+                        self.preferencesArray = preferences
+                        
+                        // Push personal Info view
+                        withAnimation(.easeOut(duration: 0.5)) {
+                            self.navigationCoordinator.path.append("PersonalInfo")
+                            self.navigationCoordinator.showPages = true
+                            self.navigationCoordinator.currentPage += 1
+                        }
+                    }
                 }
             }
         }
     }
+    
+    private func updateTotalPages(_ preferences: [String: Bool]) {
+        if preferences["here_to_explore"] == true {
+            navigationCoordinator.totalPages = 2
+        } else if preferences["sell_buy_product"] == true ||
+                  preferences["lease_property"] == true ||
+                  preferences["find_roommate"] == true {
+            navigationCoordinator.totalPages = 3
+        } else {
+            navigationCoordinator.totalPages = 2 // Default case
+        }
+    }
+
+    
+    
 }
 
 #Preview {
-    OptionsView(currentPage: .constant(0), totalPages: .constant(3))
+    OptionsView(currentPage: .constant(0), totalPages: .constant(3), preferencesArray: .constant([:]))
+        .environmentObject(NavigationCoordinator())
 }

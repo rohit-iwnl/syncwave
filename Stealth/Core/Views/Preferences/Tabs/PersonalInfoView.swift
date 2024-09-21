@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-import SwiftUI
+
 
 struct PersonalInfoView: View {
     @Binding var currentPage: Int
@@ -24,8 +24,13 @@ struct PersonalInfoView: View {
     @State private var selectedGender = ""
     @State private var selectedPronouns = PersonalInfoConstants.pronouns.placeholder
     @State private var selectedField = PersonalInfoConstants.fields.placeholder
-    
     @State private var activeField: String?
+    
+    @State private var isHereToExploreSelected : Bool = false
+    
+    @Binding var preferencesArray : [String : Bool]
+    
+    @EnvironmentObject var navigationCoordinator : NavigationCoordinator
     
     private var isContinueEnabled: Bool {
         selectedCountry != PersonalInfoConstants.residentialStatusCountry.placeholder &&
@@ -174,5 +179,6 @@ struct InfoField: View {
 
 
 #Preview {
-    PersonalInfoView(currentPage: .constant(2))
+    PersonalInfoView(currentPage: .constant(2), preferencesArray: .constant([:]))
+        .environmentObject(NavigationCoordinator())
 }
