@@ -92,6 +92,9 @@ struct PersonalInfoView: View {
             Spacer(minLength: 20)
             
             Button(action: {
+                if (preferencesArray["here_to_explore"] == true){
+                    self.navigationCoordinator.resetToHome()
+                }
                 currentPage += 1
             }) {
                 HStack {
