@@ -26,6 +26,8 @@ struct PersonalInfoView: View {
     @State private var selectedField = PersonalInfoConstants.fields.placeholder
     @State private var activeField: String?
     
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var isHereToExploreSelected : Bool = false
     
     @Binding var preferencesArray : [String : Bool]
@@ -43,6 +45,9 @@ struct PersonalInfoView: View {
         
         
         VStack(spacing: 0) {
+            
+            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(false), showPages: .constant(true), onBackTap: handleBackTap)
+            
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     Text("Tell us a bit about yourself!")
@@ -113,7 +118,23 @@ struct PersonalInfoView: View {
             .padding(.bottom, 20)
         }
     }
+    
+    private func handleBackTap() {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            if !navigationCoordinator.path.isEmpty {
+                if navigationCoordinator.path.count == 1 {
+                    navigationCoordinator.showPages = false
+                }
+                navigationCoordinator.path.removeLast()
+                navigationCoordinator.currentPage = navigationCoordinator.path.count
+                
+            } else {
+                dismiss()
+            }
+        }
+    }
 }
+
 
 
 
