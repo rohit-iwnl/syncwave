@@ -17,98 +17,82 @@ struct WelcomeCard: View {
     
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
-    @EnvironmentObject private var navigationCoordinator : NavigationCoordinator
+    @ObservedObject var navigationCoordinator : NavigationCoordinator
     
     var body: some View {
-        NavigationStack(path: $navigationCoordinator.path) {
-            ZStack {
-                TopographyPattern()
-                    .fill(TextColors.primaryBlack.color)
-                    .opacity(PreferencesScreenConstants.topoPatternOpacity)
-                    .ignoresSafeArea(edges: .all)
-                
-                VStack {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color(TextColors.primaryBlack.color))
-                        
-                        VStack {
-                            HStack {
-                                
-                                Text("Hello\n\(fullName)")
-                                    .font(.sora(.largeTitle, weight: .bold))
-                                    .fontWeight(.bold)
-                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                    .lineLimit(2)
-                                    .multilineTextAlignment(.leading)
-                                    .foregroundStyle(.white)
-                                
-                                Spacer()
-                            }
-                            .padding(.vertical)
-                            
-                            Text("Help us to understand you better by adding your preferences. Let's make your journey hyper personalized")
-                                .font(.sora(.subheadline))
-                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                .foregroundStyle(TextColors.primaryWhite.color)
-                            
-                            Spacer()
-                            
-                            AnimatedStarIllustration()
-                            Spacer()
-                            
-                            
-                            
-                        }
-                        
-                        .padding(.horizontal)
-                        .padding(.vertical)
-                    }
-                    .containerRelativeFrame(.vertical) { height, _ in
-                        return height / 1.2
-                    }
+        ZStack {
+            TopographyPattern()
+                .fill(TextColors.primaryBlack.color)
+                .opacity(PreferencesScreenConstants.topoPatternOpacity)
+                .ignoresSafeArea(edges: .all)
+            
+            VStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color(TextColors.primaryBlack.color))
                     
-                    Button(action: {
-                        let destination = "Preferences"
-                        print("DEBUG : Appending to path:", destination)
-                        navigationCoordinator.path.append(destination)
-                    }) {
+                    VStack {
                         HStack {
-                            Text("Select preferences")
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundColor(.white)
                             
-                            Image(systemName: "arrow.right")
-                                .foregroundColor(.white)
+                            Text("Hello\n\(fullName)")
+                                .font(.sora(.largeTitle, weight: .bold))
+                                .fontWeight(.bold)
+                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                .lineLimit(2)
+                                .multilineTextAlignment(.leading)
+                                .foregroundStyle(.white)
+                            
+                            Spacer()
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(TextColors.primaryBlack.color)
-                        .cornerRadius(16)
+                        .padding(.vertical)
+                        
+                        Text("Help us to understand you better by adding your preferences. Let's make your journey hyper personalized")
+                            .font(.sora(.subheadline))
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            .foregroundStyle(TextColors.primaryWhite.color)
+                        
+                        Spacer()
+                        
+                        AnimatedStarIllustration()
+                        Spacer()
+                        
+                        
+                        
                     }
-                }
-                .padding()
-            }
-            .onAppear(perform: fetchUserName)
-            .navigationDestination(for: String.self) { destination in
-                
-                switch destination {
                     
-                case "Preferences":
-                    PreferencesView()
-                        .environmentObject(navigationCoordinator)
-                case "Home":
-                    HomeView()
-                        .toolbar(.hidden)
-                        .environmentObject(appUserStateManager)
-                default:
-                    Text("Unknown destination: \(destination)")
+                    .padding(.horizontal)
+                    .padding(.vertical)
+                }
+                .containerRelativeFrame(.vertical) { height, _ in
+                    return height / 1.2
+                }
+                
+                Button {
+                    navigationCoordinator.navigateToPreferences()
+                } label: {
+                    HStack {
+                        Text("Select preferences")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                        
+                        Image(systemName: "arrow.right")
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(TextColors.primaryBlack.color)
+                    .cornerRadius(16)
+                    
                 }
             }
+            .padding()
         }
-        
+        .onAppear(perform: fetchUserName)
         
     }
+    
+    
+    
     
     
     private func fetchUserName()  {
@@ -129,8 +113,7 @@ struct WelcomeCard: View {
 }
 
 #Preview {
-    WelcomeCard()
-        .environmentObject(NavigationCoordinator())
+    WelcomeCard(navigationCoordinator: NavigationCoordinator())
         .environmentObject(AppUserManger())
 }
 

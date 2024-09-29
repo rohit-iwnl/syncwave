@@ -12,12 +12,12 @@ struct PreferencesView: View {
     @StateObject private var keychainVM = KeychainViewModel()
     @State private var isShowingHousingPreferences: Bool = false
     @State private var showPages: Bool = true
-//    @StateObject var navigationCoordinator = NavigationCoordinator()
+    //    @StateObject var navigationCoordinator = NavigationCoordinator()
     @Environment(\.dismiss) private var dismiss
     
     @State private var preferencesArray : [String : Bool] = [:]
     
-    @EnvironmentObject var navigationCoordinator : NavigationCoordinator
+    @ObservedObject var navigationCoordinator : NavigationCoordinator
     
     var body: some View {
         VStack(spacing: 0) {
@@ -29,29 +29,9 @@ struct PreferencesView: View {
                 onBackTap: handleBackTap
             )
             
-            NavigationStack(path: $navigationCoordinator.path) {
-                Group {
-                    if navigationCoordinator.path.isEmpty {
-                        OptionsView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, preferencesArray: $preferencesArray)
-                    }
-                }
-                .navigationDestination(for: String.self) { destination in
-                    switch destination {
-                    case "PersonalInfo":
-                        PersonalInfoView(currentPage: $navigationCoordinator.currentPage, preferencesArray: $preferencesArray)
-                            .toolbar(.hidden)
-                            .transition(.opacity)
-                            
-                    default:
-                        Text("Unknown destination: \(destination)")
-                    }
-                }
-            }
-            .environmentObject(navigationCoordinator)
-            
-            
+            OptionsView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, preferencesArray: $preferencesArray)
         }
-        .navigationBarHidden(true)
+        .environmentObject(navigationCoordinator)
     }
     
     private func handleBackTap() {
@@ -72,6 +52,6 @@ struct PreferencesView: View {
 
 
 #Preview {
-    PreferencesView()
+    PreferencesView(navigationCoordinator: NavigationCoordinator())
         .environmentObject(NavigationCoordinator())
 }
