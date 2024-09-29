@@ -9,6 +9,8 @@ struct ContentView: View {
     @State private var hasCompletedPreferences = false
     @State private var isContentReady = false
     
+    @StateObject private var navigationCoordinator = NavigationCoordinator()
+    
     var body: some View {
         ZStack {
             if isLoading {
@@ -24,6 +26,7 @@ struct ContentView: View {
                         } else {
                             WelcomeCard()
                                 .environmentObject(appUserStateManager)
+                                .environmentObject(navigationCoordinator)
                                 .ignoresSafeArea(edges: .all)
                         }
                     } else {

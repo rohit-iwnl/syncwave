@@ -40,82 +40,78 @@ struct PersonalInfoView: View {
     }
     
     var body: some View {
-        ZStack {
-            TopographyPattern()
-                .fill(TextColors.primaryBlack.color)
-                .opacity(PreferencesScreenConstants.topoPatternOpacity)
-                .ignoresSafeArea(edges: .all)
-            
-            VStack(spacing: 0) {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text("Tell us a bit about yourself!")
-                            .font(.sora(.largeTitle, weight: .semibold))
-                            .foregroundColor(.black)
-                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                            .lineLimit(2)
-                            .padding(.bottom)
+        
+        
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Tell us a bit about yourself!")
+                        .font(.sora(.largeTitle, weight: .semibold))
+                        .foregroundColor(.black)
+                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                        .lineLimit(2)
+                        .padding(.bottom)
+                    
+                    VStack(alignment: .leading, spacing: 16) {
+                        InfoField(title: PersonalInfoConstants.residentialStatusCountry.title,
+                                  selection: $selectedCountry,
+                                  options: PersonalInfoConstants.residentialStatusCountry.options,
+                                  isActive: Binding(
+                                    get: { activeField == PersonalInfoConstants.residentialStatusCountry.title },
+                                    set: { if $0 { activeField = PersonalInfoConstants.residentialStatusCountry.title } else { activeField = nil } }
+                                  ))
+                        InfoField(title: PersonalInfoConstants.residentialStatusState.title,
+                                  selection: $selectedState,
+                                  options: PersonalInfoConstants.residentialStatusState.options,
+                                  isActive: Binding(
+                                    get: { activeField == PersonalInfoConstants.residentialStatusState.title },
+                                    set: { if $0 { activeField = PersonalInfoConstants.residentialStatusState.title } else { activeField = nil } }
+                                  ))
                         
-                        VStack(alignment: .leading, spacing: 16) {
-                            InfoField(title: PersonalInfoConstants.residentialStatusCountry.title,
-                                      selection: $selectedCountry,
-                                      options: PersonalInfoConstants.residentialStatusCountry.options,
-                                      isActive: Binding(
-                                        get: { activeField == PersonalInfoConstants.residentialStatusCountry.title },
-                                        set: { if $0 { activeField = PersonalInfoConstants.residentialStatusCountry.title } else { activeField = nil } }
-                                      ))
-                            InfoField(title: PersonalInfoConstants.residentialStatusState.title,
-                                      selection: $selectedState,
-                                      options: PersonalInfoConstants.residentialStatusState.options,
-                                      isActive: Binding(
-                                        get: { activeField == PersonalInfoConstants.residentialStatusState.title },
-                                        set: { if $0 { activeField = PersonalInfoConstants.residentialStatusState.title } else { activeField = nil } }
-                                      ))
-                            
-                            // Gender buttons remain unchanged
-                            
-                            InfoField(title: PersonalInfoConstants.pronouns.title,
-                                      selection: $selectedPronouns,
-                                      options: PersonalInfoConstants.pronouns.options,
-                                      isActive: Binding(
-                                        get: { activeField == PersonalInfoConstants.pronouns.title },
-                                        set: { if $0 { activeField = PersonalInfoConstants.pronouns.title } else { activeField = nil } }
-                                      ))
-                            InfoField(title: PersonalInfoConstants.fields.title,
-                                      selection: $selectedField,
-                                      options: PersonalInfoConstants.fields.options,
-                                      isActive: Binding(
-                                        get: { activeField == PersonalInfoConstants.fields.title },
-                                        set: { if $0 { activeField = PersonalInfoConstants.fields.title } else { activeField = nil } }
-                                      ))
-                        }
+                        // Gender buttons remain unchanged
+                        
+                        InfoField(title: PersonalInfoConstants.pronouns.title,
+                                  selection: $selectedPronouns,
+                                  options: PersonalInfoConstants.pronouns.options,
+                                  isActive: Binding(
+                                    get: { activeField == PersonalInfoConstants.pronouns.title },
+                                    set: { if $0 { activeField = PersonalInfoConstants.pronouns.title } else { activeField = nil } }
+                                  ))
+                        InfoField(title: PersonalInfoConstants.fields.title,
+                                  selection: $selectedField,
+                                  options: PersonalInfoConstants.fields.options,
+                                  isActive: Binding(
+                                    get: { activeField == PersonalInfoConstants.fields.title },
+                                    set: { if $0 { activeField = PersonalInfoConstants.fields.title } else { activeField = nil } }
+                                  ))
                     }
-                    .padding()
                 }
-                
-                Spacer(minLength: 20)
-                
-                Button(action: {
-                    currentPage += 1
-                }) {
-                    HStack {
-                        Text("Continue")
-                            .font(.sora(.body, weight: .medium))
-                        Image(systemName: "arrow.right")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(isContinueEnabled ? Color.black : Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-                .disabled(!isContinueEnabled)
-                .padding(.horizontal)
-                .padding(.bottom, 20)
+                .padding()
             }
+            
+            Spacer(minLength: 20)
+            
+            Button(action: {
+                currentPage += 1
+            }) {
+                HStack {
+                    Text("Continue")
+                        .font(.sora(.body, weight: .medium))
+                    Image(systemName: "arrow.right")
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(isContinueEnabled ? Color.black : Color.gray)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+            }
+            .disabled(!isContinueEnabled)
+            .padding(.horizontal)
+            .padding(.bottom, 20)
         }
     }
 }
+
 
 
 

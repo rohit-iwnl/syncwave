@@ -34,7 +34,6 @@ struct HomeView: View {
         }) {
             Text("Sign out")
         }
-
     }
 }
 

@@ -69,7 +69,9 @@ struct WelcomeCard: View {
                     }
                     
                     Button(action: {
-                        navigationCoordinator.navigateToPreferences()
+                        let destination = "Preferences"
+                        print("DEBUG : Appending to path:", destination)
+                        navigationCoordinator.path.append(destination)
                     }) {
                         HStack {
                             Text("Select preferences")
@@ -89,7 +91,9 @@ struct WelcomeCard: View {
             }
             .onAppear(perform: fetchUserName)
             .navigationDestination(for: String.self) { destination in
+                
                 switch destination {
+                    
                 case "Preferences":
                     PreferencesView()
                         .environmentObject(navigationCoordinator)
@@ -102,6 +106,7 @@ struct WelcomeCard: View {
                 }
             }
         }
+        
         
     }
     

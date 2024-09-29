@@ -199,13 +199,13 @@ struct OptionsView: View {
     
     private func updateTotalPages(_ preferences: [String: Bool]) {
         if preferences["here_to_explore"] == true {
-            navigationCoordinator.totalPages = 2
+            navigationCoordinator.totalPages = 1
         } else if preferences["sell_buy_product"] == true ||
                   preferences["lease_property"] == true ||
                   preferences["find_roommate"] == true {
-            navigationCoordinator.totalPages = 3
+            navigationCoordinator.totalPages = 2
         } else {
-            navigationCoordinator.totalPages = 2 // Default case
+            navigationCoordinator.totalPages = 1 // Default case
         }
     }
 
