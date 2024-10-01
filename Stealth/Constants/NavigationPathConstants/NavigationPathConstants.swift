@@ -17,7 +17,7 @@ class NavigationCoordinator : ObservableObject {
     
     
     func navigateToPersonalInfoView() {
-        path.append("PersonalInfo")
+        path.append(NavigationDestinations.personalInfo)
     }
     
     func navigateToPreferences() {
@@ -26,7 +26,7 @@ class NavigationCoordinator : ObservableObject {
     
     func resetToHome() {
         path = NavigationPath()
-        path.append("Home")
+        path.append(NavigationDestinations.home)
     }
     
     func updatePreferences(with newPreferences: [String : Bool]) {
