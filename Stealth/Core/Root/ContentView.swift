@@ -44,29 +44,58 @@ struct ContentView: View {
                     .transition(.opacity)
                 }
             }
-            .navigationDestination(for: String.self) { destination in
+            .navigationDestination(for: NavigationDestinations.self) { destination in
+                //                switch destination {
+                //                case "Welcome":
+                //                    WelcomeCard(navigationCoordinator: navigationCoordinator)
+                //                        .environmentObject(appUserStateManager)
+                //                        .toolbar(.hidden)
+                //
+                //                case "Preferences":
+                //                    PreferencesView(navigationCoordinator: navigationCoordinator)
+                //                        .toolbar(.hidden)
+                //                        .environmentObject(appUserStateManager)
+                //                case "PersonalInfo":
+                //                    PersonalInfoView(currentPage: $navigationCoordinator.currentPage, preferencesArray: $navigationCoordinator.preferencesArray)
+                //                        .toolbar(.hidden)
+                //                        .environmentObject(navigationCoordinator)
+                //                case "Home":
+                //                    HomeView()
+                //                        .environmentObject(appUserStateManager)
+                //                case "registerAccount":
+                //                    SignupSheet(emailID: "")
+                //                        .environmentObject(appUserStateManager)
+                //                default:
+                //                    Text("Unknown destination: \(destination)")
+                //                }
+                
                 switch destination {
-                case "Welcome":
+                    
+                case .welcome:
                     WelcomeCard(navigationCoordinator: navigationCoordinator)
                         .environmentObject(appUserStateManager)
                         .toolbar(.hidden)
                     
-                case "Preferences":
+                case .preferences:
                     PreferencesView(navigationCoordinator: navigationCoordinator)
                         .toolbar(.hidden)
                         .environmentObject(appUserStateManager)
-                case "PersonalInfo":
+                    
+                case .personalInfo:
                     PersonalInfoView(currentPage: $navigationCoordinator.currentPage, preferencesArray: $navigationCoordinator.preferencesArray)
                         .toolbar(.hidden)
                         .environmentObject(navigationCoordinator)
-                case "Home":
+                    
+                case .home:
                     HomeView()
                         .environmentObject(appUserStateManager)
-                case "registerAccount":
+                    
+                case .registerAccount:
                     SignupSheet(emailID: "")
-                        .environmentObject(appUserStateManager) 
+                        .environmentObject(appUserStateManager)
+                    
                 default:
-                    Text("Unknown destination: \(destination)")
+                    Text("Unknown destination :\(destination)")
                 }
             }
             .animation(.easeInOut(duration: 0.5), value: isContentReady)
@@ -97,12 +126,12 @@ struct ContentView: View {
                             self.hasCompletedPreferences = preferencesCompleted
                             self.isLoading = false
                             self.isContentReady = true
-
+                            
                             // Navigate based on preferences completion
                             if preferencesCompleted {
-                                navigationCoordinator.path.append("Home")
+                                navigationCoordinator.path.append(NavigationDestinations.home)
                             } else {
-                                navigationCoordinator.path.append("Welcome")
+                                navigationCoordinator.path.append(NavigationDestinations.welcome)
                             }
                         }
                     }
@@ -112,7 +141,7 @@ struct ContentView: View {
                             self.appUserStateManager.appUser = nil
                             self.isLoading = false
                             self.isContentReady = true
-
+                            
                             // Navigate to onboarding or sign-in based on onboarding completion
                             if hasCompletedOnboarding {
                                 navigationCoordinator.path.append("SignIn")
@@ -131,7 +160,7 @@ struct ContentView: View {
                         self.isLoading = false
                         self.isContentReady = true
                         self.showError = true
-
+                        
                         // Handle error by navigating to an error view or similar handling
                     }
                 }
