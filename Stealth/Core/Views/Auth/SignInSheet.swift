@@ -236,25 +236,6 @@ struct SignInSheet: View {
                 }
                 
                 if (!isPasswordFieldVisible){
-//                    VStack {
-//                        HStack {
-//                            Text("Don't have an account?")
-//                                .foregroundColor(.gray)
-//                            NavigationLink(destination: SignupSheet(emailID: emailID)) {
-//                                Text("Sign up here")
-//                                    .foregroundColor(TextColors.primaryWhite.color)
-//                                    .underline()
-//                                    .fontWeight(.bold)
-//                                    .lineLimit(1)
-//                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-//                            }
-//                            .toolbarColorScheme(.dark, for: .navigationBar)
-//                        }
-//                        .transition(.slide)
-//                        .animation(.easeIn, value: isPasswordFieldVisible)
-//                        .font(.sora(.subheadline))
-//                        .padding(.top, 20)
-//                    }
                     Button {
                         navigationCoordinator.path.append("registerAccount")
                     } label : {
