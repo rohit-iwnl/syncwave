@@ -33,77 +33,60 @@ struct SignupSheet: View {
     
     var body: some View {
         if isVisible {
-            NavigationStack {
-                
-                VStack {
-                    Text("Finish signing up")
-                        .font(.sora(.largeTitle))
-                        .foregroundStyle(TextColors.primaryWhite.color)
-                        .fontWeight(.semibold)
-                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                        .alignment(.leading)
-                        .padding(.vertical)
-                    
-                    CustomTextField(text: $preferredName, placeholder: "Preferred Name")
-                        .padding(.bottom)
-                    
-                    CustomTextField(text: $phoneNumber, placeholder: "Phone number")
-                        .padding(.bottom)
-                    
-                    CustomTextField(text: $emailID, placeholder: "Email ID")
-                        .padding(.bottom)
-                    
-                    CustomSecureField(text: $password, placeholder: "Password")
-                        .padding(.bottom)
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        // Perform the sign-up action
-                        registerNewUser(emailId: emailID, password: password)
-                    }) {
-                        Text("Continue")
-                            .font(.subheadline)
-                            .foregroundColor(isFormValid ? TextColors.primaryBlack.color : .gray)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(isFormValid ? TextColors.primaryWhite.color : .gray.opacity(0.5))
-                            .cornerRadius(10)
-                            .animation(.easeIn, value: isFormValid)
-                    }
-                    .disabled(!isFormValid)
+            
+            VStack {
+                Text("Finish signing up")
+                    .font(.sora(.largeTitle))
+                    .foregroundStyle(TextColors.primaryWhite.color)
+                    .fontWeight(.semibold)
+                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                    .alignment(.leading)
                     .padding(.vertical)
-                }
-                .transition(.asymmetric(insertion: .opacity, removal: .opacity.combined(with: .move(edge: .trailing))))
                 
-                .alert(isPresented: $showAlert) {
-                    Alert(title: Text("Sign Up Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-                }
-                .animation(.easeInOut(duration: 0.3), value: isVisible)
+                CustomTextField(text: $preferredName, placeholder: "Preferred Name")
+                    .padding(.bottom)
                 
-                .padding()
-                .background(TextColors.primaryBlack.color)
-                .alignment(.leading)
-                .navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button(action: {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                isVisible = false
-                            }
-                        }) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Back")
-                            }
-                            .foregroundColor(.white)
-                        }
-                    }
-                    
+                CustomTextField(text: $phoneNumber, placeholder: "Phone number")
+                    .padding(.bottom)
+                
+                CustomTextField(text: $emailID, placeholder: "Email ID")
+                    .padding(.bottom)
+                
+                CustomSecureField(text: $password, placeholder: "Password")
+                    .padding(.bottom)
+                
+                Spacer()
+                
+                Button(action: {
+                    // Perform the sign-up action
+                    registerNewUser(emailId: emailID, password: password)
+                }) {
+                    Text("Continue")
+                        .font(.subheadline)
+                        .foregroundColor(isFormValid ? TextColors.primaryBlack.color : .gray)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(isFormValid ? TextColors.primaryWhite.color : .gray.opacity(0.5))
+                        .cornerRadius(10)
+                        .animation(.easeIn, value: isFormValid)
                 }
+                .disabled(!isFormValid)
+                .padding(.vertical)
             }
+            .transition(.asymmetric(insertion: .opacity, removal: .opacity.combined(with: .move(edge: .trailing))))
+            
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Sign Up Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
+            .animation(.easeInOut(duration: 0.3), value: isVisible)
+            
+            .padding()
+            .background(TextColors.primaryBlack.color)
+            .alignment(.leading)
+            .tint(TextColors.primaryWhite.color)
         }
     }
+    
     
     private var isFormValid: Bool {
         return !preferredName.isEmpty && !phoneNumber.isEmpty && !emailID.isEmpty && !password.isEmpty && emailID.isValidEmail() && phoneNumber.isValidPhoneNumber() && password.count >= 8
@@ -126,7 +109,7 @@ struct SignupSheet: View {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 isVisible = false
                             }
-                           
+                            
                         }
                     } else {
                         throw NSError(domain: "SignUp", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to update user's full name"])

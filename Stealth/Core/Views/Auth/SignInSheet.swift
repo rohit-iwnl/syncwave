@@ -27,6 +27,8 @@ struct SignInSheet: View {
     @State private var showToast: Bool = false
     @State private var toastMessage: String = ""
     
+    @EnvironmentObject var navigationCoordinator : NavigationCoordinator
+    
     
     var isInputValid: Bool {
         if isPasswordFieldVisible {
@@ -234,24 +236,40 @@ struct SignInSheet: View {
                 }
                 
                 if (!isPasswordFieldVisible){
-                    VStack {
+//                    VStack {
+//                        HStack {
+//                            Text("Don't have an account?")
+//                                .foregroundColor(.gray)
+//                            NavigationLink(destination: SignupSheet(emailID: emailID)) {
+//                                Text("Sign up here")
+//                                    .foregroundColor(TextColors.primaryWhite.color)
+//                                    .underline()
+//                                    .fontWeight(.bold)
+//                                    .lineLimit(1)
+//                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+//                            }
+//                            .toolbarColorScheme(.dark, for: .navigationBar)
+//                        }
+//                        .transition(.slide)
+//                        .animation(.easeIn, value: isPasswordFieldVisible)
+//                        .font(.sora(.subheadline))
+//                        .padding(.top, 20)
+//                    }
+                    Button {
+                        navigationCoordinator.path.append("registerAccount")
+                    } label : {
                         HStack {
                             Text("Don't have an account?")
-                                .foregroundColor(.gray)
-                            NavigationLink(destination: SignupSheet(emailID: emailID)) {
-                                Text("Sign up here")
-                                    .foregroundColor(TextColors.primaryWhite.color)
-                                    .underline()
-                                    .fontWeight(.bold)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                            }
-                            .toolbarColorScheme(.dark, for: .navigationBar)
+                                .foregroundStyle(TextColors.primaryWhite.color)
+                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                .font(.sora(.callout))
+                            Text("Sign up here")
+                                .font(.sora(.callout))
+                                .foregroundStyle(TextColors.primaryWhite.color)
+                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                .fontWeight(.bold)
+                                .underline()
                         }
-                        .transition(.slide)
-                        .animation(.easeIn, value: isPasswordFieldVisible)
-                        .font(.sora(.subheadline))
-                        .padding(.top, 20)
                     }
                     .padding(.bottom,60)
                     .alignment(.bottom)
@@ -283,6 +301,7 @@ struct SignInSheet: View {
         
         var body: some View {
             SignInView()
+                .environmentObject(NavigationCoordinator())
         }
     }
     
