@@ -43,6 +43,7 @@
 		B6D543EE2C7C1D9D00C9D14C /* SignInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */; };
 		B6DF189A2C854C8100741B53 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B6DF18992C854C8100741B53 /* GoogleSignIn */; };
 		B6DF189C2C854C8100741B53 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B6DF189B2C854C8100741B53 /* GoogleSignInSwift */; };
+		B6E61E8A2CACA08700A46940 /* NavigationDestinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E61E892CACA08700A46940 /* NavigationDestinations.swift */; };
 		B6FE87842C7D8ABE000685E0 /* AppleSignInUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeCategory.swift; sourceTree = "<group>"; };
 		B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheet.swift; sourceTree = "<group>"; };
 		B6DF189D2C854D6200741B53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B6E61E892CACA08700A46940 /* NavigationDestinations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDestinations.swift; sourceTree = "<group>"; };
 		B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUtils.swift; sourceTree = "<group>"; };
 		B6FE87852C7D930F000685E0 /* Stealth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stealth.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -325,6 +327,7 @@
 			children = (
 				B6D543E32C7C024000C9D14C /* FrameAlignment.swift */,
 				B6D543E82C7C060C00C9D14C /* TextColors.swift */,
+				B6E61E892CACA08700A46940 /* NavigationDestinations.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -470,6 +473,7 @@
 				B6D543E92C7C060C00C9D14C /* TextColors.swift in Sources */,
 				B6D543D42C7BFB9C00C9D14C /* HexColor.swift in Sources */,
 				B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */,
+				B6E61E8A2CACA08700A46940 /* NavigationDestinations.swift in Sources */,
 				B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */,
 				B6D543BC2C7BF96E00C9D14C /* ContentView.swift in Sources */,
 				B6D543DA2C7BFE5100C9D14C /* HomeView.swift in Sources */,

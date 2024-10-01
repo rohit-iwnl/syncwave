@@ -210,6 +210,8 @@ struct OptionsView: View {
             navigationCoordinator.totalPages = 2 // Default case
         }
     }
+    
+    
 
     
     
