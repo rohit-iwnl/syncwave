@@ -45,29 +45,6 @@ struct ContentView: View {
                 }
             }
             .navigationDestination(for: NavigationDestinations.self) { destination in
-                //                switch destination {
-                //                case "Welcome":
-                //                    WelcomeCard(navigationCoordinator: navigationCoordinator)
-                //                        .environmentObject(appUserStateManager)
-                //                        .toolbar(.hidden)
-                //
-                //                case "Preferences":
-                //                    PreferencesView(navigationCoordinator: navigationCoordinator)
-                //                        .toolbar(.hidden)
-                //                        .environmentObject(appUserStateManager)
-                //                case "PersonalInfo":
-                //                    PersonalInfoView(currentPage: $navigationCoordinator.currentPage, preferencesArray: $navigationCoordinator.preferencesArray)
-                //                        .toolbar(.hidden)
-                //                        .environmentObject(navigationCoordinator)
-                //                case "Home":
-                //                    HomeView()
-                //                        .environmentObject(appUserStateManager)
-                //                case "registerAccount":
-                //                    SignupSheet(emailID: "")
-                //                        .environmentObject(appUserStateManager)
-                //                default:
-                //                    Text("Unknown destination: \(destination)")
-                //                }
                 
                 switch destination {
                     
@@ -90,7 +67,7 @@ struct ContentView: View {
                     HomeView()
                         .environmentObject(appUserStateManager)
                     
-                case .registerAccount:
+                case .signUp:
                     SignupSheet(emailID: "")
                         .environmentObject(appUserStateManager)
                     
@@ -144,9 +121,9 @@ struct ContentView: View {
                             
                             // Navigate to onboarding or sign-in based on onboarding completion
                             if hasCompletedOnboarding {
-                                navigationCoordinator.path.append("SignIn")
+                                navigationCoordinator.path.append(NavigationDestinations.signIn)
                             } else {
-                                navigationCoordinator.path.append("Onboarding")
+                                navigationCoordinator.path.append(NavigationDestinations.onboarding)
                             }
                         }
                     }

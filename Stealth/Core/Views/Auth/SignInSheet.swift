@@ -237,7 +237,7 @@ struct SignInSheet: View {
                 
                 if (!isPasswordFieldVisible){
                     Button {
-                        navigationCoordinator.path.append("registerAccount")
+                        navigationCoordinator.path.append(NavigationDestinations.signUp)
                     } label : {
                         HStack {
                             Text("Don't have an account?")

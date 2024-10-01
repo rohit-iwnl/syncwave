@@ -8,10 +8,12 @@
 import Foundation
 
 enum NavigationDestinations : String, Hashable {
-    case home = "Home"
-    case settings = "Settings"
-    case personalInfo = "PersonalInfo"
-    case preferences = "Preferences"
-    case welcome = "Welcome"
-    case registerAccount = "registerAccount"
+    case home = "home"
+    case settings = "settings"
+    case personalInfo = "personalInfo"
+    case preferences = "preferences"
+    case welcome = "welcome"
+    case signIn = "signIn"
+    case signUp = "signUp"
+    case onboarding = "onboarding"
 }

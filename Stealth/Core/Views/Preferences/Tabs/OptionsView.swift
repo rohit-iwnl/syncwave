@@ -189,7 +189,7 @@ struct OptionsView: View {
                         
                         // Push personal Info view
                         withAnimation(.easeOut(duration: 0.5)) {
-                            self.navigationCoordinator.path.append("PersonalInfo")
+                            self.navigationCoordinator.path.append(NavigationDestinations.personalInfo)
                             self.navigationCoordinator.showPages = true
                             self.navigationCoordinator.currentPage += 1
                         }
