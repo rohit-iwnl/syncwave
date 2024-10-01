@@ -186,7 +186,7 @@ struct SignInSheet: View {
                     HStack{
                         Rectangle()
                             .frame(height: 1)
-                        Text("Or continue with")
+                        Text("Or")
                             .font(.sora(.subheadline))
                             .fontWeight(.semibold)
                             .lineLimit(1)
@@ -201,8 +201,8 @@ struct SignInSheet: View {
                     
                     
                     
-                    HStack{
-                        CircleAuthButton(image: "AuthIcons/apple") {
+                    VStack{
+                        AuthButton(image: "AuthIcons/apple", provider: "Apple") {
                             Task {
                                 do {
                                     let _appUser = try await viewModel.signInWithApple()
@@ -216,7 +216,7 @@ struct SignInSheet: View {
                                 }
                             }
                         }
-                        CircleAuthButton(image: "AuthIcons/google") {
+                        AuthButton(image: "AuthIcons/google", provider: "Google") {
                             Task {
                                 do {
                                     let _appUser = try await viewModel.signInWithGoogle()
