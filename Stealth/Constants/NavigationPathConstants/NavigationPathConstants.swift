@@ -15,12 +15,13 @@ class NavigationCoordinator : ObservableObject {
     
     @Published var preferencesArray : [String : Bool] = [:]
     
+    
     func navigateToPersonalInfoView() {
         path.append("PersonalInfo")
     }
     
     func navigateToPreferences() {
-        path.append("Preferences")
+        path.append(NavigationDestinations.preferences)
     }
     
     func resetToHome() {
