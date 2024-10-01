@@ -35,6 +35,7 @@ struct ContentView: View {
                         } else {
                             if hasCompletedOnboarding {
                                 SignInView()
+                                    .environmentObject(self.navigationCoordinator)
                             } else {
                                 OnboardingView()
                             }
@@ -61,6 +62,9 @@ struct ContentView: View {
                 case "Home":
                     HomeView()
                         .environmentObject(appUserStateManager)
+                case "registerAccount":
+                    SignupSheet(emailID: "")
+                        .environmentObject(appUserStateManager) 
                 default:
                     Text("Unknown destination: \(destination)")
                 }
