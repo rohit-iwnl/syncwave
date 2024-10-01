@@ -11,7 +11,9 @@ struct OAuthSignInButton: View {
     
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     let imageName : String
+    let provider : String
     let action : () -> Void
+    
     
     var body: some View {
         
@@ -19,15 +21,16 @@ struct OAuthSignInButton: View {
         Button(action: action) {
             HStack {
                 Spacer()
-                Text("Continue with")
-                    .font(.sora(.subheadline)) // Customize the font and size
-                    .lineLimit(1)
-                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                
                 Image(imageName) // Use SF Symbol for the arrow icon
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding(.vertical)
                     .controlSize(ControlSize.large)
+                Text("Continue with \(provider)")
+                    .font(.sora(.subheadline)) // Customize the font and size
+                    .lineLimit(1)
+                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                 Spacer()
             }
             .padding(.horizontal, 20) // Add horizontal padding
@@ -42,7 +45,6 @@ struct OAuthSignInButton: View {
 }
 
 #Preview {
-    OAuthSignInButton(imageName: "AuthIcons/apple") {
-        
+    OAuthSignInButton(imageName: "AuthIcons/apple", provider: "Apple") {
     }
 }

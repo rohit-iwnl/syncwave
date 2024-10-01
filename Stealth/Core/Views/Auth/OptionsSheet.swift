@@ -38,7 +38,7 @@ struct OptionsSheet: View {
                 }
                 
                 
-                OAuthSignInButton(imageName: "AuthIcons/email") {
+                OAuthSignInButton(imageName: "AuthIcons/email" , provider : "Email") {
                     hasCompletedOnboarding = true
                     isModalOpen = false
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -60,7 +60,7 @@ struct OptionsSheet: View {
                 }
                 .foregroundStyle(.gray)
                 
-                OAuthSignInButton(imageName: "AuthIcons/apple") {
+                OAuthSignInButton(imageName: "AuthIcons/apple", provider: "Apple") {
                     // Handle Apple sign-in
                     hasCompletedOnboarding = true
                     Task {
@@ -73,7 +73,7 @@ struct OptionsSheet: View {
                     }
                 }
                 
-                OAuthSignInButton(imageName: "AuthIcons/google") {
+                OAuthSignInButton(imageName: "AuthIcons/google", provider: "Google") {
                     // Handle Google sign-in
                     hasCompletedOnboarding = true
                     
