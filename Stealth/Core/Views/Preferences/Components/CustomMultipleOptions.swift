@@ -34,7 +34,8 @@ struct CustomSelector: View {
             LazyHGrid(rows: columns, alignment: .center, spacing: 10) {
                 optionButtons
             }
-            .frame(height: 40) // Adjust this value as needed
+            .frame(height: 40)
+            .padding(.leading, 5)
         }
     }
     
@@ -51,7 +52,7 @@ struct CustomSelector: View {
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             }) {
                 Text(option)
-                    .font(.sora(.subheadline))
+                    .font(.sora(.headline, weight: (selectedOptions.contains(option) ? .medium : .regular)))
                     .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                     .foregroundColor(selectedOptions.contains(option) ? TextColors.primaryWhite.color : TextColors.primaryBlack.color)
                     .lineLimit(lineLimit)
