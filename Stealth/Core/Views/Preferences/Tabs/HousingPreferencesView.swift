@@ -23,176 +23,182 @@ struct HousingPreferencesView: View {
     
     @Binding var isShowingHousingPreferences : Bool
     
+    @EnvironmentObject var navigationCoordinator: NavigationCoordinator
+    
     
     var body: some View {
         ZStack {
             // Main HousingPreferencesView content
             GeometryReader { geometry in
                 ZStack {
-                    
                     ScrollView {
-                        VStack(alignment: .leading, spacing: 20) {
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text("Share what you're looking for in a property?")
-                                    .font(.sora(.largeTitle, weight: .semibold))
-                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                    .lineLimit(3)
-                                Text("Type of Property you're looking for? (Select all that apply)")
-                                    .font(.sora(.callout, weight: .regular))
-                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                    .lineLimit(2)
-                                    .foregroundStyle(.gray)
+                        VStack{
+                            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(true), showPages: .constant(true)) {
+                                
                             }
                             
-                            LazyVGrid(columns: adaptiveGridColumns(for: geometry.size.width), spacing: 16) {
-                                ForEach(HousingViewConstants.houseOptionButtons.indices, id: \.self) { index in
-                                    let button = HousingViewConstants.houseOptionButtons[index]
-                                    Button {
-                                        toggleSelection(index)
-                                    } label: {
-                                        ZStack(alignment: .bottomTrailing) {
-                                            VStack(alignment: .leading) {
-                                                Text(button.label)
-                                                    .font(.sora(.headline))
-                                                    .foregroundColor(.black)
-                                                    .padding()
-                                                Spacer(minLength: 20)
-                                                HStack {
-                                                    Spacer()
-                                                    Image("Preferences/Housing/\(button.illustration)")
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .aspectRatio(contentMode: .fit)
-                                                        .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
-                                                        .scaleEffect(selectedHouseOptions[index] ?? false ? 1.2 : 1.0)
-                                                        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedHouseOptions[index] ?? false)
-                                                        .padding(.bottom)
-                                                    Spacer()
+                            VStack(alignment: .leading, spacing: 20) {
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text("Share what you're looking for in a property?")
+                                        .font(.sora(.largeTitle, weight: .semibold))
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        .lineLimit(3)
+                                    Text("Type of Property you're looking for? (Select all that apply)")
+                                        .font(.sora(.callout, weight: .regular))
+                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        .lineLimit(2)
+                                        .foregroundStyle(.gray)
+                                }
+                                
+                                LazyVGrid(columns: adaptiveGridColumns(for: geometry.size.width), spacing: 16) {
+                                    ForEach(HousingViewConstants.houseOptionButtons.indices, id: \.self) { index in
+                                        let button = HousingViewConstants.houseOptionButtons[index]
+                                        Button {
+                                            toggleSelection(index)
+                                        } label: {
+                                            ZStack(alignment: .bottomTrailing) {
+                                                VStack(alignment: .leading) {
+                                                    Text(button.label)
+                                                        .font(.sora(.headline))
+                                                        .foregroundColor(.black)
+                                                        .padding()
+                                                    Spacer(minLength: 20)
+                                                    HStack {
+                                                        Spacer()
+                                                        Image("Preferences/Housing/\(button.illustration)")
+                                                            .resizable()
+                                                            .scaledToFit()
+                                                            .aspectRatio(contentMode: .fit)
+                                                            .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
+                                                            .scaleEffect(selectedHouseOptions[index] ?? false ? 1.2 : 1.0)
+                                                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: selectedHouseOptions[index] ?? false)
+                                                            .padding(.bottom)
+                                                        Spacer()
+                                                    }
                                                 }
+                                                .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.15, alignment: .topLeading)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(selectedHouseOptions[index] ?? false ? button.pressableColor : button.backgroundColor)
+                                                )
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .stroke(selectedHouseOptions[index] ?? false ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedHouseOptions[index] ?? false ? 1.2 : 1)
+                                                )
+                                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                             }
-                                            .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.15, alignment: .topLeading)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .fill(selectedHouseOptions[index] ?? false ? button.pressableColor : button.backgroundColor)
-                                            )
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 12)
-                                                    .stroke(selectedHouseOptions[index] ?? false ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedHouseOptions[index] ?? false ? 1.2 : 1)
-                                            )
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
                                         }
+                                        .buttonStyle(PressableButtonStyle(
+                                            backgroundColor: button.backgroundColor,
+                                            pressedColor: button.pressableColor,
+                                            isSelected: selectedHouseOptions[index] ?? false
+                                        ))
+                                        .sensoryFeedback(.selection, trigger: selectedHouseOptions[index] ?? false)
                                     }
-                                    .buttonStyle(PressableButtonStyle(
-                                        backgroundColor: button.backgroundColor,
-                                        pressedColor: button.pressableColor,
-                                        isSelected: selectedHouseOptions[index] ?? false
-                                    ))
-                                    .sensoryFeedback(.selection, trigger: selectedHouseOptions[index] ?? false)
-                                }
-                            }
-                            
-                            VStack(spacing: 5) {
-                                
-                                HStack {
-                                    Text("Desired rental range per person")
-                                        .font(.sora(.body))
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                    Spacer()
                                 }
                                 
-                                HStack {
-                                    Text("$\(Int(rentRange.min)) - $\(Int(rentRange.max))")
-                                        .font(.sora(.body, weight: .medium))
-                                        .fontDesign(.rounded)
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(2)
+                                VStack(spacing: 5) {
                                     
-                                    Spacer()
-                                }
-                                
-                                
-                                CustomSlider(defaultMinValue: $rentRange.min, defaultMaxValue: $rentRange.max, minValue: 200, maxValue: 4000, steps: 50)
-                            }
-                            
-                            VStack(spacing: 5){
-                                
-                                HStack{
-                                    Text("Property size")
-                                        .font(.sora(.body))
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                    Spacer()
-                                }
-                                
-                                HStack{
-                                    Text("\(Int(propertySizeRange.min)) Sqft - \(Int(propertySizeRange.max)) Sqft")
-                                        .font(.sora(.body, weight: .medium))
-                                        .fontDesign(.rounded)
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                    Spacer()
-                                }
-                                
-                                CustomSlider(defaultMinValue: $propertySizeRange.min, defaultMaxValue: $propertySizeRange.max, minValue: 500, maxValue: 3000, steps: 50)
-                                
-                            }
-                            
-                            
-                            VStack(spacing : 5){
-                                HStack {
-                                    Text("Bedrooms")
-                                        .font(.sora(.body))
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    HStack {
+                                        Text("Desired rental range per person")
+                                            .font(.sora(.body))
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        Spacer()
+                                    }
                                     
-                                    Spacer()
-                                }
-                                CustomSelector(selectedOptions: $selectedBedrooms, options: BedroomsOptions.options, isScrollable: true, lineLimit: 1)
-                                    .padding(.vertical)
-                            }
-                            
-                            VStack(spacing : 5){
-                                HStack {
-                                    Text("Bathrooms")
-                                        .font(.sora(.body))
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    HStack {
+                                        Text("$\(Int(rentRange.min)) - $\(Int(rentRange.max))")
+                                            .font(.sora(.body, weight: .medium))
+                                            .fontDesign(.rounded)
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(2)
+                                        
+                                        Spacer()
+                                    }
                                     
-                                    Spacer()
-                                }
-                                CustomSelector(selectedOptions: $selectedBathrooms, options: BathroomOptions.options, isScrollable: true, lineLimit: 1)
-                                    .padding(.vertical)
-                            }
-                            
-                            VStack(spacing : 5){
-                                HStack {
-                                    Text("Preferred number of people per unit")
-                                        .font(.sora(.body))
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                     
-                                    Spacer()
+                                    CustomSlider(defaultMinValue: $rentRange.min, defaultMaxValue: $rentRange.max, minValue: 200, maxValue: 4000, steps: 50)
                                 }
-                                CustomSelector(selectedOptions: $selectedNumberOfRoommates, options: RoomateOptions.options, isScrollable: true, lineLimit: 1)
-                                    .padding(.vertical)
-                            }
-                            
-                            VStack(spacing : 5){
-                                HStack {
-                                    Text("Furnishing")
-                                        .font(.sora(.body))
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                
+                                VStack(spacing: 5){
                                     
-                                    Spacer()
+                                    HStack{
+                                        Text("Property size")
+                                            .font(.sora(.body))
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        Spacer()
+                                    }
+                                    
+                                    HStack{
+                                        Text("\(Int(propertySizeRange.min)) Sqft - \(Int(propertySizeRange.max)) Sqft")
+                                            .font(.sora(.body, weight: .medium))
+                                            .fontDesign(.rounded)
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        Spacer()
+                                    }
+                                    
+                                    CustomSlider(defaultMinValue: $propertySizeRange.min, defaultMaxValue: $propertySizeRange.max, minValue: 500, maxValue: 3000, steps: 50)
+                                    
                                 }
-                                CustomSelector(selectedOptions: $selectedFurnishing, options: FurnishingOptions.options, isScrollable: true, lineLimit: 1)
-                                    .padding(.vertical)
-                            }
-                            
-                            
-                            
+                                
+                                
+                                VStack(spacing : 5){
+                                    HStack {
+                                        Text("Bedrooms")
+                                            .font(.sora(.body))
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        
+                                        Spacer()
+                                    }
+                                    CustomSelector(selectedOptions: $selectedBedrooms, options: BedroomsOptions.options, isScrollable: true, lineLimit: 1)
+                                        .padding(.vertical)
+                                }
+                                
+                                VStack(spacing : 5){
+                                    HStack {
+                                        Text("Bathrooms")
+                                            .font(.sora(.body))
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        
+                                        Spacer()
+                                    }
+                                    CustomSelector(selectedOptions: $selectedBathrooms, options: BathroomOptions.options, isScrollable: true, lineLimit: 1)
+                                        .padding(.vertical)
+                                }
+                                
+                                VStack(spacing : 5){
+                                    HStack {
+                                        Text("Preferred number of people per unit")
+                                            .font(.sora(.body))
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        
+                                        Spacer()
+                                    }
+                                    CustomSelector(selectedOptions: $selectedNumberOfRoommates, options: RoomateOptions.options, isScrollable: true, lineLimit: 1)
+                                        .padding(.vertical)
+                                }
+                                
+                                VStack(spacing : 5){
+                                    HStack {
+                                        Text("Furnishing")
+                                            .font(.sora(.body))
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                        
+                                        Spacer()
+                                    }
+                                    CustomSelector(selectedOptions: $selectedFurnishing, options: FurnishingOptions.options, isScrollable: true, lineLimit: 1)
+                                        .padding(.vertical)
+                                }
+                                
+                                
+                                
                                 HStack {
                                     Text("Amenities")
                                         .font(.sora(.body))
@@ -201,19 +207,20 @@ struct HousingPreferencesView: View {
                                     
                                     Spacer()
                                 }
-                            
-                            
-                            CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
-                            
-                            ContinueButton(
-                                isEnabled: checkIfValidSelection(),
-                                isLoading: isLoading
-                            ) {
-                                performAPICallAndNavigate()
+                                
+                                
+                                CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
+                                
+                                ContinueButton(
+                                    isEnabled: checkIfValidSelection(),
+                                    isLoading: isLoading
+                                ) {
+                                    performAPICallAndNavigate()
+                                }
+                                .padding(.bottom, 20)
                             }
-                            .padding(.bottom, 20)
+                            .padding()
                         }
-                        .padding()
                     }
                 }
             }
@@ -259,6 +266,7 @@ struct HousingPreferencesView: View {
 
 #Preview {
     HousingPreferencesView(currentPage: .constant(3), totalPages: .constant(3), isShowingHousingPreferences: .constant(true))
+        .environmentObject(NavigationCoordinator())
     
     
 }
