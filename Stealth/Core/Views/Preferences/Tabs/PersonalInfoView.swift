@@ -99,6 +99,8 @@ struct PersonalInfoView: View {
             Button(action: {
                 if (preferencesArray["here_to_explore"] == true){
                     self.navigationCoordinator.resetToHome()
+                } else {
+                    self.navigationCoordinator.path.append(NavigationDestinations.housing)
                 }
                 currentPage += 1
             }) {
