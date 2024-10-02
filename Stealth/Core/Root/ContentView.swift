@@ -70,7 +70,9 @@ struct ContentView: View {
                 case .signUp:
                     SignupSheet(emailID: "")
                         .environmentObject(appUserStateManager)
-                    
+                case .housing:
+                    HousingPreferencesView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, isShowingHousingPreferences: .constant(true))
+                        .toolbar(.hidden)
                 default:
                     Text("Unknown destination :\(destination)")
                 }
