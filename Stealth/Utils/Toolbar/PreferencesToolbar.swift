@@ -27,12 +27,13 @@ struct PreferencesToolbar: View {
                     Image(systemName: "chevron.left")
                         .fontWeight(.bold)
                         .foregroundColor(.black)
-                        .padding(8)
+                        .padding(.horizontal,10)
+                        .padding(.vertical,10)
                         .background(Color.white)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                .stroke(.black, lineWidth: 2)
                         )
                 }
                 
@@ -45,6 +46,11 @@ struct PreferencesToolbar: View {
                         Circle()
                             .fill(index == currentPage ? Color.black : Color.gray.opacity(0.3))
                             .frame(width: 8, height: 8)
+                            .overlay(
+                                Circle()
+                                    .fill(index == currentPage ? Color.black : Color.gray.opacity(0.3))
+                                    .stroke(.black.opacity(0.75), lineWidth: 1)
+                            )
                     }
                 }
             }
@@ -76,10 +82,26 @@ struct PreferencesToolbar: View {
 }
 
 #Preview {
+    
+    @Previewable @State var currentPage: Int = 1
+    
     VStack{
-        PreferencesToolbar(currentPage: .constant(3), totalPages: .constant(4), showSkipButton: .constant(true), showPages: .constant(false)) {
-            
+        PreferencesToolbar(currentPage: $currentPage, totalPages: .constant(4), showSkipButton: .constant(true), showPages: .constant(true)) {
         }
+        
+        Button {
+            currentPage.self += 1
+        } label : {
+            Text("Incerement")
+        }
+        .padding()
+        
+        Button {
+            currentPage.self = 1
+        } label : {
+            Text("Decrement")
+        }
+        .padding()
     }
     .background(.white)
 }
