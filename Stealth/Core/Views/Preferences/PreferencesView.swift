@@ -24,7 +24,6 @@ struct PreferencesView: View {
             PreferencesToolbar(
                 currentPage : $navigationCoordinator.currentPage,
                 totalPages: $navigationCoordinator.totalPages,
-                showSkipButton: $isShowingHousingPreferences,
                 showPages: $navigationCoordinator.showPages,
                 onBackTap: handleBackTap
             )
