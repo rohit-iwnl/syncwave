@@ -106,6 +106,7 @@
 		B699AF882C926F7700269D2A /* Hashing */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Hashing; sourceTree = "<group>"; };
 		B699AF912C926FC500269D2A /* NetworkCalls */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NetworkCalls; sourceTree = "<group>"; };
 		B6A839882C94DAAF00A0D1C9 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
+		B6B023B02CAE78DA005865C8 /* Loading */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Loading; sourceTree = "<group>"; };
 		B6D1BBE62C80A26C004F63A5 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D304382C7D2E9B0018C1FF /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D3044A2C7D38F00018C1FF /* Config */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B67568B12C82D61200E0BF1F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Config; sourceTree = "<group>"; };
@@ -275,6 +276,7 @@
 		B6D543CE2C7BFA2900C9D14C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B6B023B02CAE78DA005865C8 /* Loading */,
 				B6D543EC2C7C1D9300C9D14C /* Auth */,
 				B6D543EF2C7C2A7200C9D14C /* LaunchScreen */,
 				B6D543DB2C7BFE5400C9D14C /* Onboarding */,
@@ -396,6 +398,7 @@
 				B699AF882C926F7700269D2A /* Hashing */,
 				B699AF912C926FC500269D2A /* NetworkCalls */,
 				B6A839882C94DAAF00A0D1C9 /* Models */,
+				B6B023B02CAE78DA005865C8 /* Loading */,
 				B6D1BBE62C80A26C004F63A5 /* Components */,
 				B6D304382C7D2E9B0018C1FF /* Components */,
 				B6D3044A2C7D38F00018C1FF /* Config */,
