@@ -11,6 +11,8 @@ struct HomeView: View {
     
     @EnvironmentObject private var appUserStateManager: AppUserManger
     
+    @EnvironmentObject private var navigationCoordinator: NavigationCoordinator
+    
     var body: some View {
         Text("App user ID Token : \(appUserStateManager.appUser?.uid ?? "no user logged in")")
             .padding()
@@ -26,6 +28,7 @@ struct HomeView: View {
                     
                     await MainActor.run {
                         self.appUserStateManager.appUser = signedOutUser
+                        navigationCoordinator.path = NavigationPath()
                     }
                 } catch {
                     print("DEBUG : Error signing out")
@@ -39,4 +42,6 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environmentObject(AppUserManger())
+        .environmentObject(NavigationCoordinator())
 }
