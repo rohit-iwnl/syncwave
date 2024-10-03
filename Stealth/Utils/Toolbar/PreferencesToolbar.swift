@@ -12,12 +12,14 @@ struct PreferencesToolbar: View {
     @Binding var currentPage: Int
     @Binding var totalPages: Int
     
-    @Binding var showSkipButton : Bool
     
     @Binding var showPages : Bool
     
     
     var onBackTap : () -> Void
+    
+    var onSkipTap : (() -> Void)?
+
     
     
     var body: some View {
@@ -56,13 +58,11 @@ struct PreferencesToolbar: View {
             }
 
             
-            if showSkipButton {
+            if let skipAction = onSkipTap {
                 HStack{
                     Spacer()
                     
-                    Button {
-                        
-                    } label : {
+                    Button(action : skipAction) {
                         Text("Skip")
                             .font(.sora(.headline))
                             .foregroundStyle(.black)
@@ -72,7 +72,7 @@ struct PreferencesToolbar: View {
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(.black, lineWidth: 2))
-                    .animation(.easeInOut, value: showSkipButton)
+                    .animation(.easeInOut, value: onSkipTap != nil)
                 }
             }
         }
@@ -86,7 +86,8 @@ struct PreferencesToolbar: View {
     @Previewable @State var currentPage: Int = 1
     
     VStack{
-        PreferencesToolbar(currentPage: $currentPage, totalPages: .constant(4), showSkipButton: .constant(true), showPages: .constant(true)) {
+        PreferencesToolbar(currentPage: $currentPage, totalPages: .constant(4), showPages: .constant(true)) {
+            
         }
         
         Button {
