@@ -72,6 +72,7 @@ struct ContentView: View {
                         .environmentObject(appUserStateManager)
                 case .housing:
                     HousingPreferencesView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, isShowingHousingPreferences: .constant(true))
+                        .environmentObject(navigationCoordinator)
                         .toolbar(.hidden)
                 default:
                     Text("Unknown destination :\(destination)")
