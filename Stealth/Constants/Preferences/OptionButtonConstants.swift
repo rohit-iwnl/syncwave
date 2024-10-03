@@ -8,6 +8,13 @@ struct OptionButton {
     let jsonKey: String // Key to use in JSON representation
 }
 
+struct JsonKey {
+    static let here_to_explore = "here_to_explore"
+    static let lease_sublease_property = "lease_property"
+    static let find_roomate = "find_roommate"
+    static let sell_buy_product = "sell_buy_product"
+}
+
 struct OptionButtonConstants {
     static let buttons: [OptionButton] = [
         OptionButton(
@@ -15,28 +22,28 @@ struct OptionButtonConstants {
             backgroundColor: .white,
             pressableColor: Color(hex: "#FFDAF6"),
             illustration: "lease",
-            jsonKey: "lease_property"
+            jsonKey: JsonKey.lease_sublease_property
         ),
         OptionButton(
             label: "Find a room & roommate",
             backgroundColor: .white,
             pressableColor: Color(hex: "#EDD4CE"),
             illustration: "roommate",
-            jsonKey: "find_roommate"
+            jsonKey: JsonKey.find_roomate
         ),
         OptionButton(
             label: "Sell/buy a product",
             backgroundColor: .white,
             pressableColor: Color(hex: "#CFDFFF"),
             illustration: "selling",
-            jsonKey: "sell_buy_product"
+            jsonKey: JsonKey.sell_buy_product
         ),
         OptionButton(
             label: "Here to explore",
             backgroundColor: .white,
             pressableColor: Color(hex: "#EDE2FE"),
             illustration: "explore",
-            jsonKey: "here_to_explore"
+            jsonKey: JsonKey.here_to_explore
         )
     ]
 }
