@@ -35,18 +35,7 @@ struct PreferencesView: View {
     }
     
     private func handleBackTap() {
-        withAnimation(.easeInOut(duration: 0.5)) {
-            if !navigationCoordinator.path.isEmpty {
-                if navigationCoordinator.path.count == 1 {
-                    navigationCoordinator.showPages = false
-                }
-                navigationCoordinator.path.removeLast()
-                navigationCoordinator.currentPage = navigationCoordinator.path.count
-                
-            } else {
-                dismiss()
-            }
-        }
+        dismiss()
     }
 }
 
