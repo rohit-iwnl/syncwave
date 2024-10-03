@@ -42,11 +42,8 @@ struct PersonalInfoView: View {
     }
     
     var body: some View {
-        
-        
         VStack(spacing: 0) {
-            
-            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(false), showPages: .constant(true), onBackTap: handleBackTap)
+            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(false), showPages: $navigationCoordinator.showPages, onBackTap: handleBackTap)
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
@@ -124,12 +121,11 @@ struct PersonalInfoView: View {
     private func handleBackTap() {
         withAnimation(.easeInOut(duration: 0.5)) {
             if !navigationCoordinator.path.isEmpty {
-                if navigationCoordinator.path.count == 1 {
-                    navigationCoordinator.showPages = false
-                }
+                print("Before \(navigationCoordinator.currentPage)")
+                navigationCoordinator.showPages = false
                 navigationCoordinator.path.removeLast()
-                navigationCoordinator.currentPage = navigationCoordinator.path.count
-                
+                navigationCoordinator.currentPage = navigationCoordinator.currentPage - 1
+                print("After \(navigationCoordinator.currentPage)")
             } else {
                 dismiss()
             }
