@@ -18,15 +18,17 @@ struct ContentView: View {
         NavigationStack(path: $navigationCoordinator.path) {
             ZStack {
                 if isLoading {
-                    ProgressView("Loading...")
-                        .transition(.opacity)
+                    ProgressView(label: {
+                        Text("Loading")
+                    })
                 } else if isContentReady {
                     Group {
-                        if let appUser = appUserStateManager.appUser, let uid = appUser.uid, !uid.isEmpty {
+                        if let appUser = appUserStateManager.appUser, let uid = appUser.uid, !uid.isEmpty, uid != "" {
                             if hasCompletedPreferences {
                                 HomeView()
                                     .toolbar(.hidden)
                                     .environmentObject(appUserStateManager)
+                                    .environmentObject(navigationCoordinator)
                             } else {
                                 WelcomeCard(navigationCoordinator: navigationCoordinator)
                                     .environmentObject(appUserStateManager)
@@ -67,7 +69,10 @@ struct ContentView: View {
                 case .home:
                     HomeView()
                         .environmentObject(appUserStateManager)
-                    
+                        .environmentObject(navigationCoordinator)
+                case .signIn:
+                    SignInView()
+                        .environmentObject(appUserStateManager)
                 case .signUp:
                     SignupSheet(emailID: "")
                         .environmentObject(appUserStateManager)
@@ -109,10 +114,12 @@ struct ContentView: View {
                             self.isContentReady = true
                             
                             // Navigate based on preferences completion
-                            if preferencesCompleted {
-                                navigationCoordinator.path.append(NavigationDestinations.home)
-                            } else {
-                                navigationCoordinator.path.append(NavigationDestinations.welcome)
+                            DispatchQueue.main.asyncAfter(deadline: .now()){
+                                if preferencesCompleted {
+                                    navigationCoordinator.path.append(NavigationDestinations.home)
+                                } else {
+                                    navigationCoordinator.path.append(NavigationDestinations.welcome)
+                                }
                             }
                         }
                     }
@@ -124,10 +131,12 @@ struct ContentView: View {
                             self.isContentReady = true
                             
                             // Navigate to onboarding or sign-in based on onboarding completion
-                            if hasCompletedOnboarding {
-                                navigationCoordinator.path.append(NavigationDestinations.signIn)
-                            } else {
-                                navigationCoordinator.path.append(NavigationDestinations.onboarding)
+                            DispatchQueue.main.asyncAfter(deadline: .now()){
+                                if hasCompletedOnboarding {
+                                    navigationCoordinator.path.append(NavigationDestinations.signIn)
+                                } else {
+                                    navigationCoordinator.path.append(NavigationDestinations.onboarding)
+                                }
                             }
                         }
                     }
