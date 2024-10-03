@@ -54,8 +54,9 @@ struct ContentView: View {
                         .toolbar(.hidden)
                     
                 case .preferences:
-                    PreferencesView(navigationCoordinator: navigationCoordinator)
+                    PreferencesView()
                         .toolbar(.hidden)
+                        .environmentObject(navigationCoordinator)
                         .environmentObject(appUserStateManager)
                     
                 case .personalInfo:
