@@ -15,6 +15,7 @@ struct OptionsView: View {
     @Binding var totalPages: Int
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
     @Binding var preferencesArray: [String: Bool]
+    
 
     var body: some View {
         GeometryReader { geometry in
@@ -163,6 +164,9 @@ struct OptionsView: View {
                         self.updateTotalPages(preferences)
                         self.preferencesArray = preferences
                         self.navigationCoordinator.updatePreferences(with: preferences)
+                        
+                        UserPreferencesManager.storePreferences(preferences)
+                        
                         withAnimation(.easeOut(duration: 0.5)) {
                             self.navigationCoordinator.path.append(NavigationDestinations.personalInfo)
                             self.navigationCoordinator.currentPage += 1

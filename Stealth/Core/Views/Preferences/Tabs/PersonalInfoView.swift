@@ -121,11 +121,14 @@ struct PersonalInfoView: View {
     private func handleBackTap() {
         withAnimation(.easeInOut(duration: 0.5)) {
             if !navigationCoordinator.path.isEmpty {
-                print("Before \(navigationCoordinator.currentPage)")
+                
+                if(UserPreferencesManager.getPreferences() == [:]){
+                    UserPreferencesManager.clearPreferences()
+                }
+                
                 navigationCoordinator.showPages = false
                 navigationCoordinator.path.removeLast()
                 navigationCoordinator.currentPage = navigationCoordinator.currentPage - 1
-                print("After \(navigationCoordinator.currentPage)")
             } else {
                 dismiss()
             }
