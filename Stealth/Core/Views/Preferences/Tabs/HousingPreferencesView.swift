@@ -25,6 +25,8 @@ struct HousingPreferencesView: View {
     
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
     
+    @Environment(\.dismiss) private var dismiss
+    
     
     var body: some View {
         ZStack {
@@ -33,9 +35,7 @@ struct HousingPreferencesView: View {
                 ZStack {
                     ScrollView {
                         VStack{
-                            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(true), showPages: .constant(true)) {
-                                
-                            }
+                            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(true), showPages: .constant(true), onBackTap: handleBackTap)
                             
                             VStack(alignment: .leading, spacing: 20) {
                                 VStack(alignment: .leading, spacing: 3) {
@@ -228,6 +228,17 @@ struct HousingPreferencesView: View {
             // Render RentRangePickerView when presented
         }
         
+    }
+    
+    private func handleBackTap() {
+        withAnimation(.easeInOut(duration : 0.5)){
+            if !navigationCoordinator.path.isEmpty {
+                navigationCoordinator.path.removeLast()
+                navigationCoordinator.currentPage -= 1
+            } else {
+                dismiss()
+            }
+        }
     }
     
     private func adaptiveGridColumns(for width: CGFloat) -> [GridItem] {
