@@ -12,7 +12,7 @@ struct ContentView: View {
     var checkResetToHome : Bool = false
     
     @StateObject private var navigationCoordinator = NavigationCoordinator()
-    @State private var hasCheckedSession = false // New state variable
+    @State private var hasCheckedSession = false
     
     var body: some View {
         NavigationStack(path: $navigationCoordinator.path) {
@@ -41,7 +41,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                    .transition(.opacity)
+                    .transition(.move(edge: .trailing))
                 }
             }
             .navigationDestination(for: NavigationDestinations.self) { destination in
