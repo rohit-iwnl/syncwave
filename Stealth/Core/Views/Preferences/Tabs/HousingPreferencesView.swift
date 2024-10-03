@@ -27,15 +27,19 @@ struct HousingPreferencesView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    @State private var showSkipAlert = false
+    
     
     var body: some View {
-        ZStack {
+        VStack {
             // Main HousingPreferencesView content
             GeometryReader { geometry in
                 ZStack {
                     ScrollView {
                         VStack{
-                            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(true), showPages: .constant(true), onBackTap: handleBackTap)
+                            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showPages: .constant(true), onBackTap: handleBackTap) {
+                                showSkipAlert = true
+                            }
                             
                             VStack(alignment: .leading, spacing: 20) {
                                 VStack(alignment: .leading, spacing: 3) {
@@ -227,7 +231,27 @@ struct HousingPreferencesView: View {
             
             // Render RentRangePickerView when presented
         }
+        .alert(isPresented: $showSkipAlert) {
+            Alert(
+                title: Text("Skip Property preferences?"),
+                message: Text("Skipping property preferences? You’ll get fewer spot-on recs. No stress though, you can update them later when finishing your profile!"),
+                primaryButton: .default(Text("Yes, Skip")) {
+                    handleSkip()
+                },
+                secondaryButton: .cancel()
+            )
+        }
         
+    }
+    
+    private func handleSkip() {
+//        if navigationCoordinator.preferencesArray[JsonKey.find_roomate] == true {
+//            // Do something here
+//        } else {
+//            // Push home
+//        }
+        
+        navigationCoordinator.resetToHome()
     }
     
     private func handleBackTap() {
@@ -264,9 +288,7 @@ struct HousingPreferencesView: View {
             isLoading = false
             
             if apiCallSucceeded {
-                withAnimation {
-                    currentPage = min(currentPage + 1, totalPages - 1)
-                }
+                self.navigationCoordinator.resetToHome()
             }
         }
     }
