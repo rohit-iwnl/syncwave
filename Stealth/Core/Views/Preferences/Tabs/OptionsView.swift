@@ -114,10 +114,12 @@ struct OptionsView: View {
     }
 
     private func toggleSelection(_ index: Int) {
-        if selectedButtonIndex == index {
-            selectedButtonIndex = nil // Deselect if already selected
-        } else {
-            selectedButtonIndex = index // Select the new button
+        DispatchQueue.main.async {
+            if selectedButtonIndex == index {
+                selectedButtonIndex = nil // Deselect if already selected
+            } else {
+                selectedButtonIndex = index // Select the new button
+            }
         }
     }
 
