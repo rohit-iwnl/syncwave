@@ -12,12 +12,12 @@ struct PreferencesView: View {
     @StateObject private var keychainVM = KeychainViewModel()
     @State private var isShowingHousingPreferences: Bool = false
     @State private var showPages: Bool = true
-    //    @StateObject var navigationCoordinator = NavigationCoordinator()
+    
     @Environment(\.dismiss) private var dismiss
     
     @State private var preferencesArray : [String : Bool] = [:]
     
-    @ObservedObject var navigationCoordinator : NavigationCoordinator
+    @EnvironmentObject var navigationCoordinator : NavigationCoordinator
     
     var body: some View {
         VStack(spacing: 0) {
@@ -41,6 +41,6 @@ struct PreferencesView: View {
 
 
 #Preview {
-    PreferencesView(navigationCoordinator: NavigationCoordinator())
+    PreferencesView()
         .environmentObject(NavigationCoordinator())
 }
