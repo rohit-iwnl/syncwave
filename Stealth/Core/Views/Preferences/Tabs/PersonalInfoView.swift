@@ -43,7 +43,7 @@ struct PersonalInfoView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showSkipButton: .constant(false), showPages: $navigationCoordinator.showPages, onBackTap: handleBackTap)
+            PreferencesToolbar(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, showPages: $navigationCoordinator.showPages, onBackTap: handleBackTap)
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
