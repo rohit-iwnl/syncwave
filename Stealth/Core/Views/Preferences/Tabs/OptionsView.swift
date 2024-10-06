@@ -54,10 +54,7 @@ struct OptionsView: View {
                                     if index < OptionButtonConstants.buttons.count {
                                         let button = OptionButtonConstants.buttons[index]
                                         Button(action: {
-                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                                                toggleSelection(index)
-                                                providehapticFeedback()
-                                            }
+                                            toggleSelection(index)
                                         }) {
                                             ZStack(alignment: .bottomTrailing) {
                                                 VStack(alignment: .leading) {
@@ -83,8 +80,8 @@ struct OptionsView: View {
                                                     alignment: .topLeading
                                                 )
                                                 
-
-
+                                                
+                                                
                                                 .background(
                                                     RoundedRectangle(cornerRadius: 12)
                                                         .fill(selectedButtonIndex == index ? button.pressableColor : button.backgroundColor)
@@ -101,6 +98,7 @@ struct OptionsView: View {
                                             pressedColor: button.pressableColor,
                                             isSelected: selectedButtonIndex == index
                                         ))
+                                        .sensoryFeedback(.selection, trigger: selectedButtonIndex == index)
                                     }
                                 }
                             }
@@ -125,9 +123,12 @@ struct OptionsView: View {
         }
     }
     
-    private func providehapticFeedback() {
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
+    private func provideHapticFeedback() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let generator = UIImpactFeedbackGenerator(style: .light)
+            generator.prepare()
+            generator.impactOccurred()
+        }
     }
     
     
@@ -187,10 +188,10 @@ struct OptionsView: View {
                         
                         UserPreferencesManager.storePreferences(preferences)
                         
-                        withAnimation(.easeOut(duration: 0.5)) {
-                            self.navigationCoordinator.path.append(NavigationDestinations.personalInfo)
-                            self.navigationCoordinator.currentPage += 1
-                        }
+                        
+                        self.navigationCoordinator.path.append(NavigationDestinations.personalInfo)
+                        self.navigationCoordinator.currentPage += 1
+                        
                     }
                 }
             }
