@@ -45,51 +45,58 @@ struct OptionsView: View {
                 .padding(.bottom)
                 
                 
-                LazyVGrid(columns: twoColumnGrid, spacing: 16) {
-                    ForEach(OptionButtonConstants.buttons.indices, id: \.self) { index in
-                        let button = OptionButtonConstants.buttons[index]
-                        Button(action: {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                                toggleSelection(index)
-                            }
-                        }) {
-                            ZStack(alignment: .bottomTrailing) {
-                                VStack(alignment: .leading) {
-                                    Text(button.label)
-                                        .font(.sora(.headline))
-                                        .foregroundColor(.black)
-                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                        .padding()
-                                    Spacer(minLength: 20)
-                                    HStack {
-                                        Spacer()
-                                        Image("Preferences/Illustrations/\(button.illustration)")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
-                                            .scaleEffect(selectedButtonIndex == index ? 1.2 : 1.0)
-                                        
+                ScrollView {
+                    VStack(spacing: 16) {
+                        ForEach(0..<OptionButtonConstants.buttons.count / 2, id: \.self) { rowIndex in
+                            HStack(spacing: 16) {
+                                ForEach(0..<2, id: \.self) { columnIndex in
+                                    let index = rowIndex * 2 + columnIndex
+                                    if index < OptionButtonConstants.buttons.count {
+                                        let button = OptionButtonConstants.buttons[index]
+                                        Button(action: {
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                                toggleSelection(index)
+                                            }
+                                        }) {
+                                            ZStack(alignment: .bottomTrailing) {
+                                                VStack(alignment: .leading) {
+                                                    Text(button.label)
+                                                        .font(.sora(.headline))
+                                                        .foregroundColor(.black)
+                                                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                                        .padding()
+                                                    Spacer(minLength: 20)
+                                                    HStack {
+                                                        Spacer()
+                                                        Image("Preferences/Illustrations/\(button.illustration)")
+                                                            .resizable()
+                                                            .scaledToFit()
+                                                            .aspectRatio(contentMode: .fit)
+                                                            .frame(width: geometry.size.width / 4, height: geometry.size.width / 4)
+                                                            .scaleEffect(selectedButtonIndex == index ? 1.2 : 1.0)
+                                                    }
+                                                }
+                                                .frame(maxWidth: geometry.size.width / 2 - 16, minHeight: geometry.size.height * 0.15, alignment: .topLeading)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(selectedButtonIndex == index ? button.pressableColor : button.backgroundColor)
+                                                )
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .stroke(selectedButtonIndex == index ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtonIndex == index ? 1.2 : 1)
+                                                )
+                                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                            }
+                                        }
+                                        .buttonStyle(PressableButtonStyle(
+                                            backgroundColor: button.backgroundColor,
+                                            pressedColor: button.pressableColor,
+                                            isSelected: selectedButtonIndex == index
+                                        ))
                                     }
                                 }
-                                .frame(maxWidth: .infinity, minHeight: geometry.size.height * 0.15, alignment: .topLeading)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(selectedButtonIndex == index ? button.pressableColor : button.backgroundColor)
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(selectedButtonIndex == index ? Color.black : Color.gray.opacity(0.2), lineWidth: selectedButtonIndex == index ? 1.2 : 1)
-                                )
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                         }
-                        .buttonStyle(PressableButtonStyle(
-                            backgroundColor: button.backgroundColor,
-                            pressedColor: button.pressableColor,
-                            isSelected: selectedButtonIndex == index
-                        ))
-                        .sensoryFeedback(.selection, trigger: selectedButtonIndex == index)
                     }
                 }
                 
@@ -107,12 +114,6 @@ struct OptionsView: View {
         }
     }
     
-    
-    private func adaptiveGridColumns(for width: CGFloat) -> [GridItem] {
-        let itemWidth: CGFloat = 150
-        let numColumns = max(Int(width / itemWidth), 2)
-        return Array(repeating: GridItem(.flexible(), spacing: 16), count: numColumns)
-    }
     
     private func toggleSelection(_ index: Int) {
         DispatchQueue.main.async {
