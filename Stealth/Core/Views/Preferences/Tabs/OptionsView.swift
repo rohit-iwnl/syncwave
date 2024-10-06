@@ -56,6 +56,7 @@ struct OptionsView: View {
                                         Button(action: {
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                                                 toggleSelection(index)
+                                                providehapticFeedback()
                                             }
                                         }) {
                                             ZStack(alignment: .bottomTrailing) {
@@ -76,7 +77,14 @@ struct OptionsView: View {
                                                             .scaleEffect(selectedButtonIndex == index ? 1.2 : 1.0)
                                                     }
                                                 }
-                                                .frame(maxWidth: geometry.size.width / 2 - 16, minHeight: geometry.size.height * 0.15, alignment: .topLeading)
+                                                .frame(
+                                                    maxWidth: max(geometry.size.width / 2 - 16, 0), // Ensure width is not negative
+                                                    minHeight: max(geometry.size.height * 0.15, 0), // Ensure height is not negative
+                                                    alignment: .topLeading
+                                                )
+                                                
+
+
                                                 .background(
                                                     RoundedRectangle(cornerRadius: 12)
                                                         .fill(selectedButtonIndex == index ? button.pressableColor : button.backgroundColor)
@@ -99,6 +107,9 @@ struct OptionsView: View {
                         }
                     }
                 }
+                .cornerRadius(12)
+                .shadow(color: Color.black.opacity(0.2), radius: 2, x: 0, y: 5)
+                
                 
                 
                 Spacer()
@@ -112,6 +123,11 @@ struct OptionsView: View {
             }
             .padding()
         }
+    }
+    
+    private func providehapticFeedback() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
     }
     
     
