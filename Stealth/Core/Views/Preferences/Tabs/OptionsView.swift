@@ -173,7 +173,7 @@ struct OptionsView: View {
     
     private func performAPICallAndNavigate() {
         isLoading = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.global(qos: .background).async {
             let apiCallSucceeded = true
             self.isLoading = false
             if apiCallSucceeded {
