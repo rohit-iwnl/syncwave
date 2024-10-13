@@ -110,6 +110,7 @@
 		B6D1BBE62C80A26C004F63A5 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D304382C7D2E9B0018C1FF /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B6D3044A2C7D38F00018C1FF /* Config */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B67568B12C82D61200E0BF1F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Config; sourceTree = "<group>"; };
+		B6E3FA462CBC880800615B45 /* Text */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Text; sourceTree = "<group>"; };
 		B6EFFDA62C8A8042004005C0 /* ToastMessage */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ToastMessage; sourceTree = "<group>"; };
 		B6EFFDA92C8A82C9004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B6EFFDAA2C8A82D7004005C0 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
@@ -231,6 +232,7 @@
 		B6D543CA2C7BFA1B00C9D14C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B6E3FA462CBC880800615B45 /* Text */,
 				B66D5A652C8E4612008C9592 /* CustomFonts */,
 				B6EFFDAD2C8A852C004005C0 /* Auth */,
 				B67568AE2C82CF0F00E0BF1F /* Keyboard */,
@@ -402,6 +404,7 @@
 				B6D1BBE62C80A26C004F63A5 /* Components */,
 				B6D304382C7D2E9B0018C1FF /* Components */,
 				B6D3044A2C7D38F00018C1FF /* Config */,
+				B6E3FA462CBC880800615B45 /* Text */,
 				B6EFFDA62C8A8042004005C0 /* ToastMessage */,
 				B6EFFDA92C8A82C9004005C0 /* Auth */,
 				B6EFFDAA2C8A82D7004005C0 /* Preferences */,
