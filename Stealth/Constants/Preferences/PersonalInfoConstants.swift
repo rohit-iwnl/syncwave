@@ -15,7 +15,7 @@ struct DropDownModel {
 
 struct PersonalInfoConstants {
     static let residentialStatusCountry = DropDownModel(
-        title: "Residential Status",
+        title: "Residential Info",
         placeholder: "Select country",
         options: [
             "USA",
@@ -25,7 +25,7 @@ struct PersonalInfoConstants {
     )
     
     static let residentialStatusState = DropDownModel(
-        title: "Residential Status",
+        title: "Residential Info",
         placeholder: "Select state",
         options: [
             "California",
@@ -55,6 +55,7 @@ struct PersonalInfoConstants {
             "He/Him",
             "She/Her",
             "They/Them",
+            "Prefer not to say"
             // Add more pronoun options as needed
         ]
     )
