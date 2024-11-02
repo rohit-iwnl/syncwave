@@ -92,6 +92,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B6001FA32C885745001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B6001FA62C8858EE001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
+		B630BEDE2CD6168100F1E978 /* Location */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Location; sourceTree = "<group>"; };
+		B630BEE12CD6BD6A00F1E978 /* Inputs */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Inputs; sourceTree = "<group>"; };
 		B640DAA22C81941100D76F98 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B65AF4802CD2FC2500A31613 /* Network */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Network; sourceTree = "<group>"; };
 		B66D5A652C8E4612008C9592 /* CustomFonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CustomFonts; sourceTree = "<group>"; };
@@ -202,6 +204,8 @@
 		B6D543C72C7BFA0D00C9D14C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B630BEE12CD6BD6A00F1E978 /* Inputs */,
+				B630BEDE2CD6168100F1E978 /* Location */,
 				B68EDCFA2C9009D3003FDC94 /* Interactions */,
 				B68EDCF72C900739003FDC94 /* Toolbar */,
 				B6EFFDA62C8A8042004005C0 /* ToastMessage */,
@@ -389,6 +393,8 @@
 			fileSystemSynchronizedGroups = (
 				B6001FA32C885745001DC029 /* Preferences */,
 				B6001FA62C8858EE001DC029 /* Preferences */,
+				B630BEDE2CD6168100F1E978 /* Location */,
+				B630BEE12CD6BD6A00F1E978 /* Inputs */,
 				B640DAA22C81941100D76F98 /* Auth */,
 				B65AF4802CD2FC2500A31613 /* Network */,
 				B66D5A652C8E4612008C9592 /* CustomFonts */,
