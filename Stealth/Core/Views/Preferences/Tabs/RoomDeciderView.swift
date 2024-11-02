@@ -131,31 +131,14 @@ struct RoomDeciderView: View {
                     .cornerRadius(12)
                     .shadow(color: Color.black.opacity(0.2), radius: 2, x: 0, y: 5)
                     
-                    Button(action: {
-                        Task {
-                            errorMessage = "Soon to be implemented"
-                            showError = true
-                            
+                    ContinueButton(
+                        isEnabled: isContinueEnabled,
+                        isLoading: isLoading
+                    ) {
+                        Task{
+                            await performAPICallAndNavigate()
                         }
-                    }) {
-                        HStack {
-                            if isLoading {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                            } else {
-                                Text("Continue")
-                                    .font(.sora(.body, weight: .medium))
-                                Image(systemName: "arrow.right")
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(isContinueEnabled ? Color.black : Color.gray)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
                     }
-                    .disabled(!isContinueEnabled || isLoading)
-                    .padding(.horizontal)
                     .padding(.bottom, 20)
                     .alert("Error", isPresented: $showError) {
                         Button("OK", role: .cancel) { }
@@ -185,6 +168,82 @@ struct RoomDeciderView: View {
         }
     }
     
+    private func createPreferencesJSON(supabase_id: String) throws -> Data {
+        let room_preferences = FindRoomPreferences(
+            supabase_id: supabase_id.lowercased(),
+            find_room_preferences: FindRoomPreferences.RoomPreferences(
+                need_room: selectedButton == 0 ? true : false,
+                need_roommate: selectedButton == 1 ? true : false,
+                looking_for_both: selectedButton == 2 ? true : false
+            )
+        )
+        
+        let encode = JSONEncoder()
+        return try encode.encode(room_preferences)
+    }
+
+    private func performAPICallAndNavigate() async {
+        isLoading = true
+        
+        guard let supabaseId = try? await AuthManager.shared.getCurrentSession(),
+              let userId = supabaseId.uid else {
+            print("Error: No user ID found")
+            isLoading = false
+            return
+        }
+        
+        // Convert preferences to JSON
+        let jsonData: Data
+        do {
+            jsonData = try createPreferencesJSON(supabase_id: userId)
+        } catch {
+            await MainActor.run {
+                errorMessage = error.localizedDescription
+                showError = true
+                isLoading = false
+            }
+            return
+        }
+        
+        guard let url = URL(string: "http://159.89.222.41:8000/api/onboarding/set-find-room-preferences") else {
+            print("Invalid URL")
+            isLoading = false
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer Naandhaandaungoppan", forHTTPHeaderField: "Authorization")
+        request.httpBody = jsonData // Direct assignment since jsonData is already encoded
+        
+        do {
+            let (_, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw URLError(.badServerResponse)
+            }
+            
+            guard 200...299 ~= httpResponse.statusCode else {
+                throw URLError(.badServerResponse)
+            }
+            
+            await MainActor.run {
+                isLoading = false
+                showError = true
+                errorMessage = "Preferences saved successfully"
+            }
+            
+        } catch {
+            await MainActor.run {
+                errorMessage = error.localizedDescription
+                showError = true
+                isLoading = false
+            }
+        }
+    }
+
+    
     
     private func handleBackTap() {
         withAnimation(.easeInOut(duration: 0.5)) {
@@ -197,6 +256,18 @@ struct RoomDeciderView: View {
         }
     }
 }
+
+struct FindRoomPreferences: Codable {
+    let supabase_id: String
+    let find_room_preferences: RoomPreferences
+    
+    struct RoomPreferences: Codable {
+        let need_room: Bool?
+        let need_roommate: Bool?
+        let looking_for_both: Bool?
+    }
+}
+
 
 #Preview {
     RoomDeciderView()
