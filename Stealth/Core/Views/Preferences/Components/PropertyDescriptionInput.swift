@@ -95,26 +95,24 @@ struct PropertyDescriptionInput: View {
                     Text("5 personalizations available")
                         .font(.sora(.caption))
                         .foregroundColor(.gray)
-                        .padding(.leading, 8)
+                        
                     Spacer()
                     Text("\(maxCharacters - description.count) Characters left")
                         .font(.sora(.caption))
                         .foregroundColor(.gray)
-                        .padding(8)
+                        
                     
                 }
-                Text("Can't think of writing a beautiful description? Let AI do it.")
-                    .font(.sora(.callout, weight: .regular))
-                    .foregroundColor(.gray)
-                
-                
-                
-                
-                Text("Can't think of writing a beautiful description? Let AI do it.")
-                    .font(.sora(.callout, weight: .regular))
-                    .foregroundColor(.gray)
+                .padding(.horizontal, 4)
+
+                    
+
                 
                 HStack {
+                    Text("Can't think of writing a beautiful description? Let AI do it.")
+                        .font(.sora(.footnote, weight: .regular))
+                        .foregroundColor(.gray)
+                        .padding(.horizontal,4)
                     Spacer()
                     Button(action: {
                         if isEnabled {
