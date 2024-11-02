@@ -5,27 +5,14 @@ import CoreLocation
 struct LeasingView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @State private var selectedHouseOptions: [Int: Bool] = [:]
-    
-    
     @State private var isLoading: Bool = false
-    @Binding var currentPage: Int
-    @Binding var totalPages: Int
-    
-    @State private var minRent : Double = 400
-    @State private var maxRent : Double = 650
-    
-    @State private var rentRange : RentRangeSlider  = RentRangeSlider(min: 400, max: 550)
-    
-    @State private var propertySizeRange : propertySizeSlider = propertySizeSlider(min: 800, max: 1100)
     @State private var selectedBedrooms : Set<String> = []
     @State private var selectedBathrooms : Set<String> = []
     @State private var selectedNumberOfRoommates : Set<String> = []
-    
     @State private var selectedFurnishing : Set<String> = []
-    
     @State private var selectedAmenities : Set<String> = []
+
     
-    @Binding var isShowingHousingPreferences : Bool
     @EnvironmentObject var appUserStateManager: AppUserManger
     
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
@@ -309,56 +296,70 @@ struct LeasingView: View {
         navigationCoordinator.resetToHome()
     }
     
-    func convertToHousingPreferencesJSON(supabase_id : String) -> [String: Any] {
-        // Convert selected house options to property types
-        let propertyTypes: [String] = selectedHouseOptions.compactMap { index, isSelected in
+    private func getPropertyType() -> String {
+        return selectedHouseOptions.compactMap { index, isSelected in
             guard isSelected else { return nil }
             switch index {
-            case 0: return "condo"
-            case 1: return "duplex"
-            case 2: return "apartment"
-            case 3: return "studio"
-            default: return nil
+                case 0: return "condo"
+                case 1: return "duplex"
+                case 2: return "apartment"
+                case 3: return "studio"
+                default: return nil
             }
+        }.first ?? ""
+    }
+
+    private func formatBedrooms() -> [String] {
+        return Array(selectedBedrooms).map {
+            $0.replacingOccurrences(of: "BR", with: "").trimmingCharacters(in: .whitespaces)
         }
-        
-        let bedrooms = Array(selectedBedrooms).map { bedroom -> String in
-            // Remove "BR" and any whitespace, keeping only the number
-            return bedroom.replacingOccurrences(of: "BR", with: "")
-                .replacingOccurrences(of: " ", with: "")
-        }
-        
-        
-        // Create the nested housing preferences object
-        let housingPreferences: [String: Any] = [
-            "property_types": propertyTypes,
-            "rent_range": [
-                "min": Int(rentRange.min),
-                "max": Int(rentRange.max)
-            ],
-            "property_size": [
-                "min": Int(propertySizeRange.min),
-                "max": Int(propertySizeRange.max)
-            ],
-            "bedrooms": bedrooms.map { $0.lowercased() },
+    }
+
+    private func getPropertyDetails() -> [String: Any] {
+        return [
+            "description": propertyDescription,
+            "location": selectedLocation,
+            "monthly_base_rent": monthlyBaseRentAmount,
+            "per_person_rent": perPersonRent,
+            "square_footage": squareFootage,
+            "type": getPropertyType(),
+            "bedrooms": formatBedrooms(),
             "bathrooms": Array(selectedBathrooms).map { $0.lowercased() },
-            "preferred_roommates": Array(selectedNumberOfRoommates).map { $0.lowercased() },
+            "preferred_roommates": Array(selectedNumberOfRoommates),
             "furnishing": Array(selectedFurnishing).map { $0.lowercased() },
             "amenities": Array(selectedAmenities)
         ]
-        
-        //        guard let supabase_id = appUserStateManager.appUser?.uid else {
-        //            return [:]
-        //        }
-        
-        // Create the final JSON structure
-        let json: [String: Any] = [
-            "supabase_id": supabase_id.lowercased(),
-            "housing_preferences": housingPreferences
+    }
+
+    private func getCoordinates() -> [String: Double] {
+        return [
+            "latitude": region.center.latitude,
+            "longitude": region.center.longitude
+        ]
+    }
+
+    private func convertToLeasingJSON() -> String {
+        let preferences: [String: Any] = [
+            "property": getPropertyDetails(),
+            "coordinates": getCoordinates()
         ]
         
-        return json
+        do {
+            let jsonData = try JSONSerialization.data(
+                withJSONObject: preferences,
+                options: [.prettyPrinted]
+            )
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                return jsonString
+            }
+        } catch {
+            print("JSON serialization error: \(error)")
+        }
+        
+        return "{}"
     }
+
+
     
     
     private func handleBackTap() {
@@ -391,13 +392,19 @@ struct LeasingView: View {
     
     
     private func checkIfValidSelection() -> Bool {
-        return selectedHouseOptions.values.contains(true) &&
-        !selectedBedrooms.isEmpty &&
-        !selectedBathrooms.isEmpty &&
-        !selectedNumberOfRoommates.isEmpty &&
-        !selectedFurnishing.isEmpty &&
-        !selectedAmenities.isEmpty
+        // Check all required fields
+        return selectedHouseOptions.values.contains(true) && // Type of unit selected
+               !selectedLocation.isEmpty && // Location is provided
+               monthlyBaseRentAmount > 0 && // Base rent is entered
+               !selectedBedrooms.isEmpty && // Bedrooms selected
+               !selectedBathrooms.isEmpty && // Bathrooms selected
+               !selectedNumberOfRoommates.isEmpty && // Number of roommates selected
+               !selectedFurnishing.isEmpty && // Furnishing option selected
+               !selectedAmenities.isEmpty && // At least one amenity selected
+               !propertyDescription.isEmpty && // Property description provided
+               squareFootage > 0 // Square footage entered
     }
+
     
     
     private func performAPICallAndNavigate() async {
@@ -412,7 +419,7 @@ struct LeasingView: View {
         
         
         // Convert preferences to JSON
-        let jsonBody = convertToHousingPreferencesJSON(supabase_id: userId)
+        let jsonBody = convertToLeasingJSON()
         
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: jsonBody, options: [.prettyPrinted])
@@ -512,7 +519,7 @@ struct LeasingView: View {
 
 
 #Preview {
-    LeasingView(currentPage: .constant(3), totalPages: .constant(3), isShowingHousingPreferences: .constant(true))
+    LeasingView()
         .environmentObject(NavigationCoordinator())
         .environmentObject(AppUserManger())
     
