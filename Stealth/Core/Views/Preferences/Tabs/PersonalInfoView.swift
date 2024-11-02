@@ -181,6 +181,8 @@ struct PersonalInfoView: View {
                 if httpResponse.statusCode == 200 {
                     if (preferencesArray["here_to_explore"] == true) {
                         self.navigationCoordinator.resetToHome()
+                    } else if (preferencesArray["find_roommate"] == true) {
+                        self.navigationCoordinator.path.append(NavigationDestinations.roomdecider)
                     } else {
                         self.navigationCoordinator.path.append(NavigationDestinations.housing)
                     }
