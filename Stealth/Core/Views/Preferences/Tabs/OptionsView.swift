@@ -20,10 +20,6 @@ struct OptionsView: View {
     @State var showErrorAlert = false
     
     
-    private let twoColumnGrid = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
     
     var body: some View {
         GeometryReader { geometry in
