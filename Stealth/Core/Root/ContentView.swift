@@ -81,8 +81,13 @@ struct ContentView: View {
                 case .housing:
                     HousingPreferencesView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, isShowingHousingPreferences: .constant(true))
                         .environmentObject(navigationCoordinator)
-                        .environmentObject(AppUserManger())
+                        .environmentObject(appUserStateManager)
                         .toolbar(.hidden)
+                case .roomdecider:
+                    RoomDeciderView()
+                        .toolbar(.hidden)
+                        .environmentObject(navigationCoordinator)
+                        .environmentObject(appUserStateManager)
                 default:
                     Text("Unknown destination :\(destination)")
                 }
