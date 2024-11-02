@@ -1,8 +1,12 @@
 import SwiftUI
+import MapKit
+import CoreLocation
 
 struct LeasingView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @State private var selectedHouseOptions: [Int: Bool] = [:]
+    
+    
     @State private var isLoading: Bool = false
     @Binding var currentPage: Int
     @Binding var totalPages: Int
@@ -32,6 +36,22 @@ struct LeasingView: View {
     
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var monthlyBaseRentAmount: Int = 0
+    
+    @State private var perPersonRent: Int = 0
+    @State private var squareFootage: Int = 0
+    
+    @State private var showLocationSearch = false
+    @State private var selectedLocation = ""
+
+    
+    @State private var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
+    
+    @State private var propertyDescription: String = ""
+    
     
     
     var body: some View {
@@ -47,16 +67,22 @@ struct LeasingView: View {
                             
                             VStack(alignment: .leading, spacing: 20) {
                                 VStack(alignment: .leading, spacing: 3) {
-                                    Text("Share what you're looking for in a property?")
+                                    Text("Got a space? Spill the tea and let’s lease/ sublease it!")
                                         .font(.sora(.largeTitle, weight: .semibold))
                                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                         .lineLimit(3)
-                                    Text("Type of Property you're looking for? (Select all that apply)")
+                                    Text("Share the deets about your property! What makes it special?")
                                         .font(.sora(.callout, weight: .regular))
                                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                         .lineLimit(2)
                                         .foregroundStyle(.gray)
                                 }
+                                
+                                Text("Type of unit?")
+                                    .font(.sora(.callout, weight: .regular))
+                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                    .lineLimit(2)
+                                    .foregroundStyle(TextColors.primaryBlack.color)
                                 
                                 LazyVGrid(columns: adaptiveGridColumns(for: geometry.size.width), spacing: 16) {
                                     ForEach(HousingViewConstants.houseOptionButtons.indices, id: \.self) { index in
@@ -105,54 +131,77 @@ struct LeasingView: View {
                                     }
                                 }
                                 
-                                VStack(spacing: 5) {
+                                VStack(spacing: 10) {
                                     
-                                    HStack {
-                                        Text("Desired rental range per person")
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        Text("Property Location?")
                                             .font(.sora(.body))
+                                            .padding(.vertical,4)
                                             .lineLimit(1)
                                             .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                        Spacer()
-                                    }
-                                    
-                                    HStack {
-                                        Text("$\(Int(rentRange.min)) - $\(Int(rentRange.max))")
-                                            .font(.sora(.body, weight: .medium))
-                                            .fontDesign(.rounded)
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(2)
                                         
-                                        Spacer()
+                                        Button(action: {
+                                            showLocationSearch = true
+                                        }) {
+                                            HStack {
+                                                Text(selectedLocation.isEmpty ? "Click to add location" : selectedLocation)
+                                                    .font(.sora(.body))
+                                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                                    .foregroundColor(selectedLocation.isEmpty ? .gray : .black)
+                                                Spacer()
+                                                Image(systemName: "magnifyingglass")
+                                                    .foregroundColor(TextColors.primaryBlack.color)
+                                            }
+                                            .padding()
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .stroke(Color.gray.opacity(0.3))
+                                            )
+                                        }
+                                        if !selectedLocation.isEmpty {
+                                            Map(initialPosition: .region(region)) {
+                                                Annotation("Selected Location", coordinate: region.center) {
+                                                    Image(systemName: "mappin.circle.fill")
+                                                        .foregroundStyle(.red)
+                                                        .font(.title)
+                                                }
+                                            }
+                                            .mapStyle(.standard(elevation: .realistic))
+                                            .frame(height: 200)
+                                            .cornerRadius(12)
+                                            .padding(.vertical)
+                                        }
+                                    }
+                                    
+                                    LabeledInputButton(label: "Monthly base rent of unit?", placeholder: "Enter your base rent", value: $monthlyBaseRentAmount, keyboardType: .numberPad, leftSideText: "$")
+                                        .onChange(of: monthlyBaseRentAmount) { _ in
+                                            updatePerPersonRent()
+                                        }
+                                    
+                                    VStack(spacing : 5){
+                                        HStack {
+                                            Text("Preferred number of people per unit")
+                                                .font(.sora(.body))
+                                                .lineLimit(1)
+                                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                            
+                                            Spacer()
+                                        }
+                                        CustomSingleSelector(selectedOptions: $selectedNumberOfRoommates, options: LeasingOptions.roommateOptions, isScrollable: true, lineLimit: 1)
+                                            .padding(.vertical)
+                                            .onChange(of: selectedNumberOfRoommates) { _ in
+                                                updatePerPersonRent()
+                                            }
                                     }
                                     
                                     
-                                    CustomSlider(defaultMinValue: $rentRange.min, defaultMaxValue: $rentRange.max, minValue: 200, maxValue: 4000, steps: 50)
+                                    LabeledInputButton(label: "Monthly rent per person?", placeholder: "Enter the estimated amount", value: $perPersonRent, keyboardType: .numberPad, leftSideText: "$")
+                                    
+                                    LabeledInputButton(label: "Size of your unit?", placeholder: "Enter the sqaure footage", value: $squareFootage, keyboardType: .numberPad, leftSideText: "sqft")
+                                    
+                                    
+                                    
                                 }
-                                
-                                VStack(spacing: 5){
-                                    
-                                    HStack{
-                                        Text("Property size")
-                                            .font(.sora(.body))
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                        Spacer()
-                                    }
-                                    
-                                    HStack{
-                                        Text("\(Int(propertySizeRange.min)) Sqft - \(Int(propertySizeRange.max)) Sqft")
-                                            .font(.sora(.body, weight: .medium))
-                                            .fontDesign(.rounded)
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                        Spacer()
-                                    }
-                                    
-                                    CustomSlider(defaultMinValue: $propertySizeRange.min, defaultMaxValue: $propertySizeRange.max, minValue: 500, maxValue: 3000, steps: 50)
-                                    
-                                }
-                                
-                                
                                 VStack(spacing : 5){
                                     HStack {
                                         Text("Bedrooms")
@@ -162,7 +211,7 @@ struct LeasingView: View {
                                         
                                         Spacer()
                                     }
-                                    CustomSelector(selectedOptions: $selectedBedrooms, options: BedroomsOptions.options, isScrollable: true, lineLimit: 1)
+                                    CustomSingleSelector(selectedOptions: $selectedBedrooms, options: LeasingOptions.bedroomOptions, isScrollable: true, lineLimit: 1)
                                         .padding(.vertical)
                                 }
                                 
@@ -175,22 +224,11 @@ struct LeasingView: View {
                                         
                                         Spacer()
                                     }
-                                    CustomSelector(selectedOptions: $selectedBathrooms, options: BathroomOptions.options, isScrollable: true, lineLimit: 1)
+                                    CustomSelector(selectedOptions: $selectedBathrooms, options: LeasingOptions.bathroomOptions, isScrollable: true, lineLimit: 1)
                                         .padding(.vertical)
                                 }
                                 
-                                VStack(spacing : 5){
-                                    HStack {
-                                        Text("Preferred number of people per unit")
-                                            .font(.sora(.body))
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                        
-                                        Spacer()
-                                    }
-                                    CustomSelector(selectedOptions: $selectedNumberOfRoommates, options: RoomateOptions.options, isScrollable: true, lineLimit: 1)
-                                        .padding(.vertical)
-                                }
+                                
                                 
                                 VStack(spacing : 5){
                                     HStack {
@@ -201,7 +239,7 @@ struct LeasingView: View {
                                         
                                         Spacer()
                                     }
-                                    CustomSelector(selectedOptions: $selectedFurnishing, options: FurnishingOptions.options, isScrollable: true, lineLimit: 1)
+                                    CustomSelector(selectedOptions: $selectedFurnishing, options: LeasingOptions.furnishingOptions, isScrollable: true, lineLimit: 1)
                                         .padding(.vertical)
                                 }
                                 
@@ -218,6 +256,8 @@ struct LeasingView: View {
                                 
                                 
                                 CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
+                                
+                                PropertyDescriptionInput(description: $propertyDescription)
                                 
                                 ContinueButton(
                                     isEnabled: checkIfValidSelection(),
@@ -237,6 +277,10 @@ struct LeasingView: View {
             
             // Render RentRangePickerView when presented
         }
+        .sheet(isPresented: $showLocationSearch) {
+            LocationSearchView(selectedLocation: $selectedLocation, region: $region)
+        }
+        
         .alert(isPresented: $showSkipAlert) {
             Alert(
                 title: Text("Skip Property preferences?"),
@@ -335,8 +379,16 @@ struct LeasingView: View {
     }
     
     private func toggleSelection(_ buttonIndex: Int) {
-        selectedHouseOptions[buttonIndex, default: false].toggle()
+        // Clear all selections first
+        selectedHouseOptions.removeAll()
+        // Set only the selected button to true
+        selectedHouseOptions[buttonIndex] = true
     }
+    
+    private func isSmartWriteEnabled() -> Bool {
+        return selectedHouseOptions.values.contains(true)
+    }
+    
     
     private func checkIfValidSelection() -> Bool {
         return selectedHouseOptions.values.contains(true) &&
@@ -428,13 +480,39 @@ struct LeasingView: View {
     }
     
     
+    private func updatePerPersonRent() {
+        guard let selectedOption = selectedNumberOfRoommates.first else {
+            perPersonRent = 0
+            return
+        }
+        
+        let numberOfPeople: Int
+        if selectedOption == "6+" {
+            numberOfPeople = 6
+        } else if selectedOption == "Custom" {
+            numberOfPeople = 0
+        }
+        else if let number = Int(selectedOption) {
+            numberOfPeople = number
+        } else {
+            numberOfPeople = 0
+        }
+        
+        if numberOfPeople > 0 {
+            perPersonRent = monthlyBaseRentAmount / numberOfPeople
+        } else {
+            perPersonRent = 0
+        }
+    }
+    
+    
 }
 
 
 
 
 #Preview {
-    HousingPreferencesView(currentPage: .constant(3), totalPages: .constant(3), isShowingHousingPreferences: .constant(true))
+    LeasingView(currentPage: .constant(3), totalPages: .constant(3), isShowingHousingPreferences: .constant(true))
         .environmentObject(NavigationCoordinator())
         .environmentObject(AppUserManger())
     
