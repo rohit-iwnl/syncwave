@@ -244,7 +244,7 @@ struct LeasingView: View {
                                 
                                 CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
                                 
-                                PropertyDescriptionInput(description: $propertyDescription)
+                                PropertyDescriptionInput(description: $propertyDescription, isEnabled: isSmartWriteEnabled())
                                 
                                 ContinueButton(
                                     isEnabled: checkIfValidSelection(),
@@ -387,7 +387,15 @@ struct LeasingView: View {
     }
     
     private func isSmartWriteEnabled() -> Bool {
-        return selectedHouseOptions.values.contains(true)
+        return selectedHouseOptions.values.contains(true) && // Type of unit selected
+               !selectedLocation.isEmpty && // Location is provided
+               monthlyBaseRentAmount > 0 && // Base rent is entered
+               !selectedBedrooms.isEmpty && // Bedrooms selected
+               !selectedBathrooms.isEmpty && // Bathrooms selected
+               !selectedNumberOfRoommates.isEmpty && // Number of roommates selected
+               !selectedFurnishing.isEmpty && // Furnishing option selected
+               !selectedAmenities.isEmpty && // At least one amenity selected
+               squareFootage > 0 // Square footage entered
     }
     
     
