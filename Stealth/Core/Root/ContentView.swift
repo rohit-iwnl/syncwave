@@ -89,7 +89,7 @@ struct ContentView: View {
                         .environmentObject(navigationCoordinator)
                         .environmentObject(appUserStateManager)
                 case .sellingProperty:
-                    LeasingView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, isShowingHousingPreferences: .constant(true))
+                    LeasingView()
                         .environmentObject(navigationCoordinator)
                         .environmentObject(appUserStateManager)
                         .toolbar(.hidden)
