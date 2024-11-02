@@ -29,6 +29,13 @@ struct RoomateOptions {
     static let options : [String] = ["1", "2", "3", "4+", "Any"]
 }
 
+struct LeasingOptions {
+    static let roommateOptions : [String] = ["1", "2", "3", "4", "5", "Custom"]
+    static let bedroomOptions : [String] = ["1", "2", "3", "4+"]
+    static let bathroomOptions : [String] = ["1", "2", "3", "4+"]
+    static let furnishingOptions : [String] = ["Fully Furnished", "Semi Furnished"]
+}
+
 struct FurnishingOptions {
     static let options : [String] = ["Fully Furnished", "Semi Furnished", "Any"]
 }
