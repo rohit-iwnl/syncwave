@@ -46,4 +46,22 @@ struct OptionButtonConstants {
             jsonKey: JsonKey.here_to_explore
         )
     ]
+    
+    static let roomDecidingButtons: [OptionButton] = [
+        OptionButton(
+            label: "Got a Roomie,\nNeed a Room?",
+            backgroundColor: .white,
+            pressableColor: Color(hex: "#CFDFFF"),
+            illustration: "sparkles",  // Name for the sparkles SVG illustration
+            jsonKey: "need_room"
+        ),
+        OptionButton(
+            label: "Got a Room,\nNeed a Roomie?",
+            backgroundColor: .white,
+            pressableColor: Color(hex: "#FEDDDE"),
+            illustration: "roomie",   // Name for the circular pattern SVG illustration
+            jsonKey: "need_roomie"
+        )
+    ]
+    
 }
