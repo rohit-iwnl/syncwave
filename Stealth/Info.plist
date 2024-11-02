@@ -18,6 +18,11 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+<string>We need your location to show nearby properties</string>
+<key>NSLocationUsageDescription</key>
+<string>We need your location to show nearby properties</string>
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>Sora.ttf</string>
