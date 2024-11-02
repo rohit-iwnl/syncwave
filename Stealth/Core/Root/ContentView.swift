@@ -69,6 +69,7 @@ struct ContentView: View {
                     
                 case .home:
                     HomeView()
+                        .toolbar(.hidden)
                         .environmentObject(appUserStateManager)
                         .environmentObject(navigationCoordinator)
                 case .signIn:
@@ -80,6 +81,7 @@ struct ContentView: View {
                 case .housing:
                     HousingPreferencesView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages, isShowingHousingPreferences: .constant(true))
                         .environmentObject(navigationCoordinator)
+                        .environmentObject(AppUserManger())
                         .toolbar(.hidden)
                 default:
                     Text("Unknown destination :\(destination)")
