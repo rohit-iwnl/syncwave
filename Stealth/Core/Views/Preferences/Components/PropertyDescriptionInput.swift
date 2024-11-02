@@ -15,11 +15,12 @@ struct PropertyDescriptionInput: View {
     @State private var isGlowing = false
     @State private var colorIndex = 0
     @State private var hapticCount = 0
+    let isEnabled: Bool // Add this property
     
     private let glowColors: [Color] = [.red, .green, .blue, .purple, .orange]
     @State private var angle: Double = 0
     @State private var glowOpacity: Double = 0
-        
+    
     private let gradientColors: [Color] = [.white, .pink, .purple, .blue, .teal, .red, .orange, .yellow, .green]
     var currentGlowColor: Color {
         glowColors[colorIndex % glowColors.count]
@@ -59,6 +60,7 @@ struct PropertyDescriptionInput: View {
                         }
                             .opacity(glowOpacity) // Use glowOpacity instead of isGlowing
                     )
+                    .disabled(!isEnabled) // Disable text editor based on isEnabled
                     .onChange(of: isGlowing) { newValue in
                         withAnimation(.easeInOut(duration: 1.0)) { // Smooth fade transition
                             glowOpacity = newValue ? 0.8 : 0
@@ -99,7 +101,7 @@ struct PropertyDescriptionInput: View {
                         .font(.sora(.caption))
                         .foregroundColor(.gray)
                         .padding(8)
-                        
+                    
                 }
                 Text("Can't think of writing a beautiful description? Let AI do it.")
                     .font(.sora(.callout, weight: .regular))
@@ -107,11 +109,17 @@ struct PropertyDescriptionInput: View {
                 
                 
                 
+                
+                Text("Can't think of writing a beautiful description? Let AI do it.")
+                    .font(.sora(.callout, weight: .regular))
+                    .foregroundColor(.gray)
+                
                 HStack {
                     Spacer()
-                    
                     Button(action: {
-                        startSmartWrite()
+                        if isEnabled {
+                            startSmartWrite()
+                        }
                     }) {
                         HStack(spacing: 8) {
                             Text("Smart write")
@@ -122,13 +130,13 @@ struct PropertyDescriptionInput: View {
                         .padding(.vertical, 12)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(TextColors.primaryBlack.color)
+                                .fill(isEnabled ? TextColors.primaryBlack.color : Color.gray.opacity(0.3))
                         )
-                        .foregroundColor(.white)
+                        .foregroundColor(isEnabled ? .white : .gray)
                     }
-                    
-                    
+                    .disabled(!isEnabled)
                 }
+                
             }
         }
         .onDisappear {
@@ -168,7 +176,7 @@ struct PropertyDescriptionInput: View {
             stopEffects()
         }
     }
-
+    
     
     private func stopEffects() {
         withAnimation(.easeOut(duration: 1.0)) {
@@ -186,6 +194,6 @@ struct PropertyDescriptionInput: View {
 
 
 #Preview {
-    PropertyDescriptionInput(description: .constant(""))
+    PropertyDescriptionInput(description: .constant(""), isEnabled: true)
         .padding()
 }
