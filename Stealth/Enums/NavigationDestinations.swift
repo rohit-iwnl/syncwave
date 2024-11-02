@@ -18,4 +18,6 @@ enum NavigationDestinations : String, Hashable {
     case onboarding = "onboarding"
     case housing = "housing"
     case roomdecider = "roomdecider"
+    case sellingProperty = "sellingProperty"
+    
 }
