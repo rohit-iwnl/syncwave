@@ -11,6 +11,19 @@ struct PropertyDescriptionInput: View {
     @Binding var description: String
     let maxCharacters: Int = 350
     @State private var showSmartWrite: Bool = false
+    @State private var hapticTimer: Timer?
+    @State private var isGlowing = false
+    @State private var colorIndex = 0
+    @State private var hapticCount = 0
+    
+    private let glowColors: [Color] = [.red, .green, .blue, .purple, .orange]
+    @State private var angle: Double = 0
+    @State private var glowOpacity: Double = 0
+        
+    private let gradientColors: [Color] = [.blue, .purple, .red, .orange, .yellow, .green]
+    var currentGlowColor: Color {
+        glowColors[colorIndex % glowColors.count]
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -26,6 +39,43 @@ struct PropertyDescriptionInput: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.gray.opacity(0.3))
                     )
+                    .overlay(
+                        ZStack {
+                            ForEach(0..<2) { index in
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(
+                                        AngularGradient(
+                                            colors: gradientColors,
+                                            center: .center,
+                                            angle: .degrees(angle + Double(index * 120))
+                                        ),
+                                        lineWidth: 2
+                                    )
+                                    .shadow(color: Color.blue.opacity(0.5), radius: 50)
+                                    .shadow(color: Color.purple.opacity(0.5), radius: 60)
+                                    .shadow(color: Color.red.opacity(0.5), radius: 80)
+                                    .blur(radius: 3)
+                            }
+                        }
+                            .opacity(glowOpacity) // Use glowOpacity instead of isGlowing
+                    )
+                    .onChange(of: isGlowing) { newValue in
+                        withAnimation(.easeInOut(duration: 1.0)) { // Smooth fade transition
+                            glowOpacity = newValue ? 0.8 : 0
+                        }
+                        
+                        if newValue {
+                            withAnimation(.linear(duration: 2.5).repeatForever(autoreverses: false)) {
+                                angle = 360
+                            }
+                        } else {
+                            // Smoothly reset angle when stopping
+                            withAnimation(.easeOut(duration: 1.0)) {
+                                angle = 0
+                            }
+                        }
+                    }
+                
                 
                 if description.isEmpty {
                     Text("Describe briefly about your property.")
@@ -35,7 +85,7 @@ struct PropertyDescriptionInput: View {
                         .padding(.vertical, 18)
                 }
                 
-
+                
             }
             
             VStack(alignment: .leading, spacing: 8) {
@@ -49,10 +99,10 @@ struct PropertyDescriptionInput: View {
                         .font(.sora(.caption))
                         .foregroundColor(.gray)
                         .padding(8)
-                        .background(Color.white)
+                        
                 }
-                Text("Can't think of writing a beautiful description? Our Smart Write feature will construct beautiful description based on the preferences you give.")
-                    .font(.sora(.callout))
+                Text("Can't think of writing a beautiful description? Let AI do it.")
+                    .font(.sora(.callout, weight: .regular))
                     .foregroundColor(.gray)
                 
                 
@@ -61,7 +111,7 @@ struct PropertyDescriptionInput: View {
                     Spacer()
                     
                     Button(action: {
-                        // Your smart write action here
+                        startSmartWrite()
                     }) {
                         HStack(spacing: 8) {
                             Text("Smart write")
@@ -77,10 +127,56 @@ struct PropertyDescriptionInput: View {
                         .foregroundColor(.white)
                     }
                     
-
+                    
                 }
             }
         }
+        .onDisappear {
+            stopHaptics()
+        }
+    }
+    
+    
+    private func startSmartWrite() {
+        showSmartWrite.toggle()
+        withAnimation(.easeIn(duration: 1.0)) { // Smooth start
+            isGlowing = true
+        }
+        hapticCount = 0
+        angle = 0
+        
+        // iMessage style haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        
+        // Create typing effect with haptics
+        hapticTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            generator.notificationOccurred(.success)
+            hapticCount += 1
+            
+            if hapticCount >= 15 {
+                hapticTimer?.invalidate()
+                hapticTimer = nil
+            }
+        }
+        
+        // Stop effects after AI completion
+        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+            stopEffects()
+        }
+    }
+    
+    private func stopEffects() {
+        withAnimation(.easeOut(duration: 1.0)) {
+            isGlowing = false
+        }
+        hapticTimer?.invalidate()
+        hapticTimer = nil
+    }
+    
+    private func stopHaptics() {
+        hapticTimer?.invalidate()
+        hapticTimer = nil
     }
 }
 
