@@ -22,12 +22,16 @@ struct HousingPreferencesView: View {
     @State private var selectedAmenities : Set<String> = []
     
     @Binding var isShowingHousingPreferences : Bool
+    @EnvironmentObject var appUserStateManager: AppUserManger
     
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
     
     @Environment(\.dismiss) private var dismiss
     
     @State private var showSkipAlert = false
+    
+    @State private var showError = false
+    @State private var errorMessage = ""
     
     
     var body: some View {
@@ -219,7 +223,9 @@ struct HousingPreferencesView: View {
                                     isEnabled: checkIfValidSelection(),
                                     isLoading: isLoading
                                 ) {
-                                    performAPICallAndNavigate()
+                                    Task{
+                                        await performAPICallAndNavigate()
+                                    }
                                 }
                                 .padding(.bottom, 20)
                             }
@@ -241,18 +247,75 @@ struct HousingPreferencesView: View {
                 secondaryButton: .cancel()
             )
         }
+        .alert("Error", isPresented: $showError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(errorMessage)
+        }
         
     }
     
     private func handleSkip() {
-//        if navigationCoordinator.preferencesArray[JsonKey.find_roomate] == true {
-//            // Do something here
-//        } else {
-//            // Push home
-//        }
+        //        if navigationCoordinator.preferencesArray[JsonKey.find_roomate] == true {
+        //            // Do something here
+        //        } else {
+        //            // Push home
+        //        }
         
         navigationCoordinator.resetToHome()
     }
+    
+    func convertToHousingPreferencesJSON(supabase_id : String) -> [String: Any] {
+        // Convert selected house options to property types
+        let propertyTypes: [String] = selectedHouseOptions.compactMap { index, isSelected in
+            guard isSelected else { return nil }
+            switch index {
+            case 0: return "condo"
+            case 1: return "duplex"
+            case 2: return "apartment"
+            case 3: return "studio"
+            default: return nil
+            }
+        }
+        
+        let bedrooms = Array(selectedBedrooms).map { bedroom -> String in
+            // Remove "BR" and any whitespace, keeping only the number
+            return bedroom.replacingOccurrences(of: "BR", with: "")
+                .replacingOccurrences(of: " ", with: "")
+        }
+        
+        
+        // Create the nested housing preferences object
+        let housingPreferences: [String: Any] = [
+            "property_types": propertyTypes,
+            "rent_range": [
+                "min": Int(rentRange.min),
+                "max": Int(rentRange.max)
+            ],
+            "property_size": [
+                "min": Int(propertySizeRange.min),
+                "max": Int(propertySizeRange.max)
+            ],
+            "bedrooms": bedrooms.map { $0.lowercased() },
+            "bathrooms": Array(selectedBathrooms).map { $0.lowercased() },
+            "preferred_roommates": Array(selectedNumberOfRoommates).map { $0.lowercased() },
+            "furnishing": Array(selectedFurnishing).map { $0.lowercased() },
+            "amenities": Array(selectedAmenities)
+        ]
+        
+        //        guard let supabase_id = appUserStateManager.appUser?.uid else {
+        //            return [:]
+        //        }
+        
+        // Create the final JSON structure
+        let json: [String: Any] = [
+            "supabase_id": supabase_id.lowercased(),
+            "housing_preferences": housingPreferences
+        ]
+        
+        return json
+    }
+    
     
     private func handleBackTap() {
         withAnimation(.easeInOut(duration : 0.5)){
@@ -276,22 +339,95 @@ struct HousingPreferencesView: View {
     }
     
     private func checkIfValidSelection() -> Bool {
-        return selectedHouseOptions.values.contains(true)
+        return selectedHouseOptions.values.contains(true) &&
+        !selectedBedrooms.isEmpty &&
+        !selectedBathrooms.isEmpty &&
+        !selectedNumberOfRoommates.isEmpty &&
+        !selectedFurnishing.isEmpty &&
+        !selectedAmenities.isEmpty
     }
     
-    private func performAPICallAndNavigate() {
+    
+    private func performAPICallAndNavigate() async {
         isLoading = true
         
-        // Simulated API call
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            let apiCallSucceeded = true
+        guard let supabaseId = try? await AuthManager.shared.getCurrentSession(),
+              let userId = supabaseId.uid else {
+            print("Error: No user ID found")
             isLoading = false
-            
-            if apiCallSucceeded {
-                self.navigationCoordinator.resetToHome()
+            return
+        }
+        
+        
+        // Convert preferences to JSON
+        let jsonBody = convertToHousingPreferencesJSON(supabase_id: userId)
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: jsonBody, options: [.prettyPrinted])
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("Housing Preferences JSON:")
+                print(jsonString)
             }
+        } catch {
+            print("JSON serialization error: \(error)")
+            isLoading = false
+            return
+        }
+        
+        
+        guard let url = URL(string: "http://159.89.222.41:8000/api/onboarding/set-housing-preferences") else {
+            print("Invalid URL")
+            isLoading = false
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer Naandhaandaungoppan", forHTTPHeaderField: "Authorization")
+        
+        // Add try keyword here since JSONSerialization.data can throw
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: jsonBody)
+            
+            // Make API call
+            Task {
+                do {
+                    let (_data, response) = try await URLSession.shared.data(for: request)
+                    
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        throw URLError(.badServerResponse)
+                    }
+                    
+                    // Check status code
+                    guard 200...299 ~= httpResponse.statusCode else {
+                        throw URLError(.badServerResponse)
+                    }
+                    
+                    // Try to decode response if needed
+                    // let decodedResponse = try JSONDecoder().decode(YourResponseType.self, from: data)
+                    
+                    await MainActor.run {
+                        isLoading = false
+                        self.navigationCoordinator.resetToHome()
+                    }
+                    
+                } catch {
+                    await MainActor.run {
+                        errorMessage = error.localizedDescription
+                        showError = true
+                        isLoading = false
+                    }
+                    
+                }
+            }
+        } catch {
+            print("JSON serialization error: \(error)")
+            isLoading = false
         }
     }
+    
+    
 }
 
 
@@ -300,6 +436,7 @@ struct HousingPreferencesView: View {
 #Preview {
     HousingPreferencesView(currentPage: .constant(3), totalPages: .constant(3), isShowingHousingPreferences: .constant(true))
         .environmentObject(NavigationCoordinator())
+        .environmentObject(AppUserManger())
     
     
 }
