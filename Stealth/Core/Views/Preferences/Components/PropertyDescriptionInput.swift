@@ -20,7 +20,7 @@ struct PropertyDescriptionInput: View {
     @State private var angle: Double = 0
     @State private var glowOpacity: Double = 0
         
-    private let gradientColors: [Color] = [.blue, .purple, .red, .orange, .yellow, .green , .teal, .cyan, .mint]
+    private let gradientColors: [Color] = [.white, .pink, .purple, .blue, .teal, .red, .orange, .yellow, .green]
     var currentGlowColor: Color {
         glowColors[colorIndex % glowColors.count]
     }
