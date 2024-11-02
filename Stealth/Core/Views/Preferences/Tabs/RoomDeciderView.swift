@@ -201,6 +201,7 @@ struct RoomDeciderView: View {
                 errorMessage = error.localizedDescription
                 showError = true
                 isLoading = false
+            
             }
             return
         }
@@ -229,9 +230,7 @@ struct RoomDeciderView: View {
             }
             
             await MainActor.run {
-                isLoading = false
-                showError = true
-                errorMessage = "Preferences saved successfully"
+                navigationCoordinator.path.append(NavigationDestinations.sellingProperty)
             }
             
         } catch {
