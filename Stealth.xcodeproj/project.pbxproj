@@ -10,6 +10,7 @@
 		B6052D932C9E5FCA00C87CBF /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = B6052D922C9E5FCA00C87CBF /* NavigationTransitions */; };
 		B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640DAA52C82823D00D76F98 /* OptionsSheet.swift */; };
 		B645E4BC2CA9312A00402047 /* ExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645E4BB2CA9312A00402047 /* ExampleView.swift */; };
+		B65AF47D2CD2FB5A00A31613 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */; };
 		B66047112C80655500C8061F /* SignupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047102C80655500C8061F /* SignupSheet.swift */; };
 		B66D5A642C8E4513008C9592 /* Sora.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B66D5A632C8E4513008C9592 /* Sora.ttf */; };
 		B66D5A6A2C8E5016008C9592 /* SignInSheetWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */; };
@@ -50,6 +51,7 @@
 /* Begin PBXFileReference section */
 		B640DAA52C82823D00D76F98 /* OptionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsSheet.swift; sourceTree = "<group>"; };
 		B645E4BB2CA9312A00402047 /* ExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleView.swift; sourceTree = "<group>"; };
+		B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B66047102C80655500C8061F /* SignupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupSheet.swift; sourceTree = "<group>"; };
 		B66D5A632C8E4513008C9592 /* Sora.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sora.ttf; sourceTree = "<group>"; };
 		B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheetWrapper.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		B6001FA32C885745001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B6001FA62C8858EE001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B640DAA22C81941100D76F98 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
+		B65AF4802CD2FC2500A31613 /* Network */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Network; sourceTree = "<group>"; };
 		B66D5A652C8E4612008C9592 /* CustomFonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CustomFonts; sourceTree = "<group>"; };
 		B675689C2C82984000E0BF1F /* TextInput */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TextInput; sourceTree = "<group>"; };
 		B67568A12C82AED400E0BF1F /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
@@ -211,6 +214,7 @@
 		B6D543C82C7BFA1400C9D14C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B65AF4802CD2FC2500A31613 /* Network */,
 				B699AF882C926F7700269D2A /* Hashing */,
 				B699AF852C926F5600269D2A /* KeyChain */,
 				B699AF802C925CBC00269D2A /* Crypto */,
@@ -332,6 +336,7 @@
 				B6D543E32C7C024000C9D14C /* FrameAlignment.swift */,
 				B6D543E82C7C060C00C9D14C /* TextColors.swift */,
 				B6E61E892CACA08700A46940 /* NavigationDestinations.swift */,
+				B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -385,6 +390,7 @@
 				B6001FA32C885745001DC029 /* Preferences */,
 				B6001FA62C8858EE001DC029 /* Preferences */,
 				B640DAA22C81941100D76F98 /* Auth */,
+				B65AF4802CD2FC2500A31613 /* Network */,
 				B66D5A652C8E4612008C9592 /* CustomFonts */,
 				B675689C2C82984000E0BF1F /* TextInput */,
 				B67568A12C82AED400E0BF1F /* Views */,
@@ -482,6 +488,7 @@
 				B6E61E8A2CACA08700A46940 /* NavigationDestinations.swift in Sources */,
 				B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */,
 				B6D543BC2C7BF96E00C9D14C /* ContentView.swift in Sources */,
+				B65AF47D2CD2FB5A00A31613 /* NetworkError.swift in Sources */,
 				B6D543DA2C7BFE5100C9D14C /* HomeView.swift in Sources */,
 				B6D543D72C7BFD7600C9D14C /* AppStorageConstants.swift in Sources */,
 				B6D543DF2C7BFED200C9D14C /* TopographyPattern.swift in Sources */,

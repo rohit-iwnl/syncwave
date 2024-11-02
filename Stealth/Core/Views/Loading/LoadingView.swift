@@ -26,6 +26,9 @@ struct LoadingView: View {
                 )
             Spacer()
             
+            Text("Loading")
+                .soraStyle()
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(TextColors.primaryBlack.color)

@@ -65,6 +65,7 @@ struct ContentView: View {
                     PersonalInfoView(currentPage: $navigationCoordinator.currentPage, preferencesArray: $navigationCoordinator.preferencesArray)
                         .toolbar(.hidden)
                         .environmentObject(navigationCoordinator)
+                        .environmentObject(appUserStateManager)
                     
                 case .home:
                     HomeView()

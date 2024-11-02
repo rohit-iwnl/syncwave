@@ -14,4 +14,5 @@ struct apiAuthDict{
 
 struct ApiConstants{
     static let apiAuthToken : apiAuthDict = apiAuthDict(value: "15010cc4a33675e26b96a6ebd60d35ee", key: "Auth-Token")
+    
 }

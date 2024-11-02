@@ -38,21 +38,6 @@ class AuthManager {
     static let shared = AuthManager()
     private var client : SupabaseClient?
     
-    
-    //    private init() {
-    //        if let supabaseURL = Bundle.main.object(forInfoDictionaryKey: SupabaseConfig.SUPABASE_URL) as? String {
-    //            if let supabaseAnonKey = Bundle.main.object(forInfoDictionaryKey: SupabaseConfig.SUPABASE_KEY) as? String {
-    //                client = SupabaseClient(supabaseURL: URL(string: supabaseURL)!, supabaseKey: supabaseAnonKey)
-    //            } else {
-    //                print("Error: Supabase API Key is missing from the Info.plist")
-    //                // Handle the missing key case here, e.g., set a default value or alert the user
-    //            }
-    //        } else {
-    //            print("Error: Supabase URL is missing from the Info.plist")
-    //            // Handle the missing URL case here, e.g., set a default value or alert the user
-    //        }
-    //    }
-    
     private init () {
         client = SupabaseClient(
             supabaseURL: URL(string: "https://uvnclhfhccqtipmrvlxb.supabase.co")!,
@@ -84,8 +69,6 @@ class AuthManager {
     }
     
     func getCurrentSession() async throws -> AppUser? {
-        
-        
         guard let session = try await client?.auth.session,
               !session.user.id.uuidString.isEmpty else {
             return nil
@@ -100,8 +83,6 @@ class AuthManager {
             return nil
         }
     }
-    
-    
     
     
     func signInWithApple(idToken : String, nonce : String) async throws -> AppUser {
@@ -166,6 +147,12 @@ class AuthManager {
             throw error
         }
     }
+    
+    
+    
+    
+    
+    
     
     
 }

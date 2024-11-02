@@ -13,6 +13,11 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>904174938696-9hrjkv2djpaj77evpkkl6upp5e0pgdnt.apps.googleusercontent.com</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Sora.ttf</string>
