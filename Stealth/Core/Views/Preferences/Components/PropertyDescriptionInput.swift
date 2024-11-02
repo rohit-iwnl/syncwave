@@ -20,7 +20,7 @@ struct PropertyDescriptionInput: View {
     @State private var angle: Double = 0
     @State private var glowOpacity: Double = 0
         
-    private let gradientColors: [Color] = [.blue, .purple, .red, .orange, .yellow, .green]
+    private let gradientColors: [Color] = [.blue, .purple, .red, .orange, .yellow, .green , .teal, .cyan, .mint]
     var currentGlowColor: Color {
         glowColors[colorIndex % glowColors.count]
     }
@@ -139,22 +139,25 @@ struct PropertyDescriptionInput: View {
     
     private func startSmartWrite() {
         showSmartWrite.toggle()
-        withAnimation(.easeIn(duration: 1.0)) { // Smooth start
+        withAnimation(.easeIn(duration: 1.0)) {
             isGlowing = true
         }
         hapticCount = 0
         angle = 0
         
-        // iMessage style haptic feedback
-        let generator = UINotificationFeedbackGenerator()
+        // Create impact generator for more subtle vibrations
+        let generator = UIImpactFeedbackGenerator(style: .soft)
         generator.prepare()
         
-        // Create typing effect with haptics
+        // Create continuous wave-like haptic feedback
         hapticTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            generator.notificationOccurred(.success)
+            // Calculate varying intensity using sine wave
+            let intensity = 0.5 * (1 + sin(Double(hapticCount) * 0.3))
+            generator.impactOccurred(intensity: intensity)
             hapticCount += 1
             
-            if hapticCount >= 15 {
+            // Run for about 6 seconds (60 pulses)
+            if hapticCount >= 60 {
                 hapticTimer?.invalidate()
                 hapticTimer = nil
             }
@@ -165,6 +168,7 @@ struct PropertyDescriptionInput: View {
             stopEffects()
         }
     }
+
     
     private func stopEffects() {
         withAnimation(.easeOut(duration: 1.0)) {
