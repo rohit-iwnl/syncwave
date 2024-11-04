@@ -89,22 +89,22 @@ struct LocationSearchView: View {
                 }
                 .background(Color.white)
             }
-            Map(position: $cameraPosition) {
-                if let annotation = selectedAnnotation {
-                    Annotation("Selected Location", coordinate: annotation.coordinate) {
-                        Image(systemName: "mappin.circle.fill")
-                            .foregroundStyle(.red)
-                            .font(.title2)
-                            .padding(8)
-                            .background(.white)
-                            .clipShape(Circle())
-                    }
-                }
-            }
-            .mapStyle(.standard(elevation: .realistic))
-            .frame(height: 200)
-            .cornerRadius(12)
-            .padding(.horizontal)
+//            Map(position: $cameraPosition) {
+//                if let annotation = selectedAnnotation {
+//                    Annotation("Selected Location", coordinate: annotation.coordinate) {
+//                        Image(systemName: "mappin.circle.fill")
+//                            .foregroundStyle(.red)
+//                            .font(.title2)
+//                            .padding(8)
+//                            .background(.white)
+//                            .clipShape(Circle())
+//                    }
+//                }
+//            }
+//            .mapStyle(.standard(elevation: .realistic))
+//            .frame(height: 200)
+//            .cornerRadius(12)
+//            .padding(.horizontal)
             
             Spacer()
             
@@ -114,7 +114,7 @@ struct LocationSearchView: View {
         .onAppear {
             locationManager.requestLocationPermission()
         }
-        .presentationDetents([.fraction(0.8)])
+        .presentationDetents([.large])
         .presentationDragIndicator(.visible)
     }
     
