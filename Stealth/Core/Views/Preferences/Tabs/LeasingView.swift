@@ -442,52 +442,52 @@ struct LeasingView: View {
         }
         
         
-        guard let url = URL(string: "http://159.89.222.41:8000/api/onboarding/set-housing-preferences") else {
-            print("Invalid URL")
-            isLoading = false
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer Naandhaandaungoppan", forHTTPHeaderField: "Authorization")
+//        guard let url = URL(string: "http://159.89.222.41:8000/api/onboarding/set-housing-preferences") else {
+//            print("Invalid URL")
+//            isLoading = false
+//            return
+//        }
+//        
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue("Bearer Naandhaandaungoppan", forHTTPHeaderField: "Authorization")
         
         // Add try keyword here since JSONSerialization.data can throw
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: jsonBody)
-            
-            // Make API call
-            Task {
-                do {
-                    let (_data, response) = try await URLSession.shared.data(for: request)
-                    
-                    guard let httpResponse = response as? HTTPURLResponse else {
-                        throw URLError(.badServerResponse)
-                    }
-                    
-                    // Check status code
-                    guard 200...299 ~= httpResponse.statusCode else {
-                        throw URLError(.badServerResponse)
-                    }
-                    
-                    // Try to decode response if needed
-                    // let decodedResponse = try JSONDecoder().decode(YourResponseType.self, from: data)
-                    
-                    await MainActor.run {
-                        isLoading = false
-                        self.navigationCoordinator.resetToHome()
-                    }
-                    
-                } catch {
-                    await MainActor.run {
-                        errorMessage = error.localizedDescription
-                        showError = true
-                        isLoading = false
-                    }
-                    
-                }
-            }
+//            request.httpBody = try JSONSerialization.data(withJSONObject: jsonBody)
+//
+//            // Make API call
+//            Task {
+//                do {
+//                    let (_data, response) = try await URLSession.shared.data(for: request)
+//
+//                    guard let httpResponse = response as? HTTPURLResponse else {
+//                        throw URLError(.badServerResponse)
+//                    }
+//
+//                    // Check status code
+//                    guard 200...299 ~= httpResponse.statusCode else {
+//                        throw URLError(.badServerResponse)
+//                    }
+//
+//                    // Try to decode response if needed
+//                    // let decodedResponse = try JSONDecoder().decode(YourResponseType.self, from: data)
+//
+//                    await MainActor.run {
+//                        isLoading = false
+//                        self.navigationCoordinator.resetToHome()
+//                    }
+//
+//                } catch {
+//                    await MainActor.run {
+//                        errorMessage = error.localizedDescription
+//                        showError = true
+//                        isLoading = false
+//                    }
+//
+//                }
+//            }
         } catch {
             print("JSON serialization error: \(error)")
             isLoading = false
