@@ -2,6 +2,8 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
+
+
 struct LeasingView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @State private var selectedHouseOptions: [Int: Bool] = [:]
@@ -11,7 +13,9 @@ struct LeasingView: View {
     @State private var selectedNumberOfRoommates : Set<String> = []
     @State private var selectedFurnishing : Set<String> = []
     @State private var selectedAmenities : Set<String> = []
-
+    
+    @State private var isSmartWriteLoading: Bool = false
+    
     
     @EnvironmentObject var appUserStateManager: AppUserManger
     
@@ -30,7 +34,9 @@ struct LeasingView: View {
     
     @State private var showLocationSearch = false
     @State private var selectedLocation = ""
-
+    
+    @State private var pendingDescription: String? = nil // Temporarily holds incoming description
+    
     
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194),
@@ -39,6 +45,7 @@ struct LeasingView: View {
     
     @State private var propertyDescription: String = ""
     
+    @FocusState private var focusedField: Field?
     
     
     var body: some View {
@@ -146,49 +153,70 @@ struct LeasingView: View {
                                             )
                                         }
                                         if !selectedLocation.isEmpty {
-                                            Map(initialPosition: .region(region)) {
-                                                Annotation("Selected Location", coordinate: region.center) {
-                                                    Image(systemName: "mappin.circle.fill")
-                                                        .foregroundStyle(.red)
-                                                        .font(.title)
+                                            // Wrap Map in a container with dark mode
+                                            ZStack {
+                                                Map(initialPosition: .camera(MapCamera(
+                                                    centerCoordinate: region.center,
+                                                    distance: 500,
+                                                    heading: 0,
+                                                    pitch: 70
+                                                ))) {
+                                                    Annotation("Selected Location", coordinate: region.center) {
+                                                        Image(systemName: "mappin.circle.fill")
+                                                            .foregroundStyle(.red)
+                                                            .font(.title)
+                                                    }
                                                 }
+                                                .mapStyle(.standard(elevation: .realistic))
                                             }
-                                            .mapStyle(.standard(elevation: .realistic))
+                                            .environment(\.colorScheme, .dark) // Use environment modifier instead of preferredColorScheme
                                             .frame(height: 200)
                                             .cornerRadius(12)
                                             .padding(.vertical)
                                         }
+
+
                                     }
-                                    
-                                    LabeledInputButton(label: "Monthly base rent of unit?", placeholder: "Enter your base rent", value: $monthlyBaseRentAmount, keyboardType: .numberPad, leftSideText: "$")
-                                        .onChange(of: monthlyBaseRentAmount) { _ in
-                                            updatePerPersonRent()
-                                        }
-                                    
-                                    VStack(spacing : 5){
-                                        HStack {
-                                            Text("Preferred number of people per unit")
-                                                .font(.sora(.body))
-                                                .lineLimit(1)
-                                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                                            
-                                            Spacer()
-                                        }
-                                        CustomSingleSelector(selectedOptions: $selectedNumberOfRoommates, options: LeasingOptions.roommateOptions, isScrollable: true, lineLimit: 1)
-                                            .padding(.vertical)
-                                            .onChange(of: selectedNumberOfRoommates) { _ in
+                                    VStack{
+                                        
+                                        LabeledInputButton(label: "Monthly base rent of unit?", placeholder: "Enter your base rent", value: $monthlyBaseRentAmount, keyboardType: .numberPad, leftSideText: "$", focusedField: $focusedField,
+                                                           field: .baseRent)
+                                            .onChange(of: monthlyBaseRentAmount) { _ in
                                                 updatePerPersonRent()
                                             }
+                                        
+                                        VStack(spacing : 5){
+                                            HStack {
+                                                Text("Preferred number of people per unit")
+                                                    .font(.sora(.body))
+                                                    .lineLimit(1)
+                                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                                
+                                                Spacer()
+                                            }
+                                            CustomSingleSelector(selectedOptions: $selectedNumberOfRoommates, options: LeasingOptions.roommateOptions, isScrollable: true, lineLimit: 1)
+                                                .padding(.vertical)
+                                                .onChange(of: selectedNumberOfRoommates) { _ in
+                                                    updatePerPersonRent()
+                                                }
+                                        }
+                                        
+                                        
+                                        LabeledInputButton(label: "Monthly rent per person?", placeholder: "Enter the estimated amount", value: $perPersonRent, keyboardType: .numberPad, leftSideText: "$", focusedField: $focusedField,
+                                                           field: .baseRent)
+                                        
+                                        LabeledInputButton(label: "Size of your unit?", placeholder: "Enter the sqaure footage", value: $squareFootage, keyboardType: .numberPad, leftSideText: "sqft", focusedField: $focusedField,
+                                                           field: .baseRent)
                                     }
-                                    
-                                    
-                                    LabeledInputButton(label: "Monthly rent per person?", placeholder: "Enter the estimated amount", value: $perPersonRent, keyboardType: .numberPad, leftSideText: "$")
-                                    
-                                    LabeledInputButton(label: "Size of your unit?", placeholder: "Enter the sqaure footage", value: $squareFootage, keyboardType: .numberPad, leftSideText: "sqft")
-                                    
-                                    
-                                    
                                 }
+                                .toolbar {
+                                            ToolbarItemGroup(placement: .keyboard) {
+                                                Spacer()
+                                                Button("Done") {
+                                                    focusedField = nil
+                                                }
+                                            }
+                                        }
                                 VStack(spacing : 5){
                                     HStack {
                                         Text("Bedrooms")
@@ -244,7 +272,9 @@ struct LeasingView: View {
                                 
                                 CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
                                 
-                                PropertyDescriptionInput(description: $propertyDescription, isEnabled: isSmartWriteEnabled())
+                                PropertyDescriptionInput(description: $propertyDescription, isEnabled: isSmartWriteEnabled(), isLoading: $isSmartWriteLoading, focusedField: $focusedField, field: .generateDescription) {
+                                    await performAPICallAndNavigate()
+                                }
                                 
                                 ContinueButton(
                                     isEnabled: checkIfValidSelection(),
@@ -300,21 +330,21 @@ struct LeasingView: View {
         return selectedHouseOptions.compactMap { index, isSelected in
             guard isSelected else { return nil }
             switch index {
-                case 0: return "condo"
-                case 1: return "duplex"
-                case 2: return "apartment"
-                case 3: return "studio"
-                default: return nil
+            case 0: return "condo"
+            case 1: return "duplex"
+            case 2: return "apartment"
+            case 3: return "studio"
+            default: return nil
             }
         }.first ?? ""
     }
-
+    
     private func formatBedrooms() -> [String] {
         return Array(selectedBedrooms).map {
             $0.replacingOccurrences(of: "BR", with: "").trimmingCharacters(in: .whitespaces)
         }
     }
-
+    
     private func getPropertyDetails() -> [String: Any] {
         return [
             "description": propertyDescription,
@@ -330,14 +360,68 @@ struct LeasingView: View {
             "amenities": Array(selectedAmenities)
         ]
     }
-
+    
+    // This is to generate the JSON for description smart write
+    private func sendJSONToGenerateDescription() async -> [String: Any] {
+        isSmartWriteLoading = true
+        
+        guard let supabaseId = try? await AuthManager.shared.getCurrentSession(),
+              let userId = supabaseId.uid else {
+            print("Error: No user ID found")
+            isSmartWriteLoading = false
+            return [:]
+        }
+        
+        // Create the property details
+        let propertyDetails: [String: Any] = [
+            "location": selectedLocation,
+            "monthly_base_rent": monthlyBaseRentAmount,
+            "per_person_rent": perPersonRent,
+            "square_footage": squareFootage,
+            "type": getPropertyType(),
+            "bedrooms": selectedBedrooms.first ?? "",
+            "bathrooms": selectedBathrooms.first ?? "",
+            "preferred_roommates": selectedNumberOfRoommates.first ?? "",
+            "furnishing": selectedFurnishing.first ?? "",
+            "amenities": Array(selectedAmenities),
+            "coordinates": getCoordinates()
+        ]
+        
+        // Create the final JSON structure
+        let jsonBody: [String: Any] = [
+            "supabase_id": userId,
+            "property": propertyDetails
+        ]
+        
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            
+            // First, convert dictionary to data
+            let jsonData = try JSONSerialization.data(withJSONObject: jsonBody)
+            
+            // Convert to pretty printed string and print
+            if let prettyPrintedString = String(data: jsonData, encoding: .utf8) {
+                print("Generate Description Request JSON:")
+                print(prettyPrintedString)
+            }
+        } catch {
+            print("JSON pretty print error:", error)
+        }
+        
+        return jsonBody
+    }
+    
+    
+    
+    
     private func getCoordinates() -> [String: Double] {
         return [
             "latitude": region.center.latitude,
             "longitude": region.center.longitude
         ]
     }
-
+    
     private func convertToLeasingJSON() -> String {
         let preferences: [String: Any] = [
             "property": getPropertyDetails(),
@@ -358,8 +442,8 @@ struct LeasingView: View {
         
         return "{}"
     }
-
-
+    
+    
     
     
     private func handleBackTap() {
@@ -388,111 +472,122 @@ struct LeasingView: View {
     
     private func isSmartWriteEnabled() -> Bool {
         return selectedHouseOptions.values.contains(true) && // Type of unit selected
-               !selectedLocation.isEmpty && // Location is provided
-               monthlyBaseRentAmount > 0 && // Base rent is entered
-               !selectedBedrooms.isEmpty && // Bedrooms selected
-               !selectedBathrooms.isEmpty && // Bathrooms selected
-               !selectedNumberOfRoommates.isEmpty && // Number of roommates selected
-               !selectedFurnishing.isEmpty && // Furnishing option selected
-               !selectedAmenities.isEmpty && // At least one amenity selected
-               squareFootage > 0 // Square footage entered
+        !selectedLocation.isEmpty && // Location is provided
+        monthlyBaseRentAmount > 0 && // Base rent is entered
+        !selectedBedrooms.isEmpty && // Bedrooms selected
+        !selectedBathrooms.isEmpty && // Bathrooms selected
+        !selectedNumberOfRoommates.isEmpty && // Number of roommates selected
+        !selectedFurnishing.isEmpty && // Furnishing option selected
+        !selectedAmenities.isEmpty && // At least one amenity selected
+        squareFootage > 0 // Square footage entered
     }
     
     
     private func checkIfValidSelection() -> Bool {
         // Check all required fields
         return selectedHouseOptions.values.contains(true) && // Type of unit selected
-               !selectedLocation.isEmpty && // Location is provided
-               monthlyBaseRentAmount > 0 && // Base rent is entered
-               !selectedBedrooms.isEmpty && // Bedrooms selected
-               !selectedBathrooms.isEmpty && // Bathrooms selected
-               !selectedNumberOfRoommates.isEmpty && // Number of roommates selected
-               !selectedFurnishing.isEmpty && // Furnishing option selected
-               !selectedAmenities.isEmpty && // At least one amenity selected
-               !propertyDescription.isEmpty && // Property description provided
-               squareFootage > 0 // Square footage entered
+        !selectedLocation.isEmpty && // Location is provided
+        monthlyBaseRentAmount > 0 && // Base rent is entered
+        !selectedBedrooms.isEmpty && // Bedrooms selected
+        !selectedBathrooms.isEmpty && // Bathrooms selected
+        !selectedNumberOfRoommates.isEmpty && // Number of roommates selected
+        !selectedFurnishing.isEmpty && // Furnishing option selected
+        !selectedAmenities.isEmpty && // At least one amenity selected
+        !propertyDescription.isEmpty && // Property description provided
+        squareFootage > 0 // Square footage entered
+    }
+    
+    
+    
+    private func performAPICallAndNavigate() async {
+        isSmartWriteLoading = true
+
+        // Get JSON body
+        let jsonBody = await sendJSONToGenerateDescription()
+
+        guard !jsonBody.isEmpty else {
+            isSmartWriteLoading = false
+            return
+        }
+
+        guard let url = URL(string: "http://159.89.222.41:8000/api/property/generate-description") else {
+            print("Invalid URL")
+            isSmartWriteLoading = false
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer Naandhaandaungoppan", forHTTPHeaderField: "Authorization")
+
+        do {
+            // Convert dictionary to Data and pretty print for debugging
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            let jsonData = try JSONSerialization.data(withJSONObject: jsonBody)
+
+            // Pretty print request body
+            if let prettyPrintedString = String(data: jsonData, encoding: .utf8) {
+                print("API Request Body:")
+                print(prettyPrintedString)
+            }
+
+            request.httpBody = jsonData
+
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            // Pretty print response
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("API Response:")
+                print(responseString)
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw URLError(.badServerResponse)
+            }
+
+            guard 200...299 ~= httpResponse.statusCode else {
+                throw URLError(.badServerResponse)
+            }
+
+            // Decode the response
+            struct GenerateDescriptionResponse: Codable {
+                let description: String
+            }
+
+            let decoder = JSONDecoder()
+            let descriptionResponse = try decoder.decode(GenerateDescriptionResponse.self, from: data)
+
+            // Store the fetched description in pendingDescription
+            await MainActor.run {
+                self.pendingDescription = descriptionResponse.description
+            }
+
+        } catch {
+            await MainActor.run {
+                errorMessage = error.localizedDescription
+                showError = true
+                isSmartWriteLoading = false
+            }
+            return
+        }
+
+        // Ensure the loading animation runs for the intended duration before showing the result
+        try? await Task.sleep(nanoseconds: 5 * 1_000_000_000) // 5-second delay for animation
+
+        // Update the final description after loading completes
+        await MainActor.run {
+            if let pending = self.pendingDescription {
+                self.propertyDescription = pending
+            }
+            self.isSmartWriteLoading = false // Stop the animation
+        }
     }
 
     
     
-    private func performAPICallAndNavigate() async {
-        isLoading = true
-        
-        guard let supabaseId = try? await AuthManager.shared.getCurrentSession(),
-              let userId = supabaseId.uid else {
-            print("Error: No user ID found")
-            isLoading = false
-            return
-        }
-        
-        
-        // Convert preferences to JSON
-        let jsonBody = convertToLeasingJSON()
-        
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: jsonBody, options: [.prettyPrinted])
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("Housing Preferences JSON:")
-                print(jsonString)
-            }
-        } catch {
-            print("JSON serialization error: \(error)")
-            isLoading = false
-            return
-        }
-        
-        
-//        guard let url = URL(string: "http://159.89.222.41:8000/api/onboarding/set-housing-preferences") else {
-//            print("Invalid URL")
-//            isLoading = false
-//            return
-//        }
-//        
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.setValue("Bearer Naandhaandaungoppan", forHTTPHeaderField: "Authorization")
-        
-        // Add try keyword here since JSONSerialization.data can throw
-        do {
-//            request.httpBody = try JSONSerialization.data(withJSONObject: jsonBody)
-//
-//            // Make API call
-//            Task {
-//                do {
-//                    let (_data, response) = try await URLSession.shared.data(for: request)
-//
-//                    guard let httpResponse = response as? HTTPURLResponse else {
-//                        throw URLError(.badServerResponse)
-//                    }
-//
-//                    // Check status code
-//                    guard 200...299 ~= httpResponse.statusCode else {
-//                        throw URLError(.badServerResponse)
-//                    }
-//
-//                    // Try to decode response if needed
-//                    // let decodedResponse = try JSONDecoder().decode(YourResponseType.self, from: data)
-//
-//                    await MainActor.run {
-//                        isLoading = false
-//                        self.navigationCoordinator.resetToHome()
-//                    }
-//
-//                } catch {
-//                    await MainActor.run {
-//                        errorMessage = error.localizedDescription
-//                        showError = true
-//                        isLoading = false
-//                    }
-//
-//                }
-//            }
-        } catch {
-            print("JSON serialization error: \(error)")
-            isLoading = false
-        }
-    }
+    
     
     
     private func updatePerPersonRent() {
