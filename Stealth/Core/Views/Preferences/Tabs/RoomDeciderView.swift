@@ -230,6 +230,8 @@ struct RoomDeciderView: View {
             }
             
             await MainActor.run {
+                isLoading = false
+                navigationCoordinator.currentPage += 1
                 navigationCoordinator.path.append(NavigationDestinations.sellingProperty)
             }
             
