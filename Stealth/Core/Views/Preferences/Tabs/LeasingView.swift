@@ -153,14 +153,16 @@ struct LeasingView: View {
                                             )
                                         }
                                         if !selectedLocation.isEmpty {
-                                            // Wrap Map in a container with dark mode
                                             ZStack {
-                                                Map(initialPosition: .camera(MapCamera(
-                                                    centerCoordinate: region.center,
-                                                    distance: 500,
-                                                    heading: 0,
-                                                    pitch: 70
-                                                ))) {
+                                                Map(
+                                                    initialPosition: .camera(MapCamera(
+                                                        centerCoordinate: region.center,
+                                                        distance: 500,
+                                                        heading: 0,
+                                                        pitch: 70
+                                                    )),
+                                                    interactionModes: [.zoom, .rotate, .pitch] // This disables all map interactions
+                                                ) {
                                                     Annotation("Selected Location", coordinate: region.center) {
                                                         Image(systemName: "mappin.circle.fill")
                                                             .foregroundStyle(.red)
@@ -169,11 +171,12 @@ struct LeasingView: View {
                                                 }
                                                 .mapStyle(.standard(elevation: .realistic))
                                             }
-                                            .environment(\.colorScheme, .dark) // Use environment modifier instead of preferredColorScheme
+                                            .environment(\.colorScheme, .dark)
                                             .frame(height: 200)
                                             .cornerRadius(12)
                                             .padding(.vertical)
                                         }
+
 
 
                                     }
