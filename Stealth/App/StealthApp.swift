@@ -12,12 +12,11 @@ import GoogleSignIn
 struct StealthApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationStack{
-                ContentView()
-                    .onOpenURL { url in
-                        GIDSignIn.sharedInstance.handle(url)
-                    }
-            }
+            ContentView()
+                .onOpenURL { url in
+                    GIDSignIn.sharedInstance.handle(url)
+                }
+            
         }
     }
 }
