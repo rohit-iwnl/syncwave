@@ -25,7 +25,7 @@ struct RoomDeciderView: View {
                 PreferencesToolbar(
                     currentPage: $navigationCoordinator.currentPage,
                     totalPages: $navigationCoordinator.totalPages,
-                    showPages: .constant(true),
+                    showPages: .constant(false),
                     onBackTap: handleBackTap
                 )
                 VStack {
