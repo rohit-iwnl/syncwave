@@ -2,7 +2,6 @@ import SwiftUI
 import RoomPlan
 import RealityKit
 import QuickLook
-import ARKit
 
 struct RoomTestView: View {
     @State private var isScanning = false
@@ -163,25 +162,24 @@ struct RoomCaptureViewRepresentable: UIViewRepresentable {
 
 class RoomCaptureUIView: UIView, RoomCaptureSessionDelegate {
     private var roomCaptureView: RoomCaptureView!
-    private var captureSession: RoomCaptureSession?
-    private var roomBuilder = RoomBuilder(options: [.beautifyObjects])
-    var detectedObjects: [CapturedRoom.Object] = []
-    private var capturedRoomData: CapturedRoomData?
-    private var modelProvider: ModelProvider!
-    private var usdzFileURL: URL?
+        private var captureSession: RoomCaptureSession?
+        private var roomBuilder = RoomBuilder(options: [.beautifyObjects])
+        var detectedObjects: [CapturedRoom.Object] = []
+        private var capturedRoomData: CapturedRoomData?
+        
+        // Use ModelCatalog to manage models without ModelProvider protocol
+        private var modelCatalog = ModelCatalog()
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            setupRoomCaptureView()
+        }
 
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupRoomCaptureView()
-        modelProvider = ModelCatalog()
-    }
+        required init?(coder: NSCoder) {
+            super.init(coder: coder)
+            setupRoomCaptureView()
+        }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupRoomCaptureView()
-        modelProvider = ModelCatalog()
-    }
 
     
     
@@ -191,15 +189,12 @@ class RoomCaptureUIView: UIView, RoomCaptureSessionDelegate {
         }
     
     private func setupRoomCaptureView() {
-            // Remove any existing roomCaptureView
             roomCaptureView?.removeFromSuperview()
             
-            // Create and configure roomCaptureView
             roomCaptureView = RoomCaptureView(frame: bounds)
             roomCaptureView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(roomCaptureView)
             
-            // Add constraints
             NSLayoutConstraint.activate([
                 roomCaptureView.topAnchor.constraint(equalTo: topAnchor),
                 roomCaptureView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -207,7 +202,6 @@ class RoomCaptureUIView: UIView, RoomCaptureSessionDelegate {
                 roomCaptureView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
             
-            // Setup capture session
             captureSession = roomCaptureView.captureSession
             captureSession?.delegate = self
             
@@ -306,65 +300,91 @@ class RoomCaptureUIView: UIView, RoomCaptureSessionDelegate {
     }
 }
 
+struct CategoryAttributes: Codable {
+    let folderRelativePath: String
+    let modelFilename: String?
+    let attributes: [String: String]
+    let category: String // This should map to CapturedRoom.Object.Category
+}
 
-
-// Update the ModelProvider implementation
-class ModelCatalog: ModelProvider {
-    private let modelsBundle: Bundle
-    private let supportedCategories: Set<CapturedRoom.Object.Category> = [
-        .storage,
-        .refrigerator,
-        .table,
-        .sofa,
-        .bed,
-        .sink,
-        .bathtub,
-        .television,
-        .chair
-    ]
+class ModelCatalog {
+    private var catalog: [CategoryAttributes]
     
     init() {
+        // Load and parse catalog.plist from models.bundle
         guard let bundlePath = Bundle.main.path(forResource: "Models", ofType: "bundle"),
-              let bundle = Bundle(path: bundlePath) else {
-            fatalError("Could not load Models.bundle")
+              let modelsBundle = Bundle(path: bundlePath),
+              let plistURL = modelsBundle.url(forResource: "catalog", withExtension: "plist"),
+              let data = try? Data(contentsOf: plistURL),
+              let catalog = try? PropertyListDecoder().decode([CategoryAttributes].self, from: data) else {
+            fatalError("Could not load or parse catalog.plist")
         }
-        self.modelsBundle = bundle
+        
+        self.catalog = catalog
     }
     
-    func model(for category: CapturedRoom.Object.Category, dimensions: SIMD3<Float>) async throws -> URL? {
-        guard supportedCategories.contains(category) else {
-            print("Unsupported category: \(category)")
-            return nil
-        }
+    // Function to instantiate a ModelProvider
+    func createModelProvider() -> CapturedRoom.ModelProvider {
+        let modelProvider = CustomModelProvider()
         
-        // Convert category name to lowercase to match folder and file names
-        let categoryName = String(describing: category).lowercased()
-        print("Looking for model in category folder: \(categoryName)")
-        
-        // Use modelsBundle instead of main bundle and correct path
-        guard let modelURL = modelsBundle.url(forResource: categoryName,
-                                            withExtension: "usdc",
-                                            subdirectory: "Resources/\(categoryName)") else {
-            print("No model found for category: \(category) at path: Resources/\(categoryName)/\(categoryName).usdc")
-            
-            // Debug: Print Resources folder contents
-            if let resourcesPath = modelsBundle.path(forResource: "Resources", ofType: nil) {
-                do {
-                    let contents = try FileManager.default.contentsOfDirectory(atPath: resourcesPath)
-                    print("Available categories in Resources folder: \(contents)")
-                } catch {
-                    print("Error listing Resources contents: \(error)")
-                }
+        for categoryAttribute in catalog {
+            guard let modelFilename = categoryAttribute.modelFilename else {
+                continue // Skip if no modelFilename is provided
             }
             
-            return nil
+            let folderRelativePath = categoryAttribute.folderRelativePath
+            guard let bundlePath = Bundle.main.path(forResource: "Models", ofType: "bundle"),
+                  let modelsBundle = Bundle(path: bundlePath),
+                  let modelURL = modelsBundle.url(forResource: modelFilename, withExtension: nil, subdirectory: folderRelativePath) else {
+                print("Could not find model file at path \(folderRelativePath)/\(modelFilename)")
+                continue
+            }
+            
+            if categoryAttribute.attributes.isEmpty {
+                if let capturedCategory = CapturedRoom.Object.Category(rawValue: categoryAttribute.category.lowercased()) {
+                    try? modelProvider.setModelFileURL(modelURL, for: capturedCategory)
+                }
+            } else {
+                try? modelProvider.setModelFileURL(modelURL, for: categoryAttribute.attributes)
+            }
         }
         
-        print("Found model for category \(category) at: \(modelURL)")
-        return modelURL
+        return modelProvider
     }
 }
 
+struct CategoryAttributes: Codable {
+    let folderRelativePath: String
+    let modelFilename: String?
+    let attributes: [String: String] // Assuming attributes are key-value pairs
+    let category: String // This should map to CapturedRoom.Object.Category
+}
+
+class CustomModelProvider: NSObject, CapturedRoom.ModelProvider {
+    
+    private var modelURLsByCategory = [CapturedRoom.Object.Category : URL]()
+    private var modelURLsByAttributes = [[String : String] : URL]()
+    
+    // Set URL by category
+    func setModelFileURL(_ url: URL, for category: CapturedRoom.Object.Category) throws {
+        modelURLsByCategory[category] = url
+    }
+    
+    // Set URL by attributes (key-value pairs)
+    func setModelFileURL(_ url: URL, for attributes: [String : String]) throws {
+        modelURLsByAttributes[attributes] = url
+    }
+    
+    // Provide the correct URL based on the object's category and dimensions
+    func model(for category: CapturedRoom.Object.Category, dimensions: simd_float3) async throws -> URL? {
+        if let url = modelURLsByCategory[category] {
+            return url
+        } else {
+            print("No matching model found for category \(category)")
+            return nil
+        }
+    }
+}
 
 
 
@@ -379,11 +399,4 @@ extension RoomCaptureUIView: QLPreviewControllerDataSource {
         let destinationURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
         return destinationURL as QLPreviewItem
     }
-}
-
-
-protocol ModelProvider {
-    func model(
-        for category: CapturedRoom.Object.Category, dimensions: SIMD3<Float>
-    ) async throws -> URL?
 }
