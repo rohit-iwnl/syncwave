@@ -10,13 +10,28 @@ import SwiftUI
 
 @main
 struct StealthApp: App {
+    @State private var isLaunchViewPresented = true
+
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-//                .onOpenURL { url in
-//                    GIDSignIn.sharedInstance.handle(url)
-//                }
-            RoomTestView()
+            ZStack {
+                if isLaunchViewPresented {
+                    LaunchView()
+                        .onAppear {
+                            // Delay to allow the launch animation to complete
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { // 4.0 seconds for the full animation
+                                withAnimation {
+                                    isLaunchViewPresented = false
+                                }
+                            }
+                        }
+                } else {
+                    ContentView()
+                        .onOpenURL { url in
+                            GIDSignIn.sharedInstance.handle(url)
+                        }
+                }
+            }
         }
     }
 }

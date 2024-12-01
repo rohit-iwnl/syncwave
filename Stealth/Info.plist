@@ -11,24 +11,11 @@
 			</array>
 		</dict>
 	</array>
-	<key>GIDClientID</key>
-	<string>904174938696-9hrjkv2djpaj77evpkkl6upp5e0pgdnt.apps.googleusercontent.com</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to show nearby properties</string>
-	<key>NSLocationUsageDescription</key>
-	<string>We need your location to show nearby properties</string>
-	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to the camera to scan rooms and generate 3D models.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This app requires access to the microphone for audio input during room scanning.</string>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>This app needs photo library access to save scanned room models</string>
-
 	<key>UIAppFonts</key>
 	<array>
 		<string>Sora.ttf</string>
