@@ -18,9 +18,9 @@ struct ContentView: View {
         NavigationStack(path: $navigationCoordinator.path) {
             ZStack {
                 if isLoading {
-                    ProgressView(label: {
-                        Text("Loading")
-                    })
+//                    ProgressView(label: {
+//                        Text("Loading")
+//                    })
                 } else if isContentReady {
                     Group {
                         if let appUser = appUserStateManager.appUser, let uid = appUser.uid, !uid.isEmpty, uid != "" {
