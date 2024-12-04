@@ -24,7 +24,7 @@ struct LaunchView: View {
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 2.5)) {
-                backgroundColor = Color(hex: "#C3FF19")
+                backgroundColor = TextColors.primaryWhite.color
                 logoColor = .black
                 isAnimating = true
             }
@@ -32,7 +32,7 @@ struct LaunchView: View {
             // Scale the logo after the color transition
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 withAnimation(.easeInOut(duration: 2)) {
-                    iconScale = 20
+                    iconScale = 25
                 }
             }
         }
