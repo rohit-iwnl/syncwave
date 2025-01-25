@@ -34,6 +34,7 @@ struct HousingPreferencesView: View {
     @State private var errorMessage = ""
     
     
+    
     var body: some View {
         VStack {
             // Main HousingPreferencesView content
