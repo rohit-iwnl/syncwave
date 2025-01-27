@@ -11,7 +11,7 @@ import SwiftUI
 @main
 struct StealthApp: App {
     @State private var isLaunchViewPresented = true
-    @State private var contentViewOpacity = 0.0 // Start with ContentView fully transparent
+    @State private var contentViewOpacity = 0.0
     
     var body: some Scene {
         WindowGroup {
@@ -36,7 +36,6 @@ struct StealthApp: App {
                             }
                         }
                     }
-//            RoomTestView()
         }
     }
     
