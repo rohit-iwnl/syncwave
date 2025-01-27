@@ -123,11 +123,14 @@ struct OnboardingView: View {
                                 .onTapGesture {
                                     DispatchQueue.main.async {
                                         let totalPages = onboardingPages.count
-                                        if currentPage < totalPages - 1 {
-                                            currentPage += 1
-                                        } else {
-                                            isModalOpen = true
+                                        withAnimation {
+                                            if currentPage < totalPages - 1 {
+                                                currentPage += 1
+                                            } else {
+                                                isModalOpen = true
+                                            }
                                         }
+                                        
                                     }
                                 }
                             
