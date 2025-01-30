@@ -93,8 +93,8 @@ struct ContentView: View {
                         .environmentObject(navigationCoordinator)
                         .environmentObject(appUserStateManager)
                         .toolbar(.hidden)
-                case .roomplan:
-                    RoomTestView()
+//                case .roomplan:
+//                    RoomTestView()
                 default:
                     Text("Unknown destination :\(destination)")
                 }
