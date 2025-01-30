@@ -93,8 +93,8 @@ struct ContentView: View {
                         .environmentObject(navigationCoordinator)
                         .environmentObject(appUserStateManager)
                         .toolbar(.hidden)
-//                case .roomplan:
-//                    RoomTestView()
+                case .roomplan:
+                    RoomTestView()
                 default:
                     Text("Unknown destination :\(destination)")
                 }
@@ -149,7 +149,7 @@ struct ContentView: View {
                             DispatchQueue.main.asyncAfter(deadline: .now()){
                                 if hasCompletedOnboarding {
 //                                    navigationCoordinator.path.append(NavigationDestinations.signIn)
-                                    navigationCoordinator.path.append(NavigationDestinations.roomplan)
+                                    navigationCoordinator.path.append(NavigationDestinations.signIn)
                                 } else {
                                     navigationCoordinator.path.append(NavigationDestinations.onboarding)
                                 }
