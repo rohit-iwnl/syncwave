@@ -47,6 +47,8 @@ struct LeasingView: View {
     
     @FocusState private var focusedField: Field?
     
+    @State private var showIncompleteFieldsAlert = false
+    @State private var incompleteFields: [String] = []
     
     var body: some View {
         VStack {
@@ -61,7 +63,7 @@ struct LeasingView: View {
                             
                             VStack(alignment: .leading, spacing: 20) {
                                 VStack(alignment: .leading, spacing: 3) {
-                                    Text("Got a space? Spill the tea and let’s lease/ sublease it!")
+                                    Text("Got a space? Spill the tea and let's lease/ sublease it!")
                                         .font(.sora(.largeTitle, weight: .semibold))
                                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                                         .lineLimit(3)
@@ -280,11 +282,16 @@ struct LeasingView: View {
                                 }
                                 
                                 ContinueButton(
-                                    isEnabled: checkIfValidSelection(),
+                                    isEnabled: true,
                                     isLoading: isLoading
                                 ) {
-                                    Task{
-                                        await performAPICallAndNavigate()
+                                    if checkIfValidSelection() {
+                                        Task {
+                                            await performAPICallAndNavigate()
+                                        }
+                                    } else {
+                                        incompleteFields = getIncompleteFields()
+                                        showIncompleteFieldsAlert = true
                                     }
                                 }
                                 .padding(.bottom, 20)
@@ -304,7 +311,7 @@ struct LeasingView: View {
         .alert(isPresented: $showSkipAlert) {
             Alert(
                 title: Text("Skip Property preferences?"),
-                message: Text("Skipping property preferences? You’ll get fewer spot-on recs. No stress though, you can update them later when finishing your profile!"),
+                message: Text("Skipping property preferences? You'll get fewer spot-on recs. No stress though, you can update them later when finishing your profile!"),
                 primaryButton: .default(Text("Yes, Skip")) {
                     handleSkip()
                 },
@@ -316,7 +323,11 @@ struct LeasingView: View {
         } message: {
             Text(errorMessage)
         }
-        
+        .alert("Incomplete Fields", isPresented: $showIncompleteFieldsAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Please fill in the following fields:\n" + incompleteFields.joined(separator: "\n"))
+        }
     }
     
     private func handleSkip() {
@@ -618,7 +629,42 @@ struct LeasingView: View {
         }
     }
     
-    
+    private func getIncompleteFields() -> [String] {
+        var incomplete: [String] = []
+        
+        if !selectedHouseOptions.values.contains(true) {
+            incomplete.append("• Type of unit")
+        }
+        if selectedLocation.isEmpty {
+            incomplete.append("• Property Location")
+        }
+        if monthlyBaseRentAmount <= 0 {
+            incomplete.append("• Monthly base rent")
+        }
+        if selectedBedrooms.isEmpty {
+            incomplete.append("• Bedrooms")
+        }
+        if selectedBathrooms.isEmpty {
+            incomplete.append("• Bathrooms")
+        }
+        if selectedNumberOfRoommates.isEmpty {
+            incomplete.append("• Number of people per unit")
+        }
+        if selectedFurnishing.isEmpty {
+            incomplete.append("• Furnishing")
+        }
+        if selectedAmenities.isEmpty {
+            incomplete.append("• Amenities")
+        }
+        if propertyDescription.isEmpty {
+            incomplete.append("• Property description")
+        }
+        if squareFootage <= 0 {
+            incomplete.append("• Square footage")
+        }
+        
+        return incomplete
+    }
 }
 
 
