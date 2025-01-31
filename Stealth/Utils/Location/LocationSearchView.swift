@@ -27,6 +27,10 @@ struct LocationSearchView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var searchCompleter = SearchCompleter()
     
+    // Add these new state properties
+    @State private var isLoadingCurrentLocation = false
+    @State private var nearbyLocations: [MKMapItem] = []
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Enter Property Location")
@@ -36,6 +40,29 @@ struct LocationSearchView: View {
             Divider()
                 .padding(.horizontal)
             
+            // Add Current Location Button
+            Button(action: useCurrentLocation) {
+                HStack {
+                    Image(systemName: "location.fill")
+                        .foregroundColor(.blue)
+                        .font(.system(size: 16))
+                    Text("Use Current Location")
+                        .font(.sora(.body))
+                        .foregroundColor(.white)
+                    if isLoadingCurrentLocation {
+                        Spacer()
+                        ProgressView()
+                            .tint(.white)
+                    }
+                    Spacer()
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.black)
+                .cornerRadius(12)
+            }
+            .padding(.horizontal)
+            
             TextField("Search location", text: $searchText)
                 .font(.sora(.body, weight: .regular))
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -43,6 +70,28 @@ struct LocationSearchView: View {
                 .onChange(of: searchText) { _, newValue in
                     searchCompleter.searchTerm = newValue
                 }
+            
+            // Show nearby locations when search is empty
+            if searchText.isEmpty && !nearbyLocations.isEmpty {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Nearby Locations")
+                            .font(.sora(.subheadline, weight: .medium))
+                            .padding(.horizontal)
+                        
+                        ForEach(nearbyLocations, id: \.self) { item in
+                            LocationResultRow(
+                                title: item.name ?? "",
+                                subtitle: item.placemark.formattedAddress ?? ""
+                            )
+                            .onTapGesture {
+                                selectMapItem(item)
+                            }
+                            Divider()
+                        }
+                    }
+                }
+            }
             
             if showConfirmButton {
                 VStack(alignment: .leading, spacing: 8) {
@@ -113,6 +162,7 @@ struct LocationSearchView: View {
         .padding(.vertical, 16)
         .onAppear {
             locationManager.requestLocationPermission()
+            fetchNearbyLocations()
         }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
@@ -162,11 +212,103 @@ struct LocationSearchView: View {
             }
         }
     }
+    
+    // Add these new methods
+    private func useCurrentLocation() {
+        isLoadingCurrentLocation = true
+        
+        guard let location = locationManager.userLocation else {
+            locationManager.requestLocationPermission()
+            isLoadingCurrentLocation = false
+            return
+        }
+        
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            DispatchQueue.main.async {
+                isLoadingCurrentLocation = false
+                
+                if let placemark = placemarks?.first {
+                    let address = [
+                        placemark.subThoroughfare,
+                        placemark.thoroughfare,
+                        placemark.locality,
+                        placemark.administrativeArea,
+                        placemark.postalCode
+                    ].compactMap { $0 }.joined(separator: " ")
+                    
+                    tempSelectedLocation = address
+                    showConfirmButton = true
+                    region = MKCoordinateRegion(
+                        center: location.coordinate,
+                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                    )
+                }
+            }
+        }
+    }
+    
+    private func fetchNearbyLocations() {
+        guard let location = locationManager.userLocation else { return }
+        
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = "point of interest"
+        request.region = MKCoordinateRegion(
+            center: location.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        )
+        
+        let search = MKLocalSearch(request: request)
+        search.start { response, error in
+            guard let response = response else { return }
+            
+            DispatchQueue.main.async {
+                self.nearbyLocations = response.mapItems
+            }
+        }
+    }
+    
+    private func selectMapItem(_ mapItem: MKMapItem) {
+        let coordinate = mapItem.placemark.coordinate
+        
+        DispatchQueue.main.async {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = mapItem.name
+            self.selectedAnnotation = annotation
+            
+            withAnimation {
+                self.cameraPosition = .region(MKCoordinateRegion(
+                    center: coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                ))
+            }
+            
+            self.region = MKCoordinateRegion(
+                center: coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            )
+            
+            self.tempSelectedLocation = mapItem.placemark.formattedAddress ?? ""
+            self.showConfirmButton = true
+        }
+    }
 }
 
-
-
-
+// Add this extension to MKPlacemark
+extension MKPlacemark {
+    var formattedAddress: String? {
+        let addressComponents = [
+            subThoroughfare,
+            thoroughfare,
+            locality,
+            administrativeArea,
+            postalCode
+        ].compactMap { $0 }
+        
+        return addressComponents.isEmpty ? nil : addressComponents.joined(separator: " ")
+    }
+}
 
 // Location Manager class to handle permissions and updates
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
