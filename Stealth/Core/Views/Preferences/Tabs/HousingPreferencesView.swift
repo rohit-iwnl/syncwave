@@ -33,7 +33,8 @@ struct HousingPreferencesView: View {
     @State private var showError = false
     @State private var errorMessage = ""
     
-    
+    @State private var showIncompleteFieldsAlert = false
+    @State private var incompleteFields: [String] = []
     
     var body: some View {
         VStack {
@@ -221,11 +222,16 @@ struct HousingPreferencesView: View {
                                 CustomSelectorAmenities(selectedOptions: $selectedAmenities, options: AmenitiesOptions.options)
                                 
                                 ContinueButton(
-                                    isEnabled: checkIfValidSelection(),
+                                    isEnabled: true,
                                     isLoading: isLoading
                                 ) {
-                                    Task{
-                                        await performAPICallAndNavigate()
+                                    if checkIfValidSelection() {
+                                        Task {
+                                            await performAPICallAndNavigate()
+                                        }
+                                    } else {
+                                        incompleteFields = getIncompleteFields()
+                                        showIncompleteFieldsAlert = true
                                     }
                                 }
                                 .padding(.bottom, 20)
@@ -241,7 +247,7 @@ struct HousingPreferencesView: View {
         .alert(isPresented: $showSkipAlert) {
             Alert(
                 title: Text("Skip Property preferences?"),
-                message: Text("Skipping property preferences? You’ll get fewer spot-on recs. No stress though, you can update them later when finishing your profile!"),
+                message: Text("Skipping property preferences? You'll get fewer spot-on recs. No stress though, you can update them later when finishing your profile!"),
                 primaryButton: .default(Text("Yes, Skip")) {
                     handleSkip()
                 },
@@ -253,7 +259,11 @@ struct HousingPreferencesView: View {
         } message: {
             Text(errorMessage)
         }
-        
+        .alert("Incomplete Fields", isPresented: $showIncompleteFieldsAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Please fill in the following fields:\n" + incompleteFields.joined(separator: "\n"))
+        }
     }
     
     private func handleSkip() {
@@ -303,10 +313,6 @@ struct HousingPreferencesView: View {
             "furnishing": Array(selectedFurnishing).map { $0.lowercased() },
             "amenities": Array(selectedAmenities)
         ]
-        
-        //        guard let supabase_id = appUserStateManager.appUser?.uid else {
-        //            return [:]
-        //        }
         
         // Create the final JSON structure
         let json: [String: Any] = [
@@ -428,11 +434,32 @@ struct HousingPreferencesView: View {
         }
     }
     
+    private func getIncompleteFields() -> [String] {
+        var incomplete: [String] = []
+        
+        if !selectedHouseOptions.values.contains(true) {
+            incomplete.append("• Property Type")
+        }
+        if selectedBedrooms.isEmpty {
+            incomplete.append("• Bedrooms")
+        }
+        if selectedBathrooms.isEmpty {
+            incomplete.append("• Bathrooms")
+        }
+        if selectedNumberOfRoommates.isEmpty {
+            incomplete.append("• Number of People per Unit")
+        }
+        if selectedFurnishing.isEmpty {
+            incomplete.append("• Furnishing")
+        }
+        if selectedAmenities.isEmpty {
+            incomplete.append("• Amenities")
+        }
+        
+        return incomplete
+    }
     
 }
-
-
-
 
 #Preview {
     HousingPreferencesView(currentPage: .constant(3), totalPages: .constant(3), isShowingHousingPreferences: .constant(true))
