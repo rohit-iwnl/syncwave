@@ -148,7 +148,6 @@ struct ContentView: View {
                             // Navigate to onboarding or sign-in based on onboarding completion
                             DispatchQueue.main.asyncAfter(deadline: .now()){
                                 if hasCompletedOnboarding {
-//                                    navigationCoordinator.path.append(NavigationDestinations.signIn)
                                     navigationCoordinator.path.append(NavigationDestinations.signIn)
                                 } else {
                                     navigationCoordinator.path.append(NavigationDestinations.onboarding)
