@@ -660,7 +660,7 @@ struct LeasingView: View {
             incomplete.append("• Property description")
         }
         if squareFootage <= 0 {
-            incomplete.append("• Square footage")
+            incomplete.append("• Square footage of the property")
         }
         
         return incomplete
