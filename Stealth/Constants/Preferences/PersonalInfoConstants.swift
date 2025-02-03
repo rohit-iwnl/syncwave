@@ -18,36 +18,38 @@ struct PersonalInfoConstants {
         title: "Residential Info",
         placeholder: "Select country",
         options: [
-            "USA",
-            "Canada",
-            "UK"
+            "USA"
         ]
     )
-    
+
     static let residentialStatusState = DropDownModel(
         title: "Residential Info",
         placeholder: "Select state",
         options: [
-            "California",
-            "Arizona",
-            "North Carolina",
-            "New Jersey",
-            "Texas",
-            "New York",
-            // Add more states as needed
+            "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+            "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+            "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
+            "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland",
+            "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri",
+            "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey",
+            "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio",
+            "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island",
+            "South Carolina",
+            "South Dakota", "Tennessee", "Texas", "Utah", "Vermont",
+            "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
         ]
     )
-    
+
     static let genders = DropDownModel(
         title: "Your Gender",
         placeholder: "Select gender",
         options: [
             "Male",
             "Female",
-            "Other"
+            "Other",
         ]
     )
-    
+
     static let pronouns = DropDownModel(
         title: "Pronouns",
         placeholder: "How do you identify yourself?",
@@ -55,11 +57,11 @@ struct PersonalInfoConstants {
             "He/Him",
             "She/Her",
             "They/Them",
-            "Prefer not to say"
+            "Prefer not to say",
             // Add more pronoun options as needed
         ]
     )
-    
+
     static let fields = DropDownModel(
         title: "What do you do for work or study?",
         placeholder: "What's your field?",
@@ -73,7 +75,7 @@ struct PersonalInfoConstants {
             "Arts",
         ]
     )
-    
+
     static let languages = DropDownModel(
         title: "Languages you know",
         placeholder: "What do you speak?",
