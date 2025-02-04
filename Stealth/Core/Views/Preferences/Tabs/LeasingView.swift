@@ -45,6 +45,7 @@ struct LeasingView: View {
     )
     
     @State private var propertyDescription: String = ""
+    @State private var selectedStartDate = Date()
     
     @FocusState private var focusedField: Field?
     
@@ -193,6 +194,26 @@ struct LeasingView: View {
                                             .padding(.vertical)
                                     }
                                     
+                                    
+                                    VStack(spacing : 5){
+                                        DatePicker("Start date",
+                                                   selection: $selectedStartDate,
+                                                   in: Date()...,
+                                                   displayedComponents: [.date])
+                                            .datePickerStyle(.compact)
+                                            .font(.sora(.body))
+                                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                            .padding()
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .fill(Color.white)
+                                                    .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 2)
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 12)
+                                                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                                    )
+                                            )
+                                    }
                                     
                                     VStack{
                                         
