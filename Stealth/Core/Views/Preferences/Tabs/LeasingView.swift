@@ -334,8 +334,6 @@ struct LeasingView: View {
                     }
                 }
             }
-            
-            // Render RentRangePickerView when presented
         }
         .sheet(isPresented: $showLocationSearch) {
             LocationSearchView(selectedLocation: $selectedLocation, region: $region)
@@ -364,6 +362,7 @@ struct LeasingView: View {
     }
     
     private func handleSkip() {
+        
         //        if navigationCoordinator.preferencesArray[JsonKey.find_roomate] == true {
         //            // Do something here
         //        } else {
@@ -541,7 +540,9 @@ struct LeasingView: View {
         !selectedFurnishing.isEmpty && // Furnishing option selected
         !selectedAmenities.isEmpty && // At least one amenity selected
         !propertyDescription.isEmpty && // Property description provided
-        squareFootage > 0 // Square footage entered
+        squareFootage > 0 && // Square footage entered
+        selectedStartDate > Date() && // Ensure start date is in the future
+        !selectedPlan.isEmpty // Ensure a house plan is selected
     }
     
     
@@ -694,6 +695,12 @@ struct LeasingView: View {
         }
         if squareFootage <= 0 {
             incomplete.append("• Square footage of the property")
+        }
+        if selectedStartDate <= Date() { // Ensure start date is in the future
+            incomplete.append("• Start date must be in the future")
+        }
+        if selectedPlan.isEmpty { // Check if a house plan is selected
+            incomplete.append("• Property plan must be selected")
         }
         
         return incomplete
