@@ -13,6 +13,7 @@ struct LeasingView: View {
     @State private var selectedNumberOfRoommates : Set<String> = []
     @State private var selectedFurnishing : Set<String> = []
     @State private var selectedAmenities : Set<String> = []
+    @State private var selectedPlan : Set<String> = []
     
     @State private var isSmartWriteLoading: Bool = false
     
@@ -128,7 +129,6 @@ struct LeasingView: View {
                                 }
                                 
                                 VStack(spacing: 10) {
-                                    
                                     VStack(alignment: .leading, spacing: 10) {
                                         Text("Property Location?")
                                             .font(.sora(.body))
@@ -178,10 +178,22 @@ struct LeasingView: View {
                                             .cornerRadius(12)
                                             .padding(.vertical)
                                         }
-
-
-
                                     }
+                                    
+                                    VStack(spacing : 5){
+                                        HStack {
+                                            Text("What's the plan?")
+                                                .font(.sora(.body))
+                                                .lineLimit(1)
+                                                .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                            
+                                            Spacer()
+                                        }
+                                        CustomSingleSelector(selectedOptions: $selectedPlan, options: LeasingOptions.planOptions, isScrollable: true, lineLimit: 2)
+                                            .padding(.vertical)
+                                    }
+                                    
+                                    
                                     VStack{
                                         
                                         LabeledInputButton(label: "Monthly base rent of unit?", placeholder: "Enter your base rent", value: $monthlyBaseRentAmount, keyboardType: .numberPad, leftSideText: "$", focusedField: $focusedField,
