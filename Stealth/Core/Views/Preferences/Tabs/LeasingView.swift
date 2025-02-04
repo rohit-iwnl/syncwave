@@ -52,6 +52,8 @@ struct LeasingView: View {
     @State private var showIncompleteFieldsAlert = false
     @State private var incompleteFields: [String] = []
     
+    @State private var selectedEndDate: Date? // Add this new state variable for end date
+    
     var body: some View {
         VStack {
             // Main HousingPreferencesView content
@@ -195,7 +197,7 @@ struct LeasingView: View {
                                     }
                                     
                                     
-                                    VStack(spacing : 5){
+                                    VStack(spacing : 10){
                                         DatePicker("Start date",
                                                    selection: $selectedStartDate,
                                                    in: Date()...,
@@ -213,7 +215,31 @@ struct LeasingView: View {
                                                             .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                                                     )
                                             )
+                                        
+                                        if selectedPlan.contains("Temporary Stay") {
+                                                DatePicker("End date",
+                                                           selection: Binding(
+                                                            get: { selectedEndDate ?? selectedStartDate },
+                                                            set: { selectedEndDate = $0 }
+                                                           ),
+                                                           in: selectedStartDate...,
+                                                           displayedComponents: [.date])
+                                                    .datePickerStyle(.compact)
+                                                    .font(.sora(.body))
+                                                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                                                    .padding()
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 12)
+                                                            .fill(Color.white)
+                                                            .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 2)
+                                                            .overlay(
+                                                                RoundedRectangle(cornerRadius: 12)
+                                                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                                            )
+                                                    )
+                                            }
                                     }
+                                    .animation(.snappy, value: selectedPlan)
                                     
                                     VStack{
                                         
@@ -542,7 +568,7 @@ struct LeasingView: View {
         !propertyDescription.isEmpty && // Property description provided
         squareFootage > 0 && // Square footage entered
         selectedStartDate > Date() && // Ensure start date is in the future
-        !selectedPlan.isEmpty // Ensure a house plan is selected
+        (!selectedPlan.contains("Temporary Stay") || (selectedEndDate != nil && selectedEndDate! > selectedStartDate)) // Ensure end date is valid if temporary stay is selected
     }
     
     
@@ -700,7 +726,10 @@ struct LeasingView: View {
             incomplete.append("• Start date must be in the future")
         }
         if selectedPlan.isEmpty { // Check if a house plan is selected
-            incomplete.append("• Property plan must be selected")
+            incomplete.append("• House plan must be selected")
+        }
+        if selectedPlan.contains("Temporary Stay") && (selectedEndDate == nil || selectedEndDate! <= selectedStartDate) {
+            incomplete.append("• End date must be after start date for temporary stay")
         }
         
         return incomplete
