@@ -269,7 +269,7 @@ struct LeasingView: View {
                                         LabeledInputButton(label: "Monthly rent per person?", placeholder: "Enter the estimated amount", value: $perPersonRent, keyboardType: .numberPad, leftSideText: "$", focusedField: $focusedField,
                                                            field: .baseRent)
                                         
-                                        LabeledInputButton(label: "Size of your unit?", placeholder: "Enter the sqaure footage", value: $squareFootage, keyboardType: .numberPad, leftSideText: "sqft", focusedField: $focusedField,
+                                        LabeledInputButton(label: "Size of your unit?", placeholder: "Enter the square footage", value: $squareFootage, keyboardType: .numberPad, leftSideText: "sqft", focusedField: $focusedField,
                                                            field: .baseRent)
                                     }
                                 }
