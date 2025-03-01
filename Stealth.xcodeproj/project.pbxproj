@@ -10,6 +10,7 @@
 		B6052D932C9E5FCA00C87CBF /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = B6052D922C9E5FCA00C87CBF /* NavigationTransitions */; };
 		B612A89D2CDDE6BE007957A5 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B612A8942CDDE409007957A5 /* ARKit.framework */; };
 		B61C67672CE68BC70058B2BE /* RoomPlanCatalog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B61C67642CE68B4D0058B2BE /* RoomPlanCatalog.bundle */; };
+		B6388C0B2D72E49100EF2123 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B6388C0A2D72E49100EF2123 /* AlertToast */; };
 		B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640DAA52C82823D00D76F98 /* OptionsSheet.swift */; };
 		B65AF47D2CD2FB5A00A31613 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */; };
 		B66047112C80655500C8061F /* SignupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047102C80655500C8061F /* SignupSheet.swift */; };
@@ -106,6 +107,7 @@
 		B6302A102CFBFC0E00213AC9 /* Launch */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Launch; sourceTree = "<group>"; };
 		B630BEDE2CD6168100F1E978 /* Location */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Location; sourceTree = "<group>"; };
 		B630BEE12CD6BD6A00F1E978 /* Inputs */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Inputs; sourceTree = "<group>"; };
+		B6388C052D72E35F00EF2123 /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
 		B640DAA22C81941100D76F98 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B65AF4802CD2FC2500A31613 /* Network */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Network; sourceTree = "<group>"; };
 		B66D5A652C8E4612008C9592 /* CustomFonts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CustomFonts; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				B6052D932C9E5FCA00C87CBF /* NavigationTransitions in Frameworks */,
 				B6D3043F2C7D33000018C1FF /* PostgREST in Frameworks */,
 				B6D304582C7D3C8B0018C1FF /* Storage in Frameworks */,
+				B6388C0B2D72E49100EF2123 /* AlertToast in Frameworks */,
 				B6D304502C7D3C8B0018C1FF /* Auth in Frameworks */,
 				B6925E4D2CE30D5300F1A272 /* RoomPlan.framework in Frameworks */,
 				B6D3043D2C7D33000018C1FF /* Auth in Frameworks */,
@@ -280,6 +283,7 @@
 		B6D543CB2C7BFA1F00C9D14C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B6388C052D72E35F00EF2123 /* Components */,
 				B6D543CD2C7BFA2600C9D14C /* Root */,
 				B6D543CE2C7BFA2900C9D14C /* Views */,
 				B6FE877E2C7D896D000685E0 /* ViewModels */,
@@ -420,6 +424,7 @@
 				B6302A102CFBFC0E00213AC9 /* Launch */,
 				B630BEDE2CD6168100F1E978 /* Location */,
 				B630BEE12CD6BD6A00F1E978 /* Inputs */,
+				B6388C052D72E35F00EF2123 /* Components */,
 				B640DAA22C81941100D76F98 /* Auth */,
 				B65AF4802CD2FC2500A31613 /* Network */,
 				B66D5A652C8E4612008C9592 /* CustomFonts */,
@@ -483,6 +488,7 @@
 				B6DF18982C854C8100741B53 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */,
 				B6052D912C9E5FCA00C87CBF /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
+				B6388C092D72E49100EF2123 /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = B6D543B72C7BF96E00C9D14C /* Products */;
 			projectDirPath = "";
@@ -781,6 +787,14 @@
 				minimumVersion = 0.13.4;
 			};
 		};
+		B6388C092D72E49100EF2123 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.9;
+			};
+		};
 		B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:spacenation/swiftui-sliders.git";
@@ -812,6 +826,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B6052D912C9E5FCA00C87CBF /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;
 			productName = NavigationTransitions;
+		};
+		B6388C0A2D72E49100EF2123 /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6388C092D72E49100EF2123 /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
 		};
 		B696A8012C92D1DB0058215B /* Sliders */ = {
 			isa = XCSwiftPackageProductDependency;
