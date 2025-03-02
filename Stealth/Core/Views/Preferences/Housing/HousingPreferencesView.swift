@@ -48,7 +48,7 @@ struct HousingPreferencesView: View {
                             }
                             
                             VStack(alignment: .leading, spacing: 20) {
-                                VStack(alignment: .leading, spacing: 3) {
+                                VStack(alignment: .leading, spacing: 4) {
                                     Text("Share what you're looking for in a property?")
                                         .font(.sora(.largeTitle, weight: .semibold))
                                         .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
@@ -248,7 +248,7 @@ struct HousingPreferencesView: View {
             Alert(
                 title: Text("Skip Property preferences?"),
                 message: Text("Skipping property preferences? You'll get fewer spot-on recs. No stress though, you can update them later when finishing your profile!"),
-                primaryButton: .default(Text("Yes, Skip")) {
+                primaryButton: .default(Text("Proceed")) {
                     handleSkip()
                 },
                 secondaryButton: .cancel()
