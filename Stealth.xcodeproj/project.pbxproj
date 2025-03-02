@@ -50,7 +50,6 @@
 		B6D543EE2C7C1D9D00C9D14C /* SignInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */; };
 		B6DF189A2C854C8100741B53 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B6DF18992C854C8100741B53 /* GoogleSignIn */; };
 		B6DF189C2C854C8100741B53 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B6DF189B2C854C8100741B53 /* GoogleSignInSwift */; };
-		B6E61E8A2CACA08700A46940 /* NavigationDestinations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E61E892CACA08700A46940 /* NavigationDestinations.swift */; };
 		B6FE87842C7D8ABE000685E0 /* AppleSignInUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */; };
 /* End PBXBuildFile section */
 
@@ -85,9 +84,7 @@
 		B6D543EA2C7C090800C9D14C /* ContentSizeCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeCategory.swift; sourceTree = "<group>"; };
 		B6D543ED2C7C1D9D00C9D14C /* SignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheet.swift; sourceTree = "<group>"; };
 		B6DF189D2C854D6200741B53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		B6E61E892CACA08700A46940 /* NavigationDestinations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDestinations.swift; sourceTree = "<group>"; };
 		B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInUtils.swift; sourceTree = "<group>"; };
-		B6FE87852C7D930F000685E0 /* Stealth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stealth.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -137,7 +134,8 @@
 		B6F9C3BB2D740D660030AB37 /* Types */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Types; sourceTree = "<group>"; };
 		B6F9C3BF2D74AA420030AB37 /* Welcome */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Welcome; sourceTree = "<group>"; };
 		B6F9C3C42D74AA660030AB37 /* Illustrations */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Illustrations; sourceTree = "<group>"; };
-		B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NavigationPathConstants; sourceTree = "<group>"; };
+		B6F9C3EE2D74E5810030AB37 /* String */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = String; sourceTree = "<group>"; };
+		B6F9C3F62D750F840030AB37 /* Navigation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Navigation; sourceTree = "<group>"; };
 		B6FE877E2C7D896D000685E0 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -204,7 +202,6 @@
 			children = (
 				B6A3AEC22CF7C4C600985A65 /* LaunchScreen.storyboard */,
 				B6DF189D2C854D6200741B53 /* Info.plist */,
-				B6FE87852C7D930F000685E0 /* Stealth.entitlements */,
 				B6D543CC2C7BFA2300C9D14C /* App */,
 				B6D543CB2C7BFA1F00C9D14C /* Core */,
 				B6F9C3BB2D740D660030AB37 /* Types */,
@@ -269,6 +266,7 @@
 		B6D543CA2C7BFA1B00C9D14C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B6F9C3EE2D74E5810030AB37 /* String */,
 				B6E3FA462CBC880800615B45 /* Text */,
 				B66D5A652C8E4612008C9592 /* CustomFonts */,
 				B6EFFDAD2C8A852C004005C0 /* Auth */,
@@ -331,7 +329,7 @@
 		B6D543D02C7BFAB600C9D14C /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */,
+				B6F9C3F62D750F840030AB37 /* Navigation */,
 				B699AF912C926FC500269D2A /* NetworkCalls */,
 				B68EDCFD2C900A91003FDC94 /* Onboarding */,
 				B6001FA62C8858EE001DC029 /* Preferences */,
@@ -371,7 +369,6 @@
 			children = (
 				B6D543E32C7C024000C9D14C /* FrameAlignment.swift */,
 				B6D543E82C7C060C00C9D14C /* TextColors.swift */,
-				B6E61E892CACA08700A46940 /* NavigationDestinations.swift */,
 				B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */,
 			);
 			path = Enums;
@@ -452,7 +449,8 @@
 				B6F9C3BB2D740D660030AB37 /* Types */,
 				B6F9C3BF2D74AA420030AB37 /* Welcome */,
 				B6F9C3C42D74AA660030AB37 /* Illustrations */,
-				B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */,
+				B6F9C3EE2D74E5810030AB37 /* String */,
+				B6F9C3F62D750F840030AB37 /* Navigation */,
 				B6FE877E2C7D896D000685E0 /* ViewModels */,
 			);
 			name = Stealth;
@@ -525,7 +523,6 @@
 				B6D543E92C7C060C00C9D14C /* TextColors.swift in Sources */,
 				B6D543D42C7BFB9C00C9D14C /* HexColor.swift in Sources */,
 				B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */,
-				B6E61E8A2CACA08700A46940 /* NavigationDestinations.swift in Sources */,
 				B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */,
 				B6D543BC2C7BF96E00C9D14C /* ContentView.swift in Sources */,
 				B65AF47D2CD2FB5A00A31613 /* NetworkError.swift in Sources */,
@@ -674,7 +671,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = Stealth/Stealth.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Stealth/;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Stealth/Preview Content\"";
@@ -693,6 +690,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -719,7 +717,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = Stealth/Stealth.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Stealth/;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Stealth/Preview Content\"";
@@ -738,6 +736,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
