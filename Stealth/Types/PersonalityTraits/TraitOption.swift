@@ -26,3 +26,21 @@ struct TraitQuestion : Codable, Hashable {
     let category : TraitCategory
     let options : [TraitOption]
 }
+
+struct TraitQuestionWithoutScore : Codable, Hashable {
+    
+    let questionText: String
+    
+    let id: String
+    let options : [String]
+    
+    let allowMutlipleSelection : Bool
+    
+    
+    init(questionText : String, options : [String], allowMultipleSelection : Bool = false) {
+        self.id = UUID().uuidString
+        self.questionText = questionText
+        self.options = options
+        self.allowMutlipleSelection = allowMultipleSelection
+    }
+}
