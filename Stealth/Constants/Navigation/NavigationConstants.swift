@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// The enum `NavigationDestinations` defines the different destinations in the app's navigation system.
+
 enum NavigationDestinations : String, Hashable {
     case home = "home"
     case settings = "settings"
@@ -20,5 +22,6 @@ enum NavigationDestinations : String, Hashable {
     case roomdecider = "roomdecider"
     case sellingProperty = "sellingProperty"
     case roomplan = "roomplan"
+    case lookingForRoommate = "lookingForRoommate"
     
 }
