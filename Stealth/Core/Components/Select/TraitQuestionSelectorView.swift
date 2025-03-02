@@ -77,6 +77,7 @@ struct TraitQuestionSelectorView: View {
         } else {
             selectedAnswer = option
             onSelectionChanged?(option.scoreValue)
+            print("Selected Score: \(option.scoreValue)")
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
     }
