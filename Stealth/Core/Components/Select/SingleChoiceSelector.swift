@@ -8,11 +8,37 @@
 import SwiftUI
 
 struct SingleChoiceSelector: View {
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    let questionText: String
+
+    // Options for the selector
+    let options: [String]
+
+    @Binding var selectedOption: Set<String>
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 10) {
+            HStack {
+                Text(questionText)
+                    .font(.sora(.subheadline, weight: .regular))
+                    .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+
+                Spacer()
+            }
+            
+            // Options View Here
+            CustomSingleSelector(selectedOptions: $selectedOption, options: options, isScrollable: false, lineLimit: 3)
+        }
     }
 }
 
 #Preview {
-    SingleChoiceSelector()
+    SingleChoiceSelector(
+        questionText: "What is your favorite color?",
+        options: [
+            "Red", "Blue", "Green", "Yellow",
+        ],
+        selectedOption: .constant(["Red"])
+    )
+    .padding()
 }
