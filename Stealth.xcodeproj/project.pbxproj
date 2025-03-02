@@ -134,6 +134,7 @@
 		B6EFFDA92C8A82C9004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B6EFFDAA2C8A82D7004005C0 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B6EFFDAD2C8A852C004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
+		B6F9C3BB2D740D660030AB37 /* Types */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Types; sourceTree = "<group>"; };
 		B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NavigationPathConstants; sourceTree = "<group>"; };
 		B6FE877E2C7D896D000685E0 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -204,6 +205,7 @@
 				B6FE87852C7D930F000685E0 /* Stealth.entitlements */,
 				B6D543CC2C7BFA2300C9D14C /* App */,
 				B6D543CB2C7BFA1F00C9D14C /* Core */,
+				B6F9C3BB2D740D660030AB37 /* Types */,
 				B6D543D02C7BFAB600C9D14C /* Constants */,
 				B6D3044A2C7D38F00018C1FF /* Config */,
 				B6D543E22C7C022700C9D14C /* Enums */,
@@ -451,6 +453,7 @@
 				B6EFFDA92C8A82C9004005C0 /* Auth */,
 				B6EFFDAA2C8A82D7004005C0 /* Preferences */,
 				B6EFFDAD2C8A852C004005C0 /* Auth */,
+				B6F9C3BB2D740D660030AB37 /* Types */,
 				B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */,
 				B6FE877E2C7D896D000685E0 /* ViewModels */,
 			);
