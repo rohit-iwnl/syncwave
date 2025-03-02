@@ -77,8 +77,8 @@ struct PropertyDescriptionInput: View {
                     .opacity(textOpacity)
                     .focused($focusedField, equals: field)
                 
-                    .onChange(of: description) { newValue in
-                        if !newValue.isEmpty {
+                    .onChange(of: description) {
+                        if !description.isEmpty {
                             // Animate text fade-in and shimmer
                             withAnimation(.easeOut(duration: 0.3)) {
                                 textOpacity = 0
@@ -97,6 +97,7 @@ struct PropertyDescriptionInput: View {
                             }
                         }
                     }
+
                     .overlay(
                         ZStack {
                             ForEach(0..<2) { index in
