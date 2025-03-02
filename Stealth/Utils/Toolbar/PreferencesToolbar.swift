@@ -12,15 +12,13 @@ struct PreferencesToolbar: View {
     @Binding var currentPage: Int
     @Binding var totalPages: Int
     
+    @Binding var showPages: Bool
     
-    @Binding var showPages : Bool
+    var onBackTap: () -> Void
+    var onSkipTap: (() -> Void)?
     
-    
-    var onBackTap : () -> Void
-    
-    var onSkipTap : (() -> Void)?
-
-    
+    // Add EnvironmentObject to access NavigationCoordinator
+    @EnvironmentObject var navigationCoordinator: NavigationCoordinator
     
     var body: some View {
         ZStack {
@@ -56,13 +54,12 @@ struct PreferencesToolbar: View {
                     }
                 }
             }
-
             
             if let skipAction = onSkipTap {
                 HStack{
                     Spacer()
                     
-                    Button(action : skipAction) {
+                    Button(action: skipAction) {
                         Text("Skip")
                             .font(.sora(.headline))
                             .foregroundStyle(.black)
@@ -78,22 +75,28 @@ struct PreferencesToolbar: View {
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
+        .onChange(of: showPages) { oldValue, newValue in
+            if newValue == false {
+                // Reset the navigation coordinator's page count when showPages is set to false
+                navigationCoordinator.resetPageCount()
+            }
+        }
     }
 }
 
 #Preview {
-    
     @Previewable @State var currentPage: Int = 1
     
     VStack{
         PreferencesToolbar(currentPage: $currentPage, totalPages: .constant(4), showPages: .constant(true)) {
             
         }
+        .environmentObject(NavigationCoordinator()) // Add this for the preview
         
         Button {
             currentPage.self += 1
         } label : {
-            Text("Incerement")
+            Text("Increment")
         }
         .padding()
         
@@ -106,4 +109,3 @@ struct PreferencesToolbar: View {
     }
     .background(.white)
 }
-

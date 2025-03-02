@@ -32,6 +32,11 @@ class NavigationCoordinator: ObservableObject {
             print("Already at the first page")
         }
     }
+    
+    func resetPageCount() {
+            currentPage = -1
+            print("Page count reset to 0")
+        }
 
     func setPage(_ page: Int) {
         if page >= 0 && page < totalPages {
@@ -51,6 +56,7 @@ class NavigationCoordinator: ObservableObject {
     func navigateToPreferences() {
         path.append(NavigationDestinations.preferences)
     }
+    
 
     func resetToHome() {
         path = NavigationPath()

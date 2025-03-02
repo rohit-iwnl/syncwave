@@ -229,10 +229,10 @@ struct RoomDeciderView: View {
                 throw URLError(.badServerResponse)
             }
             
+            try handleNextScreenNavigation()
+            
             await MainActor.run {
                 isLoading = false
-                navigationCoordinator.currentPage += 1
-                navigationCoordinator.path.append(NavigationDestinations.sellingProperty)
             }
             
         } catch {
@@ -241,6 +241,24 @@ struct RoomDeciderView: View {
                 showError = true
                 isLoading = false
             }
+        }
+    }
+    
+    private func handleNextScreenNavigation() throws {
+        if let selectedButton = selectedButton, selectedButton >= 0, selectedButton <= 2 {
+            navigationCoordinator.currentPage += 1
+            switch selectedButton {
+                case 0:
+                navigationCoordinator.path.append(NavigationDestinations.sellingProperty)
+                case 1:
+                navigationCoordinator.path.append(NavigationDestinations.sellingProperty)
+                case 2:
+                navigationCoordinator.path.append(NavigationDestinations.lookingForRoommate)
+                default:
+                    break
+            }
+        } else {
+            throw NSError(domain: "RoomDeciderView", code: 1, userInfo: [NSLocalizedDescriptionKey: "Invalid selection"])
         }
     }
 
