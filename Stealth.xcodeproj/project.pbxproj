@@ -135,6 +135,8 @@
 		B6EFFDAA2C8A82D7004005C0 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B6EFFDAD2C8A852C004005C0 /* Auth */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Auth; sourceTree = "<group>"; };
 		B6F9C3BB2D740D660030AB37 /* Types */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Types; sourceTree = "<group>"; };
+		B6F9C3BF2D74AA420030AB37 /* Welcome */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Welcome; sourceTree = "<group>"; };
+		B6F9C3C42D74AA660030AB37 /* Illustrations */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Illustrations; sourceTree = "<group>"; };
 		B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = NavigationPathConstants; sourceTree = "<group>"; };
 		B6FE877E2C7D896D000685E0 /* ViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModels; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -313,11 +315,12 @@
 		B6D543CE2C7BFA2900C9D14C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B6F9C3BF2D74AA420030AB37 /* Welcome */,
 				B6302A102CFBFC0E00213AC9 /* Launch */,
 				B612A8992CDDE63D007957A5 /* RoomPlanViews */,
 				B6B023B02CAE78DA005865C8 /* Loading */,
 				B6D543EC2C7C1D9300C9D14C /* Auth */,
-				B6D543EF2C7C2A7200C9D14C /* LaunchScreen */,
+				B6F9C3C42D74AA660030AB37 /* Illustrations */,
 				B6D543DB2C7BFE5400C9D14C /* Onboarding */,
 				B6001FA32C885745001DC029 /* Preferences */,
 				B6D543D82C7BFE4900C9D14C /* Home */,
@@ -397,13 +400,6 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		B6D543EF2C7C2A7200C9D14C /* LaunchScreen */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LaunchScreen;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -454,6 +450,8 @@
 				B6EFFDAA2C8A82D7004005C0 /* Preferences */,
 				B6EFFDAD2C8A852C004005C0 /* Auth */,
 				B6F9C3BB2D740D660030AB37 /* Types */,
+				B6F9C3BF2D74AA420030AB37 /* Welcome */,
+				B6F9C3C42D74AA660030AB37 /* Illustrations */,
 				B6FD8F2A2C9D485F00A2F1AE /* NavigationPathConstants */,
 				B6FE877E2C7D896D000685E0 /* ViewModels */,
 			);
