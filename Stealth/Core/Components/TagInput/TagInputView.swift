@@ -36,6 +36,8 @@ struct TagInputView: View {
                     .onSubmit {
                         addTag()
                     }
+                    .keyboardType(.default)
+                    .addDismissButton(text: "Done")
 
                 Divider()
                     .frame(height: 20)
