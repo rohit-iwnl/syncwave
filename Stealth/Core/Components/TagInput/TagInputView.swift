@@ -61,12 +61,12 @@ struct TagInputView: View {
                     TagView(tag: tag) {
                         removeTag(tag)
                     }
-                    .transition(.scale.combined(with: .opacity))  // Animate insert/removal
+                    .transition(.scale.combined(with: .blurReplace(.upUp)))
                 }
             }
         }
 
-        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: tags)  // Smooth animation for changes
+        .animation(.bouncy, value: tags)  // Smooth animation for changes
         // Toast for feedback messages
         .toast(isPresenting: $showToast) {
             AlertToast(type: .error(Color.red), title: toastMessage)
