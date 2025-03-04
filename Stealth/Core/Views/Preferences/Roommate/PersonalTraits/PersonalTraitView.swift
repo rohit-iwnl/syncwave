@@ -64,6 +64,8 @@ struct PersonalTraitView: View {
                         )
                         .padding(.vertical, 8)
                     }
+                    
+                    /// TODO: make the textfield scroll up to be above the keyboard
 
                     // Hobbies Section
                     TagInputView(

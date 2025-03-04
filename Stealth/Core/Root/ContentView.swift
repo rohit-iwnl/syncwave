@@ -14,6 +14,8 @@ struct ContentView: View {
     @StateObject private var navigationCoordinator = NavigationCoordinator()
     @State private var hasCheckedSession = false
     
+    @StateObject private var globalState = GlobalStateManager()
+    
     var body: some View {
         NavigationStack(path: $navigationCoordinator.path) {
             ZStack {
@@ -112,6 +114,7 @@ struct ContentView: View {
                 }
             }
             .environmentObject(appUserStateManager)
+            .environmentObject(globalState)
         }
     }
     
