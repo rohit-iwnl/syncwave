@@ -12,7 +12,6 @@
 		B61C67672CE68BC70058B2BE /* RoomPlanCatalog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B61C67642CE68B4D0058B2BE /* RoomPlanCatalog.bundle */; };
 		B6388C0B2D72E49100EF2123 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B6388C0A2D72E49100EF2123 /* AlertToast */; };
 		B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640DAA52C82823D00D76F98 /* OptionsSheet.swift */; };
-		B65AF47D2CD2FB5A00A31613 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */; };
 		B66047112C80655500C8061F /* SignupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66047102C80655500C8061F /* SignupSheet.swift */; };
 		B66D5A642C8E4513008C9592 /* Sora.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B66D5A632C8E4513008C9592 /* Sora.ttf */; };
 		B66D5A6A2C8E5016008C9592 /* SignInSheetWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */; };
@@ -57,7 +56,6 @@
 		B612A8942CDDE409007957A5 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
 		B61C67642CE68B4D0058B2BE /* RoomPlanCatalog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RoomPlanCatalog.bundle; sourceTree = "<group>"; };
 		B640DAA52C82823D00D76F98 /* OptionsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsSheet.swift; sourceTree = "<group>"; };
-		B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B66047102C80655500C8061F /* SignupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupSheet.swift; sourceTree = "<group>"; };
 		B66D5A632C8E4513008C9592 /* Sora.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sora.ttf; sourceTree = "<group>"; };
 		B66D5A692C8E5016008C9592 /* SignInSheetWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInSheetWrapper.swift; sourceTree = "<group>"; };
@@ -102,6 +100,7 @@
 		B6001FA62C8858EE001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B60C06362D768C8600CAD66A /* States */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = States; sourceTree = "<group>"; };
 		B60C063B2D768D3C00CAD66A /* ExampleState */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ExampleState; sourceTree = "<group>"; };
+		B60C06482D77B9D200CAD66A /* Network */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Network; sourceTree = "<group>"; };
 		B612A8992CDDE63D007957A5 /* RoomPlanViews */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RoomPlanViews; sourceTree = "<group>"; };
 		B6302A102CFBFC0E00213AC9 /* Launch */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Launch; sourceTree = "<group>"; };
 		B630BEDE2CD6168100F1E978 /* Location */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Location; sourceTree = "<group>"; };
@@ -371,9 +370,9 @@
 		B6D543E22C7C022700C9D14C /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				B60C06482D77B9D200CAD66A /* Network */,
 				B6D543E32C7C024000C9D14C /* FrameAlignment.swift */,
 				B6D543E82C7C060C00C9D14C /* TextColors.swift */,
-				B65AF47C2CD2FB5A00A31613 /* NetworkError.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -421,6 +420,7 @@
 				B6001FA62C8858EE001DC029 /* Preferences */,
 				B60C06362D768C8600CAD66A /* States */,
 				B60C063B2D768D3C00CAD66A /* ExampleState */,
+				B60C06482D77B9D200CAD66A /* Network */,
 				B612A8992CDDE63D007957A5 /* RoomPlanViews */,
 				B6302A102CFBFC0E00213AC9 /* Launch */,
 				B630BEDE2CD6168100F1E978 /* Location */,
@@ -531,7 +531,6 @@
 				B640DAA62C82823D00D76F98 /* OptionsSheet.swift in Sources */,
 				B67568992C8288CE00E0BF1F /* SignInView.swift in Sources */,
 				B6D543BC2C7BF96E00C9D14C /* ContentView.swift in Sources */,
-				B65AF47D2CD2FB5A00A31613 /* NetworkError.swift in Sources */,
 				B6D543DA2C7BFE5100C9D14C /* HomeView.swift in Sources */,
 				B6D543D72C7BFD7600C9D14C /* AppStorageConstants.swift in Sources */,
 				B6D543DF2C7BFED200C9D14C /* TopographyPattern.swift in Sources */,
