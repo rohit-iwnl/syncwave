@@ -20,7 +20,7 @@ struct LaunchView: View {
             AppLogo()
                 .fill(logoColor)
                 .aspectRatio(contentMode: .fit)
-                .scaleEffect(iconScale)
+                .smoothScale(iconScale)
         }
         .onAppear {
             withAnimation(.easeInOut(duration: 2.5)) {
@@ -31,13 +31,34 @@ struct LaunchView: View {
             
             // Scale the logo after the color transition
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                withAnimation(.easeInOut(duration: 2)) {
+                withAnimation(.spring(response: 2, dampingFraction: 0.8, blendDuration: 1)) {
                     iconScale = 25
                 }
+
             }
         }
     }
 }
+
+struct ScaleEffect: AnimatableModifier {
+    var scale: CGFloat
+    
+    var animatableData: CGFloat {
+        get { scale }
+        set { scale = newValue }
+    }
+    
+    func body(content: Content) -> some View {
+        content.scaleEffect(scale)
+    }
+}
+
+extension View {
+    func smoothScale(_ scale: CGFloat) -> some View {
+        self.modifier(ScaleEffect(scale: scale))
+    }
+}
+
 
 
 
