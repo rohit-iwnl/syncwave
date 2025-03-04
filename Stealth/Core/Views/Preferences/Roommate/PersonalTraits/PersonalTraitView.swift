@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PersonalTraitView: View {
-
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
@@ -20,17 +19,14 @@ struct PersonalTraitView: View {
     @State private var showIncompleteFieldsAlert = false
     @State private var incompleteFields: [String] = []
 
-    // Add state for tracking selections
     @State private var selections: [String: Set<String>] = [:]
-
     @State private var hobbyTags: [String] = []
 
-    // Get the questions from PersonalityTraitConstants
     private let personalTraitQuestions = PersonalityTraitConstants
         .PersonalTraits.questionSet
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             PreferencesToolbar(
                 currentPage: $navigationCoordinator.currentPage,
                 totalPages: $navigationCoordinator.totalPages,
@@ -40,55 +36,68 @@ struct PersonalTraitView: View {
             }
 
             List {
-                Section {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Let's get to know basics about you")
-                            .font(.sora(.largeTitle, weight: .semibold))
-                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                            .lineLimit(3)
+                // Header Section
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Let's get to know basics about you")
+                        .font(.sora(.largeTitle, weight: .semibold))
+                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                        .lineLimit(3)
 
-                        Text("This helps us find the best matches for you")
-                            .font(.sora(.callout, weight: .regular))
-                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                            .lineLimit(2)
-                            .foregroundStyle(.gray)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .listRowInsets(EdgeInsets())
+                    Text("This helps us find the best matches for you")
+                        .font(.sora(.callout, weight: .regular))
+                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                        .lineLimit(2)
+                        .foregroundStyle(.gray)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 16)
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                .listRowBackground(Color.clear)
 
-                Section {
-                    ForEach(personalTraitQuestions, id: \.questionText) { question in
-                        MultiSelectQuestionView(
-                            question: question,
-                            selectedOptions: Binding(
-                                get: { selections[question.questionText] ?? [] },
-                                set: { selections[question.questionText] = $0 }
-                            )
+                // Questions Section
+                ForEach(personalTraitQuestions, id: \.questionText) { question in
+                    MultiSelectQuestionView(
+                        question: question,
+                        selectedOptions: Binding(
+                            get: { selections[question.questionText] ?? [] },
+                            set: { selections[question.questionText] = $0 }
                         )
-                    }
-
-                    TagInputView(
-                        headerText: "What's your hobbies",
-                        placeholderText: "Enter your hobbies here",
-                        tags: $hobbyTags
                     )
+                    .padding(.vertical, 8)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                    .listRowBackground(Color.clear)
                 }
 
-                Section {
-                    Button(action: validateAndContinue) {
-                        Text("Continue")
-                            .font(.sora(.headline, weight: .semibold))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(TextColors.primaryBlack.color)
-                            .cornerRadius(12)
-                    }
-                    .listRowInsets(EdgeInsets())
+                // Hobbies Section
+                TagInputView(
+                    headerText: "What's your hobbies",
+                    placeholderText: "Enter your hobbies here",
+                    tags: $hobbyTags
+                )
+                .padding(.vertical, 8)
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                .listRowBackground(Color.clear)
+
+                // Continue Button Section
+                Button(action: validateAndContinue) {
+                    Text("Continue")
+                        .font(.sora(.headline, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(TextColors.primaryBlack.color)
+                        .cornerRadius(12)
                 }
+                .padding(.vertical, 16)
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                .listRowBackground(Color.clear)
             }
-            .listStyle(InsetGroupedListStyle())
+            .listStyle(PlainListStyle())
+            .background(Color.clear)
         }
         .alert(isPresented: $showSkipAlert) {
             Alert(
@@ -104,7 +113,6 @@ struct PersonalTraitView: View {
             Text(incompleteFields.joined(separator: "\n"))
         }
     }
-
 
     private func validateAndContinue() {
         incompleteFields = []
@@ -124,25 +132,18 @@ struct PersonalTraitView: View {
         if incompleteFields.isEmpty {
             // All fields are complete, proceed to next screen
             withAnimation {
-                navigationCoordinator.currentPage += 1
-                // Navigate to next screen
+                navigationCoordinator.incrementPage()
+                // Print selections for debugging
                 for key in selections.keys {
                     print("Question: \(key)")
                     let selectedOptions = selections[key]
                     if selectedOptions?.count == 1 {
-                        print(
-                            "Selected Option: \(selectedOptions?.first ?? "")")
+                        print("Selected Option: \(selectedOptions?.first ?? "")")
                     } else {
-                        print(
-                            "Selected Options: [\(selectedOptions?.joined(separator: ", ") ?? "")]"
-                        )
+                        print("Selected Options: [\(selectedOptions?.joined(separator: ", ") ?? "")]")
                     }
                 }
-
-                // Print hobbies
                 print("Hobbies: [\(hobbyTags.joined(separator: ", "))]")
-
-                // navigationCoordinator.path.append(...)
             }
         } else {
             showIncompleteFieldsAlert = true
@@ -161,14 +162,12 @@ struct PersonalTraitView: View {
     }
 
     private func handleSkip() {
-        // Handle skip logic
         withAnimation {
             navigationCoordinator.incrementPage()
-            // Navigate to next screen
-            // navigationCoordinator.path.append(...)
         }
     }
 }
+
 
 #Preview {
     PersonalTraitView(currentPage: .constant(1), totalPages: .constant(3))
