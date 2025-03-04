@@ -100,6 +100,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B6001FA32C885745001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
 		B6001FA62C8858EE001DC029 /* Preferences */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Preferences; sourceTree = "<group>"; };
+		B60C06362D768C8600CAD66A /* States */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = States; sourceTree = "<group>"; };
+		B60C063B2D768D3C00CAD66A /* ExampleState */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ExampleState; sourceTree = "<group>"; };
 		B612A8992CDDE63D007957A5 /* RoomPlanViews */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RoomPlanViews; sourceTree = "<group>"; };
 		B6302A102CFBFC0E00213AC9 /* Launch */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Launch; sourceTree = "<group>"; };
 		B630BEDE2CD6168100F1E978 /* Location */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Location; sourceTree = "<group>"; };
@@ -285,6 +287,8 @@
 		B6D543CB2C7BFA1F00C9D14C /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B60C063B2D768D3C00CAD66A /* ExampleState */,
+				B60C06362D768C8600CAD66A /* States */,
 				B6388C052D72E35F00EF2123 /* Components */,
 				B6D543CD2C7BFA2600C9D14C /* Root */,
 				B6D543CE2C7BFA2900C9D14C /* Views */,
@@ -415,6 +419,8 @@
 			fileSystemSynchronizedGroups = (
 				B6001FA32C885745001DC029 /* Preferences */,
 				B6001FA62C8858EE001DC029 /* Preferences */,
+				B60C06362D768C8600CAD66A /* States */,
+				B60C063B2D768D3C00CAD66A /* ExampleState */,
 				B612A8992CDDE63D007957A5 /* RoomPlanViews */,
 				B6302A102CFBFC0E00213AC9 /* Launch */,
 				B630BEDE2CD6168100F1E978 /* Location */,
