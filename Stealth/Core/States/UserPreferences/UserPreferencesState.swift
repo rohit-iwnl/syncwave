@@ -16,8 +16,28 @@ class UserPreferencesViewModel : ObservableObject {
         .sell_buy_product : false
     ]
     
-    func getPreferences() {
+    func getPreferenceSetToTrue() -> UserPreferencesStateKeys {
+        for (key, value) in preferences {
+            if value == true {
+                return key
+            }
+        }
         
+        return .here_to_explore
+    }
+    
+    
+    
+    func setPreferenceToTrue(keyToSet key : UserPreferencesStateKeys){
+        if preferences[key] == true {
+            return
+        }
+        
+        preferences = preferences.mapValues({ _ in
+            false
+        })
+        
+        preferences[key] = true
     }
 }
 
