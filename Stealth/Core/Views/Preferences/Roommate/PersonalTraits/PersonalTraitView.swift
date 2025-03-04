@@ -35,68 +35,58 @@ struct PersonalTraitView: View {
                 showSkipAlert = true
             }
 
-            List {
-                // Header Section
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Let's get to know basics about you")
-                        .font(.sora(.largeTitle, weight: .semibold))
-                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                        .lineLimit(3)
+            ScrollView {
+                VStack(spacing: 10) {
+                    // Header Section
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Let's get to know basics about you")
+                            .font(.sora(.largeTitle, weight: .semibold))
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            .lineLimit(3)
 
-                    Text("This helps us find the best matches for you")
-                        .font(.sora(.callout, weight: .regular))
-                        .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
-                        .lineLimit(2)
-                        .foregroundStyle(.gray)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 16)
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-                .listRowBackground(Color.clear)
+                        Text("This helps us find the best matches for you")
+                            .font(.sora(.callout, weight: .regular))
+                            .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
+                            .lineLimit(2)
+                            .foregroundStyle(.gray)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 16)
 
-                // Questions Section
-                ForEach(personalTraitQuestions, id: \.questionText) { question in
-                    MultiSelectQuestionView(
-                        question: question,
-                        selectedOptions: Binding(
-                            get: { selections[question.questionText] ?? [] },
-                            set: { selections[question.questionText] = $0 }
+                    // Questions Section
+                    ForEach(personalTraitQuestions, id: \.questionText) { question in
+                        MultiSelectQuestionView(
+                            question: question,
+                            selectedOptions: Binding(
+                                get: { selections[question.questionText] ?? [] },
+                                set: { selections[question.questionText] = $0 }
+                            )
                         )
+                        .padding(.vertical, 8)
+                    }
+
+                    // Hobbies Section
+                    TagInputView(
+                        headerText: "What's your hobbies",
+                        placeholderText: "Enter your hobbies here",
+                        tags: $hobbyTags
                     )
                     .padding(.vertical, 8)
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-                    .listRowBackground(Color.clear)
-                }
 
-                // Hobbies Section
-                TagInputView(
-                    headerText: "What's your hobbies",
-                    placeholderText: "Enter your hobbies here",
-                    tags: $hobbyTags
-                )
-                .padding(.vertical, 8)
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-                .listRowBackground(Color.clear)
-
-                // Continue Button Section
-                Button(action: validateAndContinue) {
-                    Text("Continue")
-                        .font(.sora(.headline, weight: .semibold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(TextColors.primaryBlack.color)
-                        .cornerRadius(12)
+                    // Continue Button Section
+                    Button(action: validateAndContinue) {
+                        Text("Continue")
+                            .font(.sora(.headline, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(TextColors.primaryBlack.color)
+                            .cornerRadius(12)
+                    }
+                    .padding(.vertical, 16)
                 }
-                .padding(.vertical, 16)
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-                .listRowBackground(Color.clear)
+                .padding(.horizontal, 16)
             }
-            .listStyle(PlainListStyle())
             .background(Color.clear)
         }
         .alert(isPresented: $showSkipAlert) {
@@ -113,6 +103,7 @@ struct PersonalTraitView: View {
             Text(incompleteFields.joined(separator: "\n"))
         }
     }
+
 
     private func validateAndContinue() {
         incompleteFields = []
