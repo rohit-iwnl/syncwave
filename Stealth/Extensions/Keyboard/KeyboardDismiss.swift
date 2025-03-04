@@ -8,11 +8,12 @@
 import SwiftUI
 
 extension View {
-    func addDismissButton() -> some View {
+    func addDismissButton(text : String = "Done") -> some View {
+        
         return self.toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                Button("Dismiss") {
+                Button(text) {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
                 .foregroundStyle(.black)
