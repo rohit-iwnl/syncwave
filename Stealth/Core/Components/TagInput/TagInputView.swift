@@ -124,8 +124,11 @@ struct TagInputView: View {
     }
 
     private func removeTag(_ tag: String) {
+        print("Before removal: \(tags)")
         tags.removeAll { $0 == tag }
+        print("After removal: \(tags)")
     }
+
 
     private func isValidTag(_ tag: String) -> Bool {
         let allowedCharacters = CharacterSet.alphanumerics.union(
