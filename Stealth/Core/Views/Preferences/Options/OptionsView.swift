@@ -179,103 +179,67 @@ struct OptionsView: View {
     }
     
     private func performAPICallAndNavigate() {
-        isLoading = true
-        
-        guard let url = URL(string: "http://159.89.222.41:8000/api/onboarding/set-preferences") else {
-            print("Invalid URL")
-            isLoading = false
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer Naandhaandaungoppan", forHTTPHeaderField: "Authorization")
-        
-        DispatchQueue.global(qos: .background).async {
-            self.convertPreferencesToJSON { jsonString in
-                guard let jsonString = jsonString else {
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                    }
-                    return
-                }
+        Task {
+            do {
+                isLoading = true
                 
-                let preferences = self.parseJSON(jsonString)
-                
-                // Create the request body
-                let supabase_id = (appUserStateManager.appUser?.uid)?.lowercased()
-                if supabase_id == nil {
+                guard let supabase_id = appUserStateManager.appUser?.uid?.lowercased() else {
                     print("Supabase ID is nil")
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                    }
+                    isLoading = false
                     return
                 }
                 
-                let payload = [
-                    "supabase_id": supabase_id!,
-                    "preferences": preferences
-                ]
+                let preferences = OptionButtonConstants.buttons.indices.reduce(into: [String: Bool]()) { result, index in
+                    let jsonKey = OptionButtonConstants.buttons[index].jsonKey
+                    result[jsonKey] = index == selectedButtonIndex
+                }
                 
+                let payload = PreferencesPayload(supabase_id: supabase_id, preferences: preferences)
                 
-                if let payloadData = try? JSONSerialization.data(withJSONObject: payload, options: .prettyPrinted),
-                               let prettyPayload = String(data: payloadData, encoding: .utf8) {
-                                print("Sending payload:\n\(prettyPayload)")
-                            }
-                
+                // Print the payload for debugging
                 do {
-                    request.httpBody = try JSONSerialization.data(withJSONObject: payload)
-                } catch {
-                    print("Error creating request body: \(error)")
-                    DispatchQueue.main.async {
-                        self.isLoading = false
+                    let payloadData = try JSONEncoder().encode(payload)
+                    if let prettyPayload = String(data: payloadData, encoding: .utf8) {
+                        print("Sending payload:\n\(prettyPayload)")
                     }
+                } catch {
+                    print("Error encoding payload: \(error)")
+                    // Handle the error appropriately, e.g., show an alert to the user
+                    self.showErrorAlert = true
                     return
                 }
                 
-                // Make the API call
-                URLSession.shared.dataTask(with: request) { data, response, error in
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                        
-                        if let error = error {
-                            print("API call failed: \(error)")
-                            return
-                        }
-                        
-                        guard let httpResponse = response as? HTTPURLResponse else {
-                            print("Invalid response")
-                            return
-                        }
-                        
-                        print("Status code: \(httpResponse.statusCode)")
-                        
-                        if (200...299).contains(httpResponse.statusCode) {
-                            // Print the pretty JSON
-                            if let jsonData = try? JSONSerialization.data(withJSONObject: preferences, options: .prettyPrinted),
-                               let prettyPrintedString = String(data: jsonData, encoding: .utf8) {
-                                print(prettyPrintedString)
-                            }
-                            
-                            self.updateTotalPages(preferences)
-                            self.preferencesArray = preferences
-                            self.navigationCoordinator.updatePreferences(with: preferences)
-                            UserPreferencesManager.storePreferences(preferences)
-                            self.navigationCoordinator.path.append(NavigationDestinations.personalInfo)
-                            self.navigationCoordinator.currentPage += 1
-                        } else {
-                            print("API call failed with status code: \(httpResponse.statusCode)")
-                            if let data = data,
-                               let errorResponse = String(data: data, encoding: .utf8) {
-                                print("Error response: \(errorResponse)")
-                            }
-                        }
-                    }
-                }.resume()
+                // Use the NetworkService to send preferences
+                try await NetworkService.shared.sendPreferences(preferences, supabaseID: supabase_id)
+                
+                // Handle successful response
+                await MainActor.run {
+                    self.isLoading = false
+                    self.updateTotalPages(preferences)
+                    self.preferencesArray = preferences
+                    self.navigationCoordinator.updatePreferences(with: preferences)
+                    UserPreferencesManager.storePreferences(preferences)
+                    self.navigationCoordinator.path.append(NavigationDestinations.personalInfo)
+                    self.navigationCoordinator.currentPage += 1
+                }
+                
+                // Print the pretty JSON for debugging
+                if let jsonData = try? JSONEncoder().encode(preferences),
+                   let prettyPrintedString = String(data: jsonData, encoding: .utf8) {
+                    print("Preferences sent:\n\(prettyPrintedString)")
+                }
+                
+            } catch {
+                await MainActor.run {
+                    self.isLoading = false
+                    print("API call failed: \(error)")
+                    // Handle error (e.g., show an alert to the user)
+                    self.showErrorAlert = true
+                }
             }
         }
     }
+
 
     
     private func updateTotalPages(_ preferences: [String: Bool]) {
