@@ -21,10 +21,18 @@ struct TraitOption: Codable, Hashable {
     var scoreValue : Int
 }
 
-struct TraitQuestion : Codable, Hashable {
+struct TraitQuestionWithScore : Codable, Hashable {
+    let id : String
     let questionText : String
     let category : TraitCategory
     let options : [TraitOption]
+    
+    init(questionText : String, options : [TraitOption], category : TraitCategory) {
+        self.id = UUID().uuidString
+        self.questionText = questionText
+        self.options = options
+        self.category = category
+    }
 }
 
 struct TraitQuestionWithoutScore : Codable, Hashable {
