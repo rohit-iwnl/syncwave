@@ -15,7 +15,7 @@ struct PersonalTraitView: View {
     @Binding var currentPage: Int
     @Binding var totalPages: Int
 
-    @State private var showSkipAlert: Bool = false
+//    @State private var showSkipAlert: Bool = false
     @State private var showIncompleteFieldsAlert = false
     @State private var incompleteFields: [String] = []
 
@@ -31,9 +31,7 @@ struct PersonalTraitView: View {
                 currentPage: $navigationCoordinator.currentPage,
                 totalPages: $navigationCoordinator.totalPages,
                 showPages: .constant(true), onBackTap: handleBackTap
-            ) {
-                showSkipAlert = true
-            }
+            )
 
             ScrollView {
                 VStack(spacing: 10) {
@@ -91,14 +89,14 @@ struct PersonalTraitView: View {
             }
             .background(Color.clear)
         }
-        .alert(isPresented: $showSkipAlert) {
-            Alert(
-                title: Text("Skip personal traits preferences"),
-                message: Text("Are you sure? This may lead to fewer hyperpersonalized matches. Don't worry you can complete it later in settings"),
-                primaryButton: .default(Text("Proceed")) { handleSkip() },
-                secondaryButton: .cancel()
-            )
-        }
+//        .alert(isPresented: $showSkipAlert) {
+//            Alert(
+//                title: Text("Skip personal traits preferences"),
+//                message: Text("Are you sure? This may lead to fewer hyperpersonalized matches. Don't worry you can complete it later in settings"),
+//                primaryButton: .default(Text("Proceed")) { handleSkip() },
+//                secondaryButton: .cancel()
+//            )
+//        }
         .alert("Please complete all fields", isPresented: $showIncompleteFieldsAlert) {
             Button("OK", role: .cancel) {}
         } message: {
