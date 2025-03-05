@@ -23,5 +23,6 @@ enum NavigationDestinations : String, Hashable {
     case sellingProperty = "sellingProperty"
     case roomplan = "roomplan"
     case lookingForRoommate = "lookingForRoommate"
+    case personalTraitsFirstScreen = "personalTraitsFirstView"
     
 }
