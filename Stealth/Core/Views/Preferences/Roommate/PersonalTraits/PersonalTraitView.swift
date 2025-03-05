@@ -37,7 +37,7 @@ struct PersonalTraitView: View {
                 VStack(spacing: 10) {
                     // Header Section
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Let's get to know basics about you")
+                        Text("Let's start off with the basics")
                             .font(.sora(.largeTitle, weight: .semibold))
                             .minimumScaleFactor(dynamicTypeSize.customMinScaleFactor)
                             .lineLimit(3)
@@ -49,7 +49,7 @@ struct PersonalTraitView: View {
                             .foregroundStyle(.gray)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 16)
+                    .padding(.vertical)
 
                     // Questions Section
                     ForEach(personalTraitQuestions, id: \.questionText) { question in
