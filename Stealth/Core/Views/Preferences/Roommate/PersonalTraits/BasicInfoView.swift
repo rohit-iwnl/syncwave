@@ -1,5 +1,5 @@
 //
-//  PersonalTraitView.swift
+//  BasicInfoView.swift
 //  Stealth
 //
 //  Created by Rohit Manivel on 3/2/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PersonalTraitView: View {
+struct BasicInfoView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
@@ -23,7 +23,7 @@ struct PersonalTraitView: View {
     @State private var hobbyTags: [String] = []
 
     private let personalTraitQuestions = PersonalityTraitConstants
-        .PersonalTraits.questionSet
+        .PersonalTraits.basicQuestionsSet
 
     var body: some View {
         VStack(spacing: 0) {
@@ -152,15 +152,10 @@ struct PersonalTraitView: View {
         }
     }
 
-    private func handleSkip() {
-        withAnimation {
-            navigationCoordinator.incrementPage()
-        }
-    }
 }
 
 
 #Preview {
-    PersonalTraitView(currentPage: .constant(1), totalPages: .constant(3))
+    BasicInfoView(currentPage: .constant(1), totalPages: .constant(3))
         .environmentObject(NavigationCoordinator())
 }
