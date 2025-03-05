@@ -135,6 +135,9 @@ struct BasicInfoView: View {
                     }
                 }
                 print("Hobbies: [\(hobbyTags.joined(separator: ", "))]")
+                
+                
+                navigationCoordinator.path.append(NavigationDestinations.personalTraitsFirstScreen)
             }
         } else {
             showIncompleteFieldsAlert = true
