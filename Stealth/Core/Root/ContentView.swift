@@ -96,7 +96,12 @@ struct ContentView: View {
                         .environmentObject(appUserStateManager)
                         .toolbar(.hidden)
                 case .lookingForRoommate:
-                    PersonalTraitView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages)
+                    BasicInfoView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages)
+                        .environmentObject(navigationCoordinator)
+                        .environmentObject(appUserStateManager)
+                        .toolbar(.hidden)
+                case .personalTraitsFirstScreen:
+                    PersonalTraitFirstView(currentPage: $navigationCoordinator.currentPage, totalPages: $navigationCoordinator.totalPages)
                         .environmentObject(navigationCoordinator)
                         .environmentObject(appUserStateManager)
                         .toolbar(.hidden)
