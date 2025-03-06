@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-enum TraitCategory : String, Codable {
+enum TraitCategory: String, Codable {
     case openness = "Openness"
     case conscientiousness = "Conscientiousness"
     case extraversion = "Extraversion"
@@ -17,17 +16,18 @@ enum TraitCategory : String, Codable {
 }
 
 struct TraitOption: Codable, Hashable {
-    var optionText : String
-    var scoreValue : Int
+    var optionText: String
+    var scoreValue: Int
 }
 
-struct TraitQuestionWithScore : Codable, Hashable {
-    let id : String
-    let questionText : String
-    let category : TraitCategory
-    let options : [TraitOption]
-    
-    init(questionText : String, options : [TraitOption], category : TraitCategory) {
+struct TraitQuestionWithScore: Codable, Hashable {
+    let id: String
+    let questionText: String
+    let category: TraitCategory
+    let options: [TraitOption]
+
+    init(questionText: String, options: [TraitOption], category: TraitCategory)
+    {
         self.id = UUID().uuidString
         self.questionText = questionText
         self.options = options
@@ -35,20 +35,23 @@ struct TraitQuestionWithScore : Codable, Hashable {
     }
 }
 
-struct TraitQuestionWithoutScore : Codable, Hashable {
-    
+struct TraitQuestionWithoutScore: Codable, Hashable {
     let questionText: String
-    
+    let payloadKey: String
     let id: String
-    let options : [String]
-    
-    let allowMutlipleSelection : Bool
-    
-    
-    init(questionText : String, options : [String], allowMultipleSelection : Bool = false) {
+    let options: [String]
+    let allowMultipleSelection: Bool
+
+    init(
+        questionText: String,
+        payloadKey: String,  // Add payloadKey parameter
+        options: [String],
+        allowMultipleSelection: Bool = false
+    ) {
         self.id = UUID().uuidString
         self.questionText = questionText
+        self.payloadKey = payloadKey
         self.options = options
-        self.allowMutlipleSelection = allowMultipleSelection
+        self.allowMultipleSelection = allowMultipleSelection
     }
 }

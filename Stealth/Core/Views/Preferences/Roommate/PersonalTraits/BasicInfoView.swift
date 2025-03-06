@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+
+struct BasicInfoSubmisssion : Codable {
+    let basicInfo : [String : String]
+    let hobbies : [String]
+}
+
 struct BasicInfoView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.dismiss) private var dismiss
@@ -56,8 +62,8 @@ struct BasicInfoView: View {
                         MultiSelectQuestionView(
                             question: question,
                             selectedOptions: Binding(
-                                get: { selections[question.questionText] ?? [] },
-                                set: { selections[question.questionText] = $0 }
+                                get: { selections[question.payloadKey] ?? [] },
+                                set: { selections[question.payloadKey] = $0 }
                             )
                         )
                         .padding(.vertical, 8)
@@ -89,14 +95,6 @@ struct BasicInfoView: View {
             }
             .background(Color.clear)
         }
-//        .alert(isPresented: $showSkipAlert) {
-//            Alert(
-//                title: Text("Skip personal traits preferences"),
-//                message: Text("Are you sure? This may lead to fewer hyperpersonalized matches. Don't worry you can complete it later in settings"),
-//                primaryButton: .default(Text("Proceed")) { handleSkip() },
-//                secondaryButton: .cancel()
-//            )
-//        }
         .alert("Please complete all fields", isPresented: $showIncompleteFieldsAlert) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -110,8 +108,8 @@ struct BasicInfoView: View {
 
         // Validate original questions
         for question in personalTraitQuestions {
-            if selections[question.questionText]?.isEmpty ?? true {
-                incompleteFields.append("• \(question.questionText)")
+            if selections[question.payloadKey]?.isEmpty ?? true {
+                incompleteFields.append("• \(question.payloadKey)")
             }
         }
 
@@ -136,12 +134,35 @@ struct BasicInfoView: View {
                 }
                 print("Hobbies: [\(hobbyTags.joined(separator: ", "))]")
                 
-                
+                createPayload()
                 navigationCoordinator.path.append(NavigationDestinations.personalTraitsFirstScreen)
+                
+                
+                
             }
         } else {
             showIncompleteFieldsAlert = true
         }
+    }
+    
+    private func createPayload() {
+        var payloadDict = [String : String]()
+        
+        for question in personalTraitQuestions {
+            let selectedOptions = selections[question.payloadKey]?.first ?? "Undefined"
+            payloadDict[question.payloadKey] = selectedOptions
+        }
+        
+        let submission = BasicInfoSubmisssion(basicInfo: payloadDict, hobbies: hobbyTags)
+        
+        do {
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+                let jsonData = try encoder.encode(submission)
+                print(String(data: jsonData, encoding: .utf8) ?? "")
+            } catch {
+                print("Encoding error: \(error.localizedDescription)")
+            }
     }
 
     private func handleBackTap() {
