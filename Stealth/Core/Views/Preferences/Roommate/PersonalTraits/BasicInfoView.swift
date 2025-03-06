@@ -9,17 +9,17 @@ import SwiftUI
 
 struct BasicInfoSubmission: Codable {
     let basicInfo: [String: String]
-    let hobbies: [String]
+    let interests: [String]
 
-    init(basicInfo: [QuestionPayloadKey: String], hobbies: [String]) {
+    init(basicInfo: [QuestionPayloadKey: String], interests: [String]) {
         self.basicInfo = Dictionary(uniqueKeysWithValues: basicInfo.map { ($0.rawValue, $1) })
-        self.hobbies = hobbies
+        self.interests = interests
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(basicInfo, forKey: .basicInfo)
-        try container.encodeIfPresent(hobbies, forKey: .hobbies)
+        try container.encodeIfPresent(interests, forKey: .interests)
     }
 }
 
@@ -101,8 +101,8 @@ struct BasicInfoView: View {
 
     private func HobbiesSection() -> some View {
         TagInputView(
-            headerText: "What's your hobbies",
-            placeholderText: "Enter your hobbies here",
+            headerText: "What's your interests",
+            placeholderText: "Enter your interests here",
             tags: $hobbyTags
         )
         .padding(.vertical, 8)
@@ -178,7 +178,7 @@ struct BasicInfoView: View {
             }
         }
         
-        let submission = BasicInfoSubmission(basicInfo: payloadDict, hobbies: hobbyTags)
+        let submission = BasicInfoSubmission(basicInfo: payloadDict, interests: hobbyTags)
         
         do {
             let encoder = JSONEncoder()
