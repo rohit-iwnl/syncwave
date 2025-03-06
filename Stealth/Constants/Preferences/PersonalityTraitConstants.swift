@@ -14,7 +14,8 @@ enum QuestionPayloadKey: String, Codable, CaseIterable {
     case drinkingPreference = "drinking_preference"
     case noiseTolerance = "noise_tolerance"
     case cleanliness = "cleanliness"
-    
+    case foodPreference = "food_preference"
+
     var displayText: String {
         switch self {
         case .preferredGender: return "Preferred Gender"
@@ -23,6 +24,7 @@ enum QuestionPayloadKey: String, Codable, CaseIterable {
         case .drinkingPreference: return "Drinking Preference"
         case .noiseTolerance: return "Noise Tolerance"
         case .cleanliness: return "Cleanliness"
+        case .foodPreference: return "Food Preference"
         }
     }
 }
@@ -33,38 +35,42 @@ struct PersonalityTraitConstants {
         /// Unscored Questions (Basic filtering shiii)
         static let basicQuestionsSet: [TraitQuestionWithoutScore] = [
             TraitQuestionWithoutScore(
-                    questionText: "Preferred gender of roommate",
-                    payloadKey: .preferredGender,
-                    options: ["Male", "Female", "Any"],
-                    allowMultipleSelection: false
-                ),
-                TraitQuestionWithoutScore(
-                    questionText: "Preferred age range of roommate",
-                    payloadKey: .preferredAgeRange,
-                    options: ["18-22", "23-27", "28-32", "Any"],
-                    allowMultipleSelection: false
-                ),
-                TraitQuestionWithoutScore(
-                    questionText: "Do you smoke?",
-                    payloadKey: .smokingPreference,
-                    options: ["Yes", "No", "Occasionally"],
-                    allowMultipleSelection: false
-                ),
-                TraitQuestionWithoutScore(
-                    questionText: "Do you drink?",
-                    payloadKey: .drinkingPreference,
-                    options: ["Yes", "No", "Occasionally"]
-                ),
-                TraitQuestionWithoutScore(
-                    questionText: "What's your noise tolerance level?",
-                    payloadKey: .noiseTolerance,
-                    options: ["Quiet", "Regular", "Moderate", "Loud"]
-                ),
-                TraitQuestionWithoutScore(
-                    questionText: "What's your cleanliness quotient",
-                    payloadKey: .cleanliness,
-                    options: ["Tidy", "Weekend Clean", "Casual", "Messy"]
-                )
+                questionText: "Preferred gender of roommate",
+                payloadKey: .preferredGender,
+                options: ["Male", "Female", "Any"],
+                allowMultipleSelection: false
+            ),
+            TraitQuestionWithoutScore(
+                questionText: "Preferred age range of roommate",
+                payloadKey: .preferredAgeRange,
+                options: ["18-22", "23-27", "28-32", "Any"],
+                allowMultipleSelection: false
+            ),
+            TraitQuestionWithoutScore(
+                questionText: "Do you smoke?",
+                payloadKey: .smokingPreference,
+                options: ["Yes", "No", "Occasionally"],
+                allowMultipleSelection: false
+            ),
+            TraitQuestionWithoutScore(
+                questionText: "Do you drink?",
+                payloadKey: .drinkingPreference,
+                options: ["Yes", "No", "Occasionally"]
+            ),
+            TraitQuestionWithoutScore(
+                questionText: "What's your food preferences",
+                payloadKey: .foodPreference, options: ["Veg", "Non-veg", "Any"]
+            ),
+            TraitQuestionWithoutScore(
+                questionText: "What's your noise tolerance level?",
+                payloadKey: .noiseTolerance,
+                options: ["Quiet", "Regular", "Moderate", "Loud"]
+            ),
+            TraitQuestionWithoutScore(
+                questionText: "What's your cleanliness quotient",
+                payloadKey: .cleanliness,
+                options: ["Tidy", "Weekend Clean", "Casual", "Messy"]
+            ),
         ]
 
         /// Scored Questions (Personality shii)
