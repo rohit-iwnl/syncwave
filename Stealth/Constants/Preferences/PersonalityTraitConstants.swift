@@ -7,44 +7,64 @@
 
 import Foundation
 
+enum QuestionPayloadKey: String, Codable, CaseIterable {
+    case preferredGender = "preferred_gender"
+    case preferredAgeRange = "preferred_age_range"
+    case smokingPreference = "smoking_preference"
+    case drinkingPreference = "drinking_preference"
+    case noiseTolerance = "noise_tolerance"
+    case cleanliness = "cleanliness"
+    
+    var displayText: String {
+        switch self {
+        case .preferredGender: return "Preferred Gender"
+        case .preferredAgeRange: return "Preferred Age Range"
+        case .smokingPreference: return "Smoking Preference"
+        case .drinkingPreference: return "Drinking Preference"
+        case .noiseTolerance: return "Noise Tolerance"
+        case .cleanliness: return "Cleanliness"
+        }
+    }
+}
+
 struct PersonalityTraitConstants {
     struct PersonalTraits {
 
         /// Unscored Questions (Basic filtering shiii)
         static let basicQuestionsSet: [TraitQuestionWithoutScore] = [
             TraitQuestionWithoutScore(
-                questionText: "Preferred gender of roommate",
-                payloadKey: "preferred_gender",
-                options: ["Male", "Female", "Any"],
-                allowMultipleSelection: false
-            ),
-            TraitQuestionWithoutScore(
-                questionText: "Preferred age range of roommate",
-                payloadKey: "preferred_age_range",
-                options: ["18-22", "23-27", "28-32", "Any"],
-                allowMultipleSelection: false
-            ),
-            TraitQuestionWithoutScore(
-                questionText: "Do you smoke?",
-                payloadKey: "smoking_preference",
-                options: ["Yes", "No", "Occasionally"],
-                allowMultipleSelection: false
-            ),
-            TraitQuestionWithoutScore(
-                questionText: "Do you drink?",
-                payloadKey: "drinking_preference",
-                options: ["Yes", "No", "Occasionally"]
-            ),
-            TraitQuestionWithoutScore(
-                questionText: "What's your noise tolerance level?",
-                payloadKey: "noise_tolerance",
-                options: ["Quiet", "Regular", "Moderate", "Loud"]
-            ),
-            TraitQuestionWithoutScore(
-                questionText: "What's your cleanliness quotient",
-                payloadKey: "cleanliness",
-                options: ["Tidy", "Weekend Clean", "Casual", "Messy"]
-            ),
+                    questionText: "Preferred gender of roommate",
+                    payloadKey: .preferredGender,
+                    options: ["Male", "Female", "Any"],
+                    allowMultipleSelection: false
+                ),
+                TraitQuestionWithoutScore(
+                    questionText: "Preferred age range of roommate",
+                    payloadKey: .preferredAgeRange,
+                    options: ["18-22", "23-27", "28-32", "Any"],
+                    allowMultipleSelection: false
+                ),
+                TraitQuestionWithoutScore(
+                    questionText: "Do you smoke?",
+                    payloadKey: .smokingPreference,
+                    options: ["Yes", "No", "Occasionally"],
+                    allowMultipleSelection: false
+                ),
+                TraitQuestionWithoutScore(
+                    questionText: "Do you drink?",
+                    payloadKey: .drinkingPreference,
+                    options: ["Yes", "No", "Occasionally"]
+                ),
+                TraitQuestionWithoutScore(
+                    questionText: "What's your noise tolerance level?",
+                    payloadKey: .noiseTolerance,
+                    options: ["Quiet", "Regular", "Moderate", "Loud"]
+                ),
+                TraitQuestionWithoutScore(
+                    questionText: "What's your cleanliness quotient",
+                    payloadKey: .cleanliness,
+                    options: ["Tidy", "Weekend Clean", "Casual", "Messy"]
+                )
         ]
 
         /// Scored Questions (Personality shii)

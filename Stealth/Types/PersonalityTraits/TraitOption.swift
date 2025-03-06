@@ -37,14 +37,14 @@ struct TraitQuestionWithScore: Codable, Hashable {
 
 struct TraitQuestionWithoutScore: Codable, Hashable {
     let questionText: String
-    let payloadKey: String
+    let payloadKey: QuestionPayloadKey
     let id: String
     let options: [String]
     let allowMultipleSelection: Bool
 
     init(
         questionText: String,
-        payloadKey: String,  // Add payloadKey parameter
+        payloadKey: QuestionPayloadKey,  // Add payloadKey parameter
         options: [String],
         allowMultipleSelection: Bool = false
     ) {
