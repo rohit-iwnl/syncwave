@@ -77,7 +77,7 @@ struct MultiSelectQuestionView: View {
             selectedOptions.remove(optionText)
         } else {
             // If single select mode, clear other selections first
-            if !question.allowMutlipleSelection {
+            if !question.allowMultipleSelection {
                 selectedOptions.removeAll()
             }
             selectedOptions.insert(optionText)
@@ -100,12 +100,14 @@ struct ScaleButtonStyle: ButtonStyle {
 #Preview {
     let genderQuestion = TraitQuestionWithoutScore(
         questionText: "Preferred gender of roommate",
+        payloadKey: "preferred_gender",
         options: ["Male", "Female", "Any"],
         allowMultipleSelection: false
     )
 
     let interestsQuestion = TraitQuestionWithoutScore(
         questionText: "Select all that apply:",
+        payloadKey: "exampleKey",
         options: [
             "Option 1",
             "Option 2 with longer text",
