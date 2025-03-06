@@ -100,14 +100,14 @@ struct ScaleButtonStyle: ButtonStyle {
 #Preview {
     let genderQuestion = TraitQuestionWithoutScore(
         questionText: "Preferred gender of roommate",
-        payloadKey: "preferred_gender",
+        payloadKey: .preferredGender,
         options: ["Male", "Female", "Any"],
         allowMultipleSelection: false
     )
 
     let interestsQuestion = TraitQuestionWithoutScore(
         questionText: "Select all that apply:",
-        payloadKey: "exampleKey",
+        payloadKey: .preferredGender,
         options: [
             "Option 1",
             "Option 2 with longer text",
