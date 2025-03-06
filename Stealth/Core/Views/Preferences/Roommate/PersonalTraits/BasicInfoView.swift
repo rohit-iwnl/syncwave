@@ -8,9 +8,24 @@
 import SwiftUI
 
 struct BasicInfoSubmission: Codable {
-    let basicInfo: [QuestionPayloadKey: String]
+    let basicInfo: [String: String]
     let hobbies: [String]
+
+    init(basicInfo: [QuestionPayloadKey: String], hobbies: [String]) {
+        self.basicInfo = Dictionary(uniqueKeysWithValues: basicInfo.map { ($0.rawValue, $1) })
+        self.hobbies = hobbies
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(basicInfo, forKey: .basicInfo)
+        try container.encodeIfPresent(hobbies, forKey: .hobbies)
+    }
 }
+
+
+
+
 
 struct BasicInfoView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
@@ -147,12 +162,20 @@ struct BasicInfoView: View {
     private func createPayload() {
         var payloadDict = [QuestionPayloadKey: String]()
         
-        for question in personalTraitQuestions {
-            guard let selectedOption = selections[question.payloadKey]?.first else {
-                payloadDict[question.payloadKey] = "Undefined"
-                continue
+//        for question in personalTraitQuestions {
+//            guard let selectedOption = selections[question.payloadKey]?.first else {
+//                payloadDict[question.payloadKey] = "Undefined"
+//                continue
+//            }
+//            payloadDict[question.payloadKey] = selectedOption
+//        }
+        
+        for key in QuestionPayloadKey.allCases {
+            if let selectedOption = selections[key]?.first {
+                payloadDict[key] = selectedOption.lowercased()
+            } else {
+                payloadDict[key] = "undefined"
             }
-            payloadDict[question.payloadKey] = selectedOption
         }
         
         let submission = BasicInfoSubmission(basicInfo: payloadDict, hobbies: hobbyTags)
