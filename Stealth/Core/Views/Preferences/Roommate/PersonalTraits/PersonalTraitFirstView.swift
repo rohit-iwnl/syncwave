@@ -24,6 +24,8 @@ struct PersonalTraitFirstView: View {
     private let scoredQuestions : [TraitQuestionWithScore] = PersonalityTraitConstants.PersonalTraits.getRandomQuestionSet(questionsPerCategory: 1)
     
     @State private var selectedOptions: [String: TraitOption?] = [:]
+    
+    @State private var isLoading : Bool = false
 
     
     
@@ -41,7 +43,9 @@ struct PersonalTraitFirstView: View {
                 currentPage: $navigationCoordinator.currentPage,
                 totalPages: $navigationCoordinator.totalPages,
                 showPages: .constant(true), onBackTap: handleBackTap
-            )
+            ) {
+                
+            }
             
             ScrollView {
                 VStack(spacing: 10) {
@@ -74,14 +78,16 @@ struct PersonalTraitFirstView: View {
                         .listStyle(.automatic)
                     }
                     
+                    Divider()
+                        .padding(.vertical)
+                    ContinueButton(isEnabled: true, isLoading: isLoading) {
+                        
+                    }
+                    
                     
                 }
                 .padding(.horizontal)
             }
-
-            
-            
-            
         }
     }
 }
