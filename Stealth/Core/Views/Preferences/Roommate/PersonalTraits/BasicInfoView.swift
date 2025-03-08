@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct BasicInfoSubmission: Codable {
-    let supabase_id : String
+    let supabase_id: String
     let basicInfo: [String: String]
     let interests: [String]
 
-    init(supabase_id : String, basicInfo: [QuestionPayloadKey: String], interests: [String]) {
+    init(
+        supabase_id: String, basicInfo: [QuestionPayloadKey: String],
+        interests: [String]
+    ) {
         self.supabase_id = supabase_id
-        self.basicInfo = Dictionary(uniqueKeysWithValues: basicInfo.map { ($0.rawValue, $1) })
+        self.basicInfo = Dictionary(
+            uniqueKeysWithValues: basicInfo.map { ($0.rawValue, $1) })
         self.interests = interests
     }
 
@@ -26,17 +30,13 @@ struct BasicInfoSubmission: Codable {
     }
 }
 
-
-
-
-
 struct BasicInfoView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
-    @EnvironmentObject var appUserStateManager : AppUserManger
-    
-    @State private var isLoading : Bool = false
+    @EnvironmentObject var appUserStateManager: AppUserManger
+
+    @State private var isLoading: Bool = false
 
     @Binding var currentPage: Int
     @Binding var totalPages: Int
@@ -47,7 +47,8 @@ struct BasicInfoView: View {
     @State private var selections: [QuestionPayloadKey: Set<String>] = [:]
     @State private var hobbyTags: [String] = []
 
-    private let personalTraitQuestions = PersonalityTraitConstants.PersonalTraits.basicQuestionsSet
+    private let personalTraitQuestions = PersonalityTraitConstants
+        .PersonalTraits.basicQuestionsSet
 
     var body: some View {
         VStack(spacing: 0) {
@@ -68,7 +69,10 @@ struct BasicInfoView: View {
             }
             .background(Color.clear)
         }
-        .alert("Please complete all fields", isPresented: $showIncompleteFieldsAlert) {
+        .alert(
+            "Please complete all fields",
+            isPresented: $showIncompleteFieldsAlert
+        ) {
             Button("OK", role: .cancel) {}
         } message: {
             Text(incompleteFields.joined(separator: "\n"))
@@ -136,12 +140,13 @@ struct BasicInfoView: View {
 
         if incompleteFields.isEmpty {
             withAnimation {
-                navigationCoordinator.incrementPage()
-                debugPrintSelections()
+                
                 Task {
-                                await createPayload()
-                            }
-                navigationCoordinator.path.append(NavigationDestinations.personalTraitsFirstScreen)
+                    await createPayload()
+                }
+                navigationCoordinator.incrementPage()
+                navigationCoordinator.path.append(
+                    NavigationDestinations.personalTraitsFirstScreen)
             }
         } else {
             isLoading = false
@@ -149,22 +154,9 @@ struct BasicInfoView: View {
         }
     }
 
-    private func debugPrintSelections() {
-        for key in selections.keys {
-            print("Question: \(key)")
-            let selectedOptions = selections[key]
-            if selectedOptions?.count == 1 {
-                print("Selected Option: \(selectedOptions?.first ?? "")")
-            } else {
-                print("Selected Options: [\(selectedOptions?.joined(separator: ", ") ?? "")]")
-            }
-        }
-        print("Hobbies: [\(hobbyTags.joined(separator: ", "))]")
-    }
-
     private func createPayload() async {
         var payloadDict = [QuestionPayloadKey: String]()
-                
+
         for key in QuestionPayloadKey.allCases {
             if let selectedOption = selections[key]?.first {
                 payloadDict[key] = selectedOption.lowercased()
@@ -172,22 +164,37 @@ struct BasicInfoView: View {
                 payloadDict[key] = "undefined"
             }
         }
-        guard let supabase_id = appUserStateManager.appUser?.uid?.lowercased() else {
+        guard let supabase_id = appUserStateManager.appUser?.uid?.lowercased()
+        else {
             print("Supabase ID is nil")
             return
         }
-        
-        let submission = BasicInfoSubmission(supabase_id: supabase_id, basicInfo: payloadDict, interests: hobbyTags)
-        
+
+        let submission = BasicInfoSubmission(
+            supabase_id: supabase_id, basicInfo: payloadDict,
+            interests: hobbyTags)
+
         do {
-            try await NetworkService.shared.storeUserTraits(basicInfoSubmission: submission, supabaseID: supabase_id)
+            try await NetworkService.shared.storeUserTraits(
+                basicInfoSubmission: submission, supabaseID: supabase_id)
             isLoading = false
         } catch {
+            
             isLoading = false
-            print("Encoding error: \(error.localizedDescription)")
+            
+            if let networkError = error as? NetworkError {
+                switch networkError {
+                case .serverError(let statusCode, let message):
+                    print("Server error \(statusCode): \(message)")
+                default:
+                    print("Network error: \(networkError.localizedDescription)")
+                }
+            } else {
+                print("Error: \(error)")
+            }
         }
-    }
 
+    }
 
     private func handleBackTap() {
         withAnimation {
