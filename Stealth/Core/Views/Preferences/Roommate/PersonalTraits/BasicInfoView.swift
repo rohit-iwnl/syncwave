@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct BasicInfoSubmission: Codable {
+    let supabase_id : String
     let basicInfo: [String: String]
     let interests: [String]
 
-    init(basicInfo: [QuestionPayloadKey: String], interests: [String]) {
+    init(supabase_id : String, basicInfo: [QuestionPayloadKey: String], interests: [String]) {
+        self.supabase_id = supabase_id
         self.basicInfo = Dictionary(uniqueKeysWithValues: basicInfo.map { ($0.rawValue, $1) })
         self.interests = interests
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(supabase_id, forKey: .supabase_id)
         try container.encodeIfPresent(basicInfo, forKey: .basicInfo)
         try container.encodeIfPresent(interests, forKey: .interests)
     }
@@ -31,6 +34,9 @@ struct BasicInfoView: View {
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var navigationCoordinator: NavigationCoordinator
+    @EnvironmentObject var appUserStateManager : AppUserManger
+    
+    @State private var isLoading : Bool = false
 
     @Binding var currentPage: Int
     @Binding var totalPages: Int
@@ -109,19 +115,13 @@ struct BasicInfoView: View {
     }
 
     private func ContinueButtonSection() -> some View {
-        Button(action: validateAndContinue) {
-            Text("Continue")
-                .font(.sora(.headline, weight: .semibold))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(TextColors.primaryBlack.color)
-                .cornerRadius(12)
+        ContinueButton(isEnabled: true, isLoading: isLoading) {
+            validateAndContinue()
         }
-        .padding(.vertical, 16)
     }
 
     private func validateAndContinue() {
+        isLoading = true
         incompleteFields = []
 
         for question in personalTraitQuestions {
@@ -138,10 +138,13 @@ struct BasicInfoView: View {
             withAnimation {
                 navigationCoordinator.incrementPage()
                 debugPrintSelections()
-                createPayload()
+                Task {
+                                await createPayload()
+                            }
                 navigationCoordinator.path.append(NavigationDestinations.personalTraitsFirstScreen)
             }
         } else {
+            isLoading = false
             showIncompleteFieldsAlert = true
         }
     }
@@ -159,17 +162,9 @@ struct BasicInfoView: View {
         print("Hobbies: [\(hobbyTags.joined(separator: ", "))]")
     }
 
-    private func createPayload() {
+    private func createPayload() async {
         var payloadDict = [QuestionPayloadKey: String]()
-        
-//        for question in personalTraitQuestions {
-//            guard let selectedOption = selections[question.payloadKey]?.first else {
-//                payloadDict[question.payloadKey] = "Undefined"
-//                continue
-//            }
-//            payloadDict[question.payloadKey] = selectedOption
-//        }
-        
+                
         for key in QuestionPayloadKey.allCases {
             if let selectedOption = selections[key]?.first {
                 payloadDict[key] = selectedOption.lowercased()
@@ -177,15 +172,18 @@ struct BasicInfoView: View {
                 payloadDict[key] = "undefined"
             }
         }
+        guard let supabase_id = appUserStateManager.appUser?.uid?.lowercased() else {
+            print("Supabase ID is nil")
+            return
+        }
         
-        let submission = BasicInfoSubmission(basicInfo: payloadDict, interests: hobbyTags)
+        let submission = BasicInfoSubmission(supabase_id: supabase_id, basicInfo: payloadDict, interests: hobbyTags)
         
         do {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-            let jsonData = try encoder.encode(submission)
-            print(String(data: jsonData, encoding: .utf8) ?? "")
+            try await NetworkService.shared.storeUserTraits(basicInfoSubmission: submission, supabaseID: supabase_id)
+            isLoading = false
         } catch {
+            isLoading = false
             print("Encoding error: \(error.localizedDescription)")
         }
     }
@@ -206,4 +204,5 @@ struct BasicInfoView: View {
 #Preview {
     BasicInfoView(currentPage: .constant(1), totalPages: .constant(3))
         .environmentObject(NavigationCoordinator())
+        .environmentObject(AppUserManger())
 }
