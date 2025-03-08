@@ -138,6 +138,10 @@ struct TagInputView: View {
     }
 
     private func showErrorToast(_ message: String) {
+        
+        let feedbackGenerator = UINotificationFeedbackGenerator()
+        feedbackGenerator.notificationOccurred(.error)
+        
         toastMessage = message
         showToast = true
     }
