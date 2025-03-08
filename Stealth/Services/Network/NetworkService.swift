@@ -22,7 +22,7 @@ class NetworkService {
     private let authToken = "Bearer Naandhaandaungoppan"
 
     private init() {}
-
+    
     func request<T: Codable, U: Codable>(
         endpoint: String,
         method: HTTPMethod,
@@ -57,9 +57,21 @@ class NetworkService {
 
         print("Status code: \(httpResponse.statusCode)")
 
-        guard (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.serverError(
-                "API call failed with status code: \(httpResponse.statusCode)")
+        switch httpResponse.statusCode {
+        case 200...299:
+            break
+        case 400:
+            throw NetworkError.serverError(httpResponse.statusCode, "Bad request")
+        case 401:
+            throw NetworkError.serverError(httpResponse.statusCode, "Unauthorized")
+        case 403:
+            throw NetworkError.serverError(httpResponse.statusCode, "Forbidden")
+        case 404:
+            throw NetworkError.serverError(httpResponse.statusCode, "Not found")
+        case 500:
+            throw NetworkError.serverError(httpResponse.statusCode, "Internal server error")
+        default:
+            throw NetworkError.serverError(httpResponse.statusCode, "Unknown server error")
         }
 
         do {
@@ -69,6 +81,7 @@ class NetworkService {
             throw NetworkError.decodingError
         }
     }
+
 
     func sendPreferences(_ preferences: [String: Bool], supabaseID: String)
         async throws
