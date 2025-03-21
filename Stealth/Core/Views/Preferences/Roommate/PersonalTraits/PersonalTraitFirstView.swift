@@ -32,10 +32,6 @@ struct PersonalTraitFirstView: View {
     private func handleBackTap() {
         navigationCoordinator.decrementPage()
     }
-    
-    
-    
-    
 
     var body: some View {
         VStack(spacing: 0) {

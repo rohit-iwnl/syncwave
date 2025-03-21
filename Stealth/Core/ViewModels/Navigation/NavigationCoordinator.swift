@@ -33,6 +33,7 @@ class NavigationCoordinator: ObservableObject {
         }
     }
     
+    
     func resetPageCount() {
             currentPage = -1
             print("Page count reset to 0")

@@ -50,6 +50,7 @@
 		B6DF189A2C854C8100741B53 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = B6DF18992C854C8100741B53 /* GoogleSignIn */; };
 		B6DF189C2C854C8100741B53 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B6DF189B2C854C8100741B53 /* GoogleSignInSwift */; };
 		B6FE87842C7D8ABE000685E0 /* AppleSignInUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FE87832C7D8ABE000685E0 /* AppleSignInUtils.swift */; };
+		B6FF225A2D8A2CCD009C3F7D /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = B6FF22592D8A2CCD009C3F7D /* Inject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -160,6 +161,7 @@
 				B6D3043F2C7D33000018C1FF /* PostgREST in Frameworks */,
 				B6D304582C7D3C8B0018C1FF /* Storage in Frameworks */,
 				B6388C0B2D72E49100EF2123 /* AlertToast in Frameworks */,
+				B6FF225A2D8A2CCD009C3F7D /* Inject in Frameworks */,
 				B6D304502C7D3C8B0018C1FF /* Auth in Frameworks */,
 				B6925E4D2CE30D5300F1A272 /* RoomPlan.framework in Frameworks */,
 				B6D3043D2C7D33000018C1FF /* Auth in Frameworks */,
@@ -494,6 +496,7 @@
 				B696A8002C92D1DB0058215B /* XCRemoteSwiftPackageReference "swiftui-sliders" */,
 				B6052D912C9E5FCA00C87CBF /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
 				B6388C092D72E49100EF2123 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				B6FF22582D8A2CCD009C3F7D /* XCRemoteSwiftPackageReference "Inject" */,
 			);
 			productRefGroup = B6D543B72C7BF96E00C9D14C /* Products */;
 			projectDirPath = "";
@@ -824,6 +827,14 @@
 				minimumVersion = 8.0.0;
 			};
 		};
+		B6FF22582D8A2CCD009C3F7D /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -901,6 +912,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B6DF18982C854C8100741B53 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		B6FF22592D8A2CCD009C3F7D /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6FF22582D8A2CCD009C3F7D /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
